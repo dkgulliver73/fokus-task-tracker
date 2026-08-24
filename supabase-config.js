@@ -1,5 +1,4 @@
 window.FOCUS_SUPABASE = {
-  url: '',
-  anonKey: ''
+  url: 'https://fhgolmuwinapdmiyqglv.supabase.co',
+  anonKey: 'sb_publishable_ltaNA7nnVozoSCOcZIjg'
 };
-
