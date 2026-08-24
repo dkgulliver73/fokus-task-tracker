@@ -15,7 +15,7 @@
     .topbar{height:58px;padding:9px 24px}.topbar h1{font-size:18px}.actions{align-items:center}.search{height:34px;width:205px}.primary{height:34px;padding:0 12px}.mini-action{width:34px;height:34px;border:1px solid var(--line);background:#14161a;border-radius:8px;color:#808793}.period{height:54px;padding:5px 24px;gap:6px}.period>button{height:30px;min-width:30px}.range{width:112px}.range strong{font-size:10px}.today{padding:0 9px;margin-right:8px}.days{height:44px;max-width:610px}.days button{border-radius:8px}.days span{font-size:8px}.days strong{font-size:12px}.days .today-dot:after{bottom:3px}.toolbar{display:none}.board{height:calc(100vh - 112px);padding:12px 24px 48px}.column{padding:10px 12px;border-radius:12px}.column-head{min-height:48px;padding:0 2px 10px;margin-bottom:10px}.day-number{width:38px;height:38px;border-radius:10px;font-size:16px;box-shadow:0 6px 16px #6659e82e}.day-label{gap:1px}.day-label strong{font-size:15px}.day-label small{font-size:9px}.day-summary{font-size:9px;gap:8px}.count{font-size:9px;padding:3px 7px}.task-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));align-content:start;gap:9px;max-width:none;min-height:250px}.card{min-width:0;padding:11px 12px;border-radius:9px}.card h3{font-size:12px;margin:9px 0 10px}.card-foot{margin-top:8px;padding-top:7px}.quick-add{min-height:44px;align-self:stretch}.empty-day{grid-column:1/-1;padding:26px}.drop-marker{width:auto;margin:0}.drop-marker.ready{margin:0}.drop-marker:before{left:-2px;right:-2px}.modal{max-height:92vh;overflow:auto}
     @media(max-width:1050px){.task-list{grid-template-columns:repeat(2,minmax(220px,1fr))}.search{width:165px}.range{display:none}.today{margin-right:2px}}
     @media(max-width:700px){.topbar{height:54px;padding:8px 12px}.topbar h1{font-size:17px}.mini-action{display:none}.period{height:50px;padding:3px 10px}.board{height:calc(100vh - 104px);padding:8px 8px 70px}.column{padding:8px}.column-head{min-height:44px}.day-summary span:first-child{display:none}.task-list{grid-template-columns:1fr;gap:8px}.days button:nth-child(n+6){display:none}.search{display:none}.primary{width:36px}.day-number{width:34px;height:34px;font-size:14px}}
-    #board,.card[data-drag],.card[data-drag] *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.card[data-drag]{cursor:grab;touch-action:pan-y;-webkit-user-drag:none}.card.dragging{display:none}body.is-dragging,body.is-dragging *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}body.is-dragging{cursor:grabbing}.drag-clone{position:fixed;z-index:60;margin:0!important;pointer-events:none;cursor:grabbing;box-shadow:0 26px 60px #000b;border-color:#8175f5;will-change:transform}.drag-clone.done{opacity:.72}.drop-marker{transition:opacity 140ms ease}.card{transition:transform var(--dur-hover) ease,opacity var(--dur-hover) ease,border-color var(--dur-hover) ease,box-shadow var(--dur-hover) ease}.card:active{transform:scale(.985)}
+    #board,.card[data-drag],.card[data-drag] *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.card[data-drag]{cursor:grab;touch-action:none;-webkit-user-drag:none}.card.dragging{display:none}body.is-dragging,body.is-dragging *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}body.is-dragging{cursor:grabbing;overscroll-behavior:none}.drag-clone{position:fixed;z-index:60;margin:0!important;pointer-events:none;cursor:grabbing;box-shadow:0 26px 60px #000b;border-color:#8175f5;will-change:transform}.drag-clone.done{opacity:.72}.drop-marker{transition:opacity 140ms ease}.card{transition:transform var(--dur-hover) ease,opacity var(--dur-hover) ease,border-color var(--dur-hover) ease,box-shadow var(--dur-hover) ease}.card:active{transform:scale(.985)}
     /* --- Сайдбар: активные разделы и проекты --- */
     .cyan{--tag:#5ad3ce}.red{--tag:#ff7f88}.gray{--tag:#98a0ac}.dot.green{background:#64d7a0}.dot.cyan{background:#54d6d0}.dot.red{background:#ff6c77}.dot.gray{background:#7b8290}
     .nav button.active,.projects button.active{background:#1c1f2d;color:#fff}.projects button{position:relative;min-width:0}.projects .pname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.projects b{margin-left:auto}.prj-edit{font-style:normal;opacity:0;color:#7d8490;font-size:11px;transition:opacity var(--dur-hover) ease,color var(--dur-hover) ease}.projects button:hover .prj-edit{opacity:1}.prj-edit:hover{color:#fff}
@@ -38,8 +38,9 @@
     #dbg b{color:#9c91ff}
     /* --- Списки без недельной ленты --- */
     .board.no-period{height:calc(100vh - 58px)}.board.stack .column{min-height:0}.board.stack .column+.column{margin-top:6px}.board.stack .task-list{min-height:0}.filter-note{font-size:10px;color:#6d7480;background:#1a1d24;border:1px solid var(--line);padding:4px 9px;border-radius:20px}
-    @media(max-width:700px){.board.no-period{height:calc(100vh - 54px)}.mini-action{display:grid;place-items:center}}
-    @media(max-width:620px){.pop{position:fixed;top:auto;bottom:74px;right:12px;left:12px;width:auto;transform-origin:bottom right}}
+    .mobile-menu-action{display:none}.mobile-projects{display:grid;gap:6px;margin:10px 0}.mobile-projects button,.mobile-menu-footer button{min-height:42px;border:1px solid var(--line);background:#14161a;border-radius:8px;color:#aab0bb;padding:9px 11px;text-align:left}.mobile-projects button{display:flex;align-items:center;gap:9px}.mobile-projects button.on{border-color:#7769fa;background:#211e3e;color:#fff}.mobile-projects b{margin-left:auto;font-size:10px}.mobile-menu-search{width:100%;height:42px;background:#101216;border:1px solid #30343e;border-radius:8px;color:#fff;padding:0 11px;outline:none}.mobile-menu-footer{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.mobile-menu-footer button:last-child{border-color:#665ce0;color:#d9d5ff}
+    @media(max-width:700px){.board.no-period{height:calc(100dvh - 54px)}.mini-action{display:grid;place-items:center}.mobile-menu-action{display:grid}.board{height:calc(100dvh - 104px)}.overlay{padding:12px}.modal{max-height:calc(100dvh - 24px)}}
+    @media(max-width:620px){.app{padding-bottom:calc(62px + env(safe-area-inset-bottom))}aside{height:calc(62px + env(safe-area-inset-bottom));padding-bottom:calc(7px + env(safe-area-inset-bottom))}.pop{position:fixed;top:auto;bottom:calc(74px + env(safe-area-inset-bottom));right:12px;left:12px;width:auto;max-height:calc(100dvh - 100px);overflow:auto;transform-origin:bottom right}.toast{bottom:calc(76px + env(safe-area-inset-bottom))}}
     /* --- Отклик на нажатие и ховер только для мыши --- */
     .primary:active,.quick-add:active,.complete:active,.mini-action:active,.pop button:active,.modal-actions button:active,.nav button:active,.projects button:active,.days button:active,.sub-check:active{transform:scale(.97);transition:transform var(--dur-press) var(--ease-out)}
     @media(hover:hover) and (pointer:fine){.card:hover{border-color:#565d6d;transform:translateY(-2px);box-shadow:0 10px 28px #0006}.complete:hover{border-color:#61d39a;color:#61d39a;background:#13221c}}
@@ -57,7 +58,7 @@
 <body>
 <div class="app">
   <aside><div class="brand"><span class="logo">F</span><span>Focus</span></div><nav class="nav"><button data-view="tasks" class="active"><span>⌂</span>Мои задачи <b id="totalCount">0</b></button><button data-view="inbox"><span>◫</span>Входящие <b id="inboxCount">0</b></button><button data-view="done"><span>✓</span>Выполненные <b id="doneCount">0</b></button></nav><div class="section-title"><span>ПРОЕКТЫ</span><button id="addProject" title="Новый проект">＋</button></div><div class="projects" id="projectList"></div><div class="aside-bottom"><div class="week-progress"><span>Прогресс недели</span><strong id="progressText"></strong></div><div class="bar"><i id="progressBar"></i></div><button class="settings" id="settingsButton">⚙ Данные</button><div class="profile"><span class="avatar">ДК</span><div><strong>Данил</strong><small>Личное пространство</small></div></div></div></aside>
-  <main><header class="topbar"><div class="title-wrap"><h1 id="viewTitle">Задачи</h1><button class="chip" id="projectChip"></button></div><div class="actions"><input class="search" id="search" placeholder="⌕  Поиск задач…"><button class="mini-action" id="filterBtn" title="Фильтр">☷</button><button class="mini-action" id="sortBtn" title="Сортировка">↕</button><button class="primary" data-open>＋ Новая задача</button><div class="pop" id="filterPop"><div class="pop-title">ПРИОРИТЕТ</div><div class="pop-row" data-key="priority"><button type="button" data-value="all">Любой</button><button type="button" data-value="High">Высокий</button><button type="button" data-value="Medium">Средний</button><button type="button" data-value="Low">Низкий</button></div><div class="pop-title">СТАТУС</div><div class="pop-row" data-key="status"><button type="button" data-value="all">Все</button><button type="button" data-value="active">Активные</button><button type="button" data-value="done">Выполненные</button></div><button type="button" class="pop-reset" id="resetFilters">Сбросить фильтры</button></div><div class="pop" id="sortPop"><div class="pop-title">СОРТИРОВКА</div><div class="pop-col" data-key="sort"><button type="button" data-value="manual">Вручную (перетаскивание)</button><button type="button" data-value="time">По времени</button><button type="button" data-value="priority">По приоритету</button><button type="button" data-value="title">По названию</button></div></div></div></header><div class="period" id="period"><button id="prevWeek" title="Предыдущая неделя">‹</button><div class="range"><strong id="weekRange"></strong></div><button id="nextWeek" title="Следующая неделя">›</button><button class="today" id="todayButton">Сегодня</button><div class="days" id="days"></div></div><div class="board" id="board"></div></main>
+  <main><header class="topbar"><div class="title-wrap"><h1 id="viewTitle">Задачи</h1><button class="chip" id="projectChip"></button></div><div class="actions"><input class="search" id="search" placeholder="⌕  Поиск задач…"><button class="mini-action mobile-menu-action" id="mobileMenuButton" title="Проекты и данные" aria-label="Проекты и данные">•••</button><button class="mini-action" id="filterBtn" title="Фильтр" aria-label="Фильтр">☷</button><button class="mini-action" id="sortBtn" title="Сортировка" aria-label="Сортировка">↕</button><button class="primary" data-open aria-label="Новая задача">＋ Новая задача</button><div class="pop" id="mobileMenuPop"><div class="pop-title">ПОИСК</div><input class="mobile-menu-search" id="mobileSearch" placeholder="Поиск задач…"><div class="pop-title" style="margin-top:12px">ПРОЕКТЫ</div><div class="mobile-projects" id="mobileProjectList"></div><div class="mobile-menu-footer"><button type="button" id="mobileAddProject">＋ Проект</button><button type="button" id="mobileSettings">⚙ Данные и вход</button></div></div><div class="pop" id="filterPop"><div class="pop-title">ПРИОРИТЕТ</div><div class="pop-row" data-key="priority"><button type="button" data-value="all">Любой</button><button type="button" data-value="High">Высокий</button><button type="button" data-value="Medium">Средний</button><button type="button" data-value="Low">Низкий</button></div><div class="pop-title">СТАТУС</div><div class="pop-row" data-key="status"><button type="button" data-value="all">Все</button><button type="button" data-value="active">Активные</button><button type="button" data-value="done">Выполненные</button></div><button type="button" class="pop-reset" id="resetFilters">Сбросить фильтры</button></div><div class="pop" id="sortPop"><div class="pop-title">СОРТИРОВКА</div><div class="pop-col" data-key="sort"><button type="button" data-value="manual">Вручную (перетаскивание)</button><button type="button" data-value="time">По времени</button><button type="button" data-value="priority">По приоритету</button><button type="button" data-value="title">По названию</button></div></div></div></header><div class="period" id="period"><button id="prevWeek" title="Предыдущая неделя">‹</button><div class="range"><strong id="weekRange"></strong></div><button id="nextWeek" title="Следующая неделя">›</button><button class="today" id="todayButton">Сегодня</button><div class="days" id="days"></div></div><div class="board" id="board"></div></main>
 </div>
 <div class="overlay" id="overlay"><form class="modal" id="taskForm" novalidate><div class="modal-head"><div><small>НОВАЯ ЗАДАЧА</small><h2>Что нужно сделать?</h2></div><button class="close" type="button" data-close>×</button></div><input id="taskTitle" required placeholder="Например, подготовить презентацию"><div class="form-row"><select id="taskProject"></select><input type="date" id="taskDate" required></div><div class="form-row"><select id="taskPriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select><label class="field-label">Рабочих дней<input type="number" id="taskDuration" min="1" max="260" value="1"></label></div><div class="schedule"><p class="schedule-title">ПОВТОР</p><div class="form-row"><select id="repeatType"><option value="none">Не повторять</option><option value="daily">Каждые N дней</option><option value="weekly">По дням недели</option><option value="monthly">По числам месяца</option></select><label class="field-label">Интервал<input type="number" id="repeatInterval" min="1" max="99" value="1"></label></div><div class="schedule-extra" id="weeklyOptions"><div class="weekday-picker" id="weekdayPicker"><label><input type="checkbox" value="1"><span>Пн</span></label><label><input type="checkbox" value="2"><span>Вт</span></label><label><input type="checkbox" value="3"><span>Ср</span></label><label><input type="checkbox" value="4"><span>Чт</span></label><label><input type="checkbox" value="5"><span>Пт</span></label></div></div><div class="schedule-extra" id="monthlyOptions"><label class="field-label">Числа через запятую<input id="monthDays" placeholder="1, 10, 25"></label></div><div class="schedule-extra" id="repeatEndOptions"><div class="form-row"><select id="repeatEndType"><option value="never">Без окончания</option><option value="date">До даты</option><option value="count">После N повторений</option></select><input type="date" id="repeatEndDate"><input type="number" id="repeatCount" min="1" max="999" value="10"></div></div></div><div class="modal-actions"><button type="button" data-close>Отмена</button><button class="save">Создать задачу</button></div></form></div>
 <div class="overlay" id="detailOverlay"><form class="modal detail-modal" id="detailForm" novalidate><div class="modal-head"><div><small>ЗАДАЧА</small><h2>Подробности задачи</h2></div><button class="close" type="button" data-detail-close>×</button></div><input id="detailTitle" required placeholder="Название задачи"><textarea id="detailDescription" placeholder="Описание, заметки или результат…"></textarea><div class="form-row"><select id="detailProject"></select><input type="date" id="detailDate" required></div><div class="form-row"><input id="detailTime" placeholder="Время, например 14:30"><select id="detailPriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select></div><div class="form-row"><label class="field-label">Рабочих дней<input type="number" id="detailDuration" min="1" max="260" value="1"></label><p class="series-note" id="seriesNote"></p></div><div class="subs"><div class="subs-head"><span>ПОДЗАДАЧИ</span><small id="subsCount"></small></div><div class="subs-list" id="subsList"></div><input id="subInput" placeholder="＋ Новый шаг — Enter, чтобы добавить"></div><div class="modal-actions"><button class="delete" type="button" id="deleteTask">Удалить</button><button class="finish" type="button" id="detailComplete">✓ Выполнить</button><button class="save">Сохранить</button></div></form></div>
@@ -100,7 +101,7 @@ function taskVisibleOnDate(t,iso){const dates=taskDates(t);return dates.includes
 function dailyDoneCount(t){const dates=taskDates(t);return dates.filter(d=>t.dailyDone&&t.dailyDone[d]).length}
 let toastTimer;
 function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400)}
-let cloudClient=null,cloudUser=null,cloudTimer=null,cloudApplying=false;
+let cloudClient=null,cloudUser=null,cloudTimer=null,cloudPoller=null,cloudApplying=false;
 
 /* ===================== Состояние ===================== */
 const todayISO=toISO(new Date());
@@ -140,7 +141,7 @@ tasks=tasks.map((t,i)=>{
     color:colorOf(project)};
 });
 
-function touchLocal(){if(!cloudApplying)localStorage.setItem('focus_local_updated',new Date().toISOString())}
+function touchLocal(){if(!cloudApplying){localStorage.setItem('focus_local_updated',new Date().toISOString());localStorage.setItem('focus_local_dirty','1')}}
 const save=(touch=true)=>{localStorage.setItem('focus_tasks',JSON.stringify(tasks));if(touch){touchLocal();queueCloudPush()}};
 const saveSeries=(touch=true)=>{localStorage.setItem('focus_series',JSON.stringify(series));if(touch){touchLocal();queueCloudPush()}};
 const saveProjects=(touch=true)=>{localStorage.setItem('focus_projects',JSON.stringify(projects));if(touch){touchLocal();queueCloudPush()}};
@@ -234,6 +235,13 @@ function renderSidebar(){
   const weekDone=weekSlots.filter(Boolean).length;
   $('#progressText').textContent=weekDone+'/'+weekSlots.length;
   $('#progressBar').style.width=(weekSlots.length?Math.round(weekDone/weekSlots.length*100):0)+'%';
+  renderMobileProjects();
+}
+function renderMobileProjects(){
+  const root=$('#mobileProjectList');if(!root)return;
+  const active=tasks.filter(t=>!t.done);
+  root.innerHTML=`<button type="button" data-mobile-project="" class="${prefs.project?'':'on'}"><i class="dot gray"></i>Все проекты<b>${active.length}</b></button>`+projects.map(p=>`<button type="button" data-mobile-project="${escapeHtml(p.name)}" class="${prefs.project===p.name?'on':''}"><i class="dot ${p.color}"></i>${escapeHtml(p.name)}<b>${active.filter(t=>t.project===p.name).length}</b></button>`).join('');
+  $$('[data-mobile-project]').forEach(button=>button.onclick=()=>{prefs.project=button.dataset.mobileProject||null;if(prefs.project&&prefs.view==='inbox')prefs.view='tasks';savePrefs();closePops();renderDays();render()});
 }
 
 /* ===================== Карточка ===================== */
@@ -275,7 +283,7 @@ function renderDay(){
   const pretty=date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
   const dayTasks=sortTasks(tasks.filter(t=>taskVisibleOnDate(t,activeDate)&&!t.done&&!(t.dailyDone&&t.dailyDone[activeDate])&&matches(t)));
   const dayDone=tasks.filter(t=>taskOnDate(t,activeDate)&&(t.done||(t.dailyDone&&t.dailyDone[activeDate]))).length;
-  $('#board').innerHTML=`<section class="column" data-date="${activeDate}"><div class="column-head"><div><span class="day-number">${date.getDate()}</span><span class="day-label"><strong>${full}</strong><small>${activeDate===todayISO?'Сегодня · ':''}${pretty}</small></span></div><div class="day-summary">${noteHtml()}<span>Выполнено ${dayDone} из ${dayTasks.length}</span><span class="count">${dayTasks.length} ${taskWord(dayTasks.length)}</span></div></div><div class="task-list">${dayTasks.length?dayTasks.map(t=>card(t,{drag:true})).join(''):emptyBlock('На этот день задач нет','Можно отдохнуть или добавить новую задачу')}<button class="quick-add" data-open data-new-date="${activeDate}">＋ Добавить задачу на этот день</button></div></section>`;
+  $('#board').innerHTML=`<section class="column" data-date="${activeDate}"><div class="column-head"><div><span class="day-number">${date.getDate()}</span><span class="day-label"><strong>${full}</strong><small>${activeDate===todayISO?'Сегодня · ':''}${pretty}</small></span></div><div class="day-summary">${noteHtml()}<span>Выполнено ${dayDone} из ${dayTasks.length}</span><span class="count">${dayTasks.length} ${taskWord(dayTasks.length)}</span></div></div><div class="task-list">${dayTasks.length?dayTasks.map(t=>card(t,{drag:prefs.sort==='manual'})).join(''):emptyBlock('На этот день задач нет','Можно отдохнуть или добавить новую задачу')}<button class="quick-add" data-open data-new-date="${activeDate}">＋ Добавить задачу на этот день</button></div></section>`;
 }
 function renderInbox(){
   const list=sortTasks(tasks.filter(t=>t.project===INBOX&&!t.done&&matches(t)));
@@ -322,7 +330,7 @@ function onCardPointerDown(e,card){
   if(e.target.closest('[data-complete]'))return;
   clearNativeSelection();
   const touch=e.pointerType!=='mouse';
-  pending={card,id:Number(card.dataset.id),pointerId:e.pointerId,sx:e.clientX,sy:e.clientY,touch,timer:null};
+  pending={card,id:Number(card.dataset.id),pointerId:e.pointerId,sx:e.clientX,sy:e.clientY,lastY:e.clientY,touch,scrolling:false,timer:null};
   if(touch)pending.timer=setTimeout(()=>{if(pending)startDrag(pending.sx,pending.sy)},TOUCH_HOLD);
   window.addEventListener('pointermove',onWindowMove);
   window.addEventListener('pointerup',onWindowUp);
@@ -337,8 +345,12 @@ function onWindowMove(e){
   if(pending&&e.pointerId===pending.pointerId){
     const dx=e.clientX-pending.sx,dy=e.clientY-pending.sy;
     if(pending.touch){
-      if(Math.abs(dx)>TOUCH_INTENT&&Math.abs(dx)>Math.abs(dy))startDrag(e.clientX,e.clientY);
-      else if(Math.abs(dy)>TOUCH_INTENT)cancelPending();
+      e.preventDefault();
+      if(pending.scrolling){
+        const board=$('#board');if(board)board.scrollTop-=e.clientY-pending.lastY;
+        pending.lastY=e.clientY;
+      }else if(Math.abs(dx)>TOUCH_INTENT&&Math.abs(dx)>Math.abs(dy))startDrag(e.clientX,e.clientY);
+      else if(Math.abs(dy)>TOUCH_INTENT){clearTimeout(pending.timer);pending.timer=null;pending.scrolling=true;pending.lastY=e.clientY}
     }else if(Math.hypot(dx,dy)>MOUSE_INTENT)startDrag(e.clientX,e.clientY);
   }
   if(drag&&e.pointerId===drag.pointerId){
@@ -580,13 +592,14 @@ function closeProject(){$('#projectOverlay').classList.remove('open');editingPro
 function recolorTasks(){tasks=tasks.map(t=>({...t,color:colorOf(t.project)}));save()}
 
 /* ===================== Резервная копия ===================== */
-function cloudPayload(){return{version:2,tasks,series,projects,prefs}}
+function cloudPayload(){return{version:3,tasks,series,projects}}
 function queueCloudPush(){if(!cloudClient||!cloudUser||cloudApplying)return;clearTimeout(cloudTimer);cloudTimer=setTimeout(()=>pushCloud(true),900)}
 function setCloudStatus(text,on=false){const el=$('#cloudStatus');if(!el)return;el.textContent=text;el.classList.toggle('on',on)}
 function renderCloudUser(){
   if(!$('#cloudLogin'))return;
   $('#cloudLogin').classList.toggle('hidden',!!cloudUser);
   $('#cloudActions').classList.toggle('show',!!cloudUser);
+  const help=$('#settingsOverlay .settings-help');if(help)help.textContent=cloudUser?'Изменения автоматически отправляются и загружаются на всех подключённых устройствах.':'Войдите с одним логином на всех устройствах, чтобы включить синхронизацию. Локальная резервная копия останется доступна.';
   setCloudStatus(cloudUser?(cloudUser.user_metadata&&cloudUser.user_metadata.login||'Пользователь'):'Не подключено',!!cloudUser);
 }
 function loginEmail(login){
@@ -611,33 +624,39 @@ async function cloudLogin(create=false){
 async function pushCloud(silent=false){
   if(!cloudClient||!cloudUser){if(!silent)toast('Сначала войдите в Supabase');return}
   setCloudStatus('Синхронизация…',true);
-  const{error}=await cloudClient.from('focus_state').upsert({user_id:cloudUser.id,payload:cloudPayload()},{onConflict:'user_id'});
+  const{data,error}=await cloudClient.from('focus_state').upsert({user_id:cloudUser.id,payload:cloudPayload()},{onConflict:'user_id'}).select('updated_at').single();
   if(error){setCloudStatus('Ошибка синхронизации');if(!silent)toast(error.message);return}
+  localStorage.removeItem('focus_local_dirty');if(data&&data.updated_at)localStorage.setItem('focus_cloud_seen',data.updated_at);
   setCloudStatus('Синхронизировано',true);if(!silent)toast('Данные отправлены в Supabase');
 }
-function applyCloudPayload(data){
+function applyCloudPayload(data,updatedAt){
   if(!data||!Array.isArray(data.tasks)||!Array.isArray(data.projects))throw new Error('В Supabase неверный формат данных');
-  cloudApplying=true;tasks=data.tasks;series=Array.isArray(data.series)?data.series:[];projects=data.projects;prefs=Object.assign({view:'tasks',project:null,priority:'all',status:'all',sort:'manual'},data.prefs||{});
+  cloudApplying=true;tasks=data.tasks;series=Array.isArray(data.series)?data.series:[];projects=data.projects;
   tasks=tasks.map(t=>({...t,durationWorkdays:Math.max(1,Number(t.durationWorkdays)||1),dailyDone:t.dailyDone||{},subtasks:Array.isArray(t.subtasks)?t.subtasks:[],color:colorOf(t.project)}));
-  save(false);saveSeries(false);saveProjects(false);savePrefs(false);localStorage.setItem('focus_local_updated',new Date().toISOString());cloudApplying=false;renderDays();render();
+  save(false);saveSeries(false);saveProjects(false);localStorage.removeItem('focus_local_dirty');if(updatedAt)localStorage.setItem('focus_cloud_seen',updatedAt);cloudApplying=false;renderDays();render();
 }
 async function pullCloud(silent=false){
   if(!cloudClient||!cloudUser){if(!silent)toast('Сначала войдите в Supabase');return}
   setCloudStatus('Загрузка…',true);const{data,error}=await cloudClient.from('focus_state').select('payload,updated_at').eq('user_id',cloudUser.id).maybeSingle();
   if(error){setCloudStatus('Ошибка синхронизации');if(!silent)toast(error.message);return}
   if(!data){await pushCloud(silent);return}
-  try{applyCloudPayload(data.payload);setCloudStatus('Синхронизировано',true);if(!silent)toast('Данные загружены из Supabase')}catch(err){toast(err.message)}
+  try{applyCloudPayload(data.payload,data.updated_at);setCloudStatus('Синхронизировано',true);if(!silent)toast('Данные загружены из Supabase')}catch(err){toast(err.message)}
 }
 async function reconcileCloud(){
   const{data,error}=await cloudClient.from('focus_state').select('payload,updated_at').eq('user_id',cloudUser.id).maybeSingle();if(error)return setCloudStatus('Ошибка синхронизации');
-  if(!data)return pushCloud(true);const local=localStorage.getItem('focus_local_updated');if(!local||data.updated_at>local)applyCloudPayload(data.payload);else pushCloud(true);setCloudStatus('Синхронизировано',true);
+  if(!data)return pushCloud(true);
+  const dirty=localStorage.getItem('focus_local_dirty')==='1'||(!localStorage.getItem('focus_cloud_seen')&&!!localStorage.getItem('focus_local_updated'));
+  const seen=localStorage.getItem('focus_cloud_seen');
+  if(dirty)await pushCloud(true);else if(!seen||data.updated_at>seen)applyCloudPayload(data.payload,data.updated_at);
+  setCloudStatus('Синхронизировано',true);
 }
+function startCloudPolling(){clearInterval(cloudPoller);if(!cloudUser)return;cloudPoller=setInterval(()=>{if(document.visibilityState==='visible')reconcileCloud()},10000)}
 async function initCloud(){
   const modal=$('#settingsOverlay .modal'),help=modal.querySelector('.settings-help');
   help.insertAdjacentHTML('afterend','<div class="cloud-panel"><div class="cloud-head"><strong>Синхронизация</strong><span class="cloud-status" id="cloudStatus">Проверка…</span></div><div class="cloud-login" id="cloudLogin"><input type="text" id="cloudUsername" autocomplete="username" maxlength="24" placeholder="Логин"><input type="password" id="cloudPassword" autocomplete="current-password" placeholder="Пароль"><div class="cloud-login-buttons"><button type="button" id="cloudSignIn">Войти</button><button type="button" id="cloudSignUp">Создать аккаунт</button></div></div><div class="cloud-actions" id="cloudActions"><button type="button" id="cloudPush">Отправить</button><button type="button" id="cloudPull">Загрузить</button><button type="button" id="cloudSignOut">Выйти</button></div><p class="cloud-hint">Используйте один логин и пароль на всех устройствах.</p></div>');
   const cfg=window.FOCUS_SUPABASE||{};if(!cfg.url||!cfg.anonKey||!window.supabase){setCloudStatus('Нужна настройка');$('#cloudSignIn').disabled=true;$('#cloudSignUp').disabled=true;return}
-  cloudClient=window.supabase.createClient(cfg.url,cfg.anonKey);const{data}=await cloudClient.auth.getSession();cloudUser=data.session&&data.session.user;renderCloudUser();if(cloudUser)reconcileCloud();
-  cloudClient.auth.onAuthStateChange((event,session)=>{cloudUser=session&&session.user;renderCloudUser();if(cloudUser&&event==='SIGNED_IN')setTimeout(reconcileCloud,0)});
+  cloudClient=window.supabase.createClient(cfg.url,cfg.anonKey);const{data}=await cloudClient.auth.getSession();cloudUser=data.session&&data.session.user;renderCloudUser();if(cloudUser){reconcileCloud();startCloudPolling()}
+  cloudClient.auth.onAuthStateChange((event,session)=>{cloudUser=session&&session.user;renderCloudUser();if(cloudUser&&event==='SIGNED_IN')setTimeout(()=>{reconcileCloud();startCloudPolling()},0);if(!cloudUser){clearInterval(cloudPoller);cloudPoller=null}});
   $('#cloudSignIn').onclick=()=>cloudLogin(false);$('#cloudSignUp').onclick=()=>cloudLogin(true);$('#cloudPassword').onkeydown=e=>{if(e.key==='Enter')cloudLogin(false)};
   $('#cloudPush').onclick=()=>pushCloud();$('#cloudPull').onclick=()=>pullCloud();$('#cloudSignOut').onclick=()=>cloudClient.auth.signOut();
 }
@@ -745,6 +764,10 @@ $$('[data-project-close]').forEach(b=>b.onclick=closeProject);
 $('#projectOverlay').onclick=e=>{if(e.target.id==='projectOverlay')closeProject()};
 
 $('#settingsButton').onclick=openSettings;
+$('#mobileMenuButton').onclick=e=>{e.stopPropagation();$('#mobileSearch').value=query;togglePop('#mobileMenuPop')};
+$('#mobileSearch').oninput=e=>{query=e.target.value.toLowerCase();$('#search').value=e.target.value;render()};
+$('#mobileAddProject').onclick=()=>{closePops();openProject(null)};
+$('#mobileSettings').onclick=()=>{closePops();openSettings()};
 $$('[data-settings-close]').forEach(b=>b.onclick=closeSettings);
 $('#settingsOverlay').onclick=e=>{if(e.target.id==='settingsOverlay')closeSettings()};
 $('#exportData').onclick=exportData;
@@ -815,6 +838,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){const f=document.querySelector('.overlay.open form');if(f){e.preventDefault();f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true}))}}
   if(e.key==='Escape'){if(drag)return endDrag(true);closeModal();closeDetail();closeProject();closeSettings();closePops()}});
 $('#search').oninput=e=>{query=e.target.value.toLowerCase();render()};
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&cloudUser)reconcileCloud()});
 $('#days').onclick=e=>{const b=e.target.closest('[data-date]');if(b){const dir=b.dataset.date>activeDate?1:b.dataset.date<activeDate?-1:0;activeDate=b.dataset.date;renderDays();render();boardEnter(dir)}};
 $('#prevWeek').onclick=()=>{weekStart=addDays(weekStart,-7);activeDate=toISO(weekStart);renderDays();render()};
 $('#nextWeek').onclick=()=>{weekStart=addDays(weekStart,7);activeDate=toISO(weekStart);renderDays();render()};
