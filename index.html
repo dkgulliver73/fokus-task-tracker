@@ -15,7 +15,7 @@
     .topbar{height:58px;padding:9px 24px}.topbar h1{font-size:18px}.actions{align-items:center}.search{height:34px;width:205px}.primary{height:34px;padding:0 12px}.mini-action{width:34px;height:34px;border:1px solid var(--line);background:#14161a;border-radius:8px;color:#808793}.period{height:54px;padding:5px 24px;gap:6px}.period>button{height:30px;min-width:30px}.range{width:112px}.range strong{font-size:10px}.today{padding:0 9px;margin-right:8px}.days{height:44px;max-width:610px}.days button{border-radius:8px}.days span{font-size:8px}.days strong{font-size:12px}.days .today-dot:after{bottom:3px}.toolbar{display:none}.board{height:calc(100vh - 112px);padding:12px 24px 48px}.column{padding:10px 12px;border-radius:12px}.column-head{min-height:48px;padding:0 2px 10px;margin-bottom:10px}.day-number{width:38px;height:38px;border-radius:10px;font-size:16px;box-shadow:0 6px 16px #6659e82e}.day-label{gap:1px}.day-label strong{font-size:15px}.day-label small{font-size:9px}.day-summary{font-size:9px;gap:8px}.count{font-size:9px;padding:3px 7px}.task-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));align-content:start;gap:9px;max-width:none;min-height:250px}.card{min-width:0;padding:11px 12px;border-radius:9px}.card h3{font-size:12px;margin:9px 0 10px}.card-foot{margin-top:8px;padding-top:7px}.quick-add{min-height:44px;align-self:stretch}.empty-day{grid-column:1/-1;padding:26px}.drop-marker{width:auto;margin:0}.drop-marker.ready{margin:0}.drop-marker:before{left:-2px;right:-2px}.modal{max-height:92vh;overflow:auto}
     @media(max-width:1050px){.task-list{grid-template-columns:repeat(2,minmax(220px,1fr))}.search{width:165px}.range{display:none}.today{margin-right:2px}}
     @media(max-width:700px){.topbar{height:54px;padding:8px 12px}.topbar h1{font-size:17px}.mini-action{display:none}.period{height:50px;padding:3px 10px}.board{height:calc(100vh - 104px);padding:8px 8px 70px}.column{padding:8px}.column-head{min-height:44px}.day-summary span:first-child{display:none}.task-list{grid-template-columns:1fr;gap:8px}.days button:nth-child(n+6){display:none}.search{display:none}.primary{width:36px}.day-number{width:34px;height:34px;font-size:14px}}
-    .card[data-drag]{cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-user-drag:none}.card.dragging{display:none}body.is-dragging{user-select:none;cursor:grabbing}.drag-clone{position:fixed;z-index:60;margin:0!important;pointer-events:none;cursor:grabbing;box-shadow:0 26px 60px #000b;border-color:#8175f5;will-change:transform}.drag-clone.done{opacity:.72}.drop-marker{transition:opacity 140ms ease}.card{transition:transform var(--dur-hover) ease,opacity var(--dur-hover) ease,border-color var(--dur-hover) ease,box-shadow var(--dur-hover) ease}.card:active{transform:scale(.985)}
+    #board,.card[data-drag],.card[data-drag] *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.card[data-drag]{cursor:grab;touch-action:pan-y;-webkit-user-drag:none}.card.dragging{display:none}body.is-dragging,body.is-dragging *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}body.is-dragging{cursor:grabbing}.drag-clone{position:fixed;z-index:60;margin:0!important;pointer-events:none;cursor:grabbing;box-shadow:0 26px 60px #000b;border-color:#8175f5;will-change:transform}.drag-clone.done{opacity:.72}.drop-marker{transition:opacity 140ms ease}.card{transition:transform var(--dur-hover) ease,opacity var(--dur-hover) ease,border-color var(--dur-hover) ease,box-shadow var(--dur-hover) ease}.card:active{transform:scale(.985)}
     /* --- Сайдбар: активные разделы и проекты --- */
     .cyan{--tag:#5ad3ce}.red{--tag:#ff7f88}.gray{--tag:#98a0ac}.dot.green{background:#64d7a0}.dot.cyan{background:#54d6d0}.dot.red{background:#ff6c77}.dot.gray{background:#7b8290}
     .nav button.active,.projects button.active{background:#1c1f2d;color:#fff}.projects button{position:relative;min-width:0}.projects .pname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.projects b{margin-left:auto}.prj-edit{font-style:normal;opacity:0;color:#7d8490;font-size:11px;transition:opacity var(--dur-hover) ease,color var(--dur-hover) ease}.projects button:hover .prj-edit{opacity:1}.prj-edit:hover{color:#fff}
@@ -320,6 +320,7 @@ function onCardPointerDown(e,card){
   dbg(`pointerdown type=${e.pointerType} button=${e.button} drag=${!!drag} pending=${!!pending}`);
   if(e.button>0||drag||pending)return;
   if(e.target.closest('[data-complete]'))return;
+  clearNativeSelection();
   const touch=e.pointerType!=='mouse';
   pending={card,id:Number(card.dataset.id),pointerId:e.pointerId,sx:e.clientX,sy:e.clientY,touch,timer:null};
   if(touch)pending.timer=setTimeout(()=>{if(pending)startDrag(pending.sx,pending.sy)},TOUCH_HOLD);
@@ -329,6 +330,7 @@ function onCardPointerDown(e,card){
   window.addEventListener('mouseup',onSafetyUp);
   window.addEventListener('blur',onSafetyUp);
 }
+function clearNativeSelection(){const selection=window.getSelection&&window.getSelection();if(selection&&selection.rangeCount)selection.removeAllRanges()}
 function onSafetyUp(){dbg('страховка: mouseup/blur');if(pending)return cancelPending();if(drag)endDrag()}
 function onWindowCancel(e){dbg(`pointercancel (жест ${drag?'идёт':'нет'})`);if(pending&&e.pointerId===pending.pointerId)return cancelPending();if(drag&&e.pointerId===drag.pointerId&&drag.touch)endDrag(true)}
 function onWindowMove(e){
@@ -354,6 +356,7 @@ function cancelPending(){if(!pending)return;clearTimeout(pending.timer);pending=
 function detachWindow(){window.removeEventListener('pointermove',onWindowMove);window.removeEventListener('pointerup',onWindowUp);window.removeEventListener('pointercancel',onWindowCancel);window.removeEventListener('mouseup',onSafetyUp);window.removeEventListener('blur',onSafetyUp)}
 function startDrag(x,y){
   dbg('ЖЕСТ НАЧАЛСЯ');
+  clearNativeSelection();
   const p=pending;clearTimeout(p.timer);pending=null;
   const card=p.card,rect=card.getBoundingClientRect(),list=card.parentElement;
   const clone=card.cloneNode(true);
@@ -689,6 +692,7 @@ $('#board').addEventListener('pointerdown',e=>{
   if(c)return onCardPointerDown(e,c);
   if(e.target.closest('.card'))dbg('ОТКАЗ: карточка без data-drag — перетаскивание есть только в «Мои задачи»');
 });
+$('#board').addEventListener('selectstart',e=>{if(pending||drag||e.target.closest('.card[data-drag]'))e.preventDefault()});
 $('#projectChip').onclick=()=>{prefs.project=null;savePrefs();renderDays();render()};
 $('#addProject').onclick=()=>openProject(null);
 $('#projectForm').onsubmit=e=>{
