@@ -6,6 +6,8 @@ create table if not exists public.focus_state (
 
 alter table public.focus_state enable row level security;
 
+grant select, insert, update on table public.focus_state to authenticated;
+
 create policy "Users can read their own Focus state"
 on public.focus_state for select
 to authenticated
@@ -38,4 +40,3 @@ drop trigger if exists focus_state_updated_at on public.focus_state;
 create trigger focus_state_updated_at
 before update on public.focus_state
 for each row execute function public.set_focus_state_updated_at();
-
