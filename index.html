@@ -69,6 +69,8 @@
 <script src="./supabase-config.js?v=2"></script>
 <script>
 window.addEventListener('error',e=>{
+  const source=e.filename||'';
+  if(!source||e.message==='Script error.'||!source.startsWith(location.origin))return;
   const b=document.createElement('div');
   b.style.cssText='position:fixed;left:0;right:0;top:0;z-index:9999;background:#5a1f26;color:#ffd7da;font:12px/1.5 ui-monospace,Menlo,monospace;padding:9px 14px;border-bottom:1px solid #ff6c77';
   b.textContent='Ошибка в приложении: '+(e.message||e.error)+'  ·  '+(e.filename||'').split('/').pop()+':'+e.lineno;
