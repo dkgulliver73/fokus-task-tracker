@@ -65,7 +65,7 @@
 <div class="overlay" id="settingsOverlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-head"><div><small>ЛОКАЛЬНОЕ ХРАНИЛИЩЕ</small><h2 id="settingsTitle">Данные Focus</h2></div><button class="close" type="button" data-settings-close>×</button></div><p class="settings-help">Пока задачи хранятся только в этом браузере. Сделайте резервную копию перед очисткой данных браузера.</p><div class="settings-grid"><button type="button" id="exportData">↓ Скачать резервную копию</button><label class="file-button">↑ Восстановить из JSON<input type="file" id="importData" accept="application/json,.json"></label><button type="button" class="danger" id="resetData">↺ Вернуть демо-данные</button></div></section></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./supabase-config.js"></script>
+<script src="./supabase-config.js?v=2"></script>
 <script>
 window.addEventListener('error',e=>{
   const b=document.createElement('div');
