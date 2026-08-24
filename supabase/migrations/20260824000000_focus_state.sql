@@ -6,6 +6,8 @@ create table if not exists public.focus_state (
 
 alter table public.focus_state enable row level security;
 
+grant select, insert, update on table public.focus_state to authenticated;
+
 create policy "Users can read their own Focus state"
 on public.focus_state for select
 to authenticated
