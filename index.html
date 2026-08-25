@@ -155,6 +155,17 @@ let activeDate=/^\d{4}-\d{2}-\d{2}$/.test(prefs.activeDate||'')?prefs.activeDate
 let weekStart=mondayOf(fromISO(activeDate));
 let query='';
 let detailId=null,editingProject=null,draftColor='purple';
+[$('#search'),$('#mobileSearch')].forEach(input=>{input.type='search';input.name='focus_task_query';input.autocomplete='off';input.autocapitalize='off';input.spellcheck=false;input.setAttribute('data-1p-ignore','true');input.setAttribute('data-lpignore','true');input.setAttribute('data-form-type','other')});
+
+function isLoginAutofill(value){const login=cloudUser&&cloudUser.user_metadata&&cloudUser.user_metadata.login;return !!login&&value.trim().toLocaleLowerCase('ru-RU')===String(login).trim().toLocaleLowerCase('ru-RU')}
+function applySearchInput(input){
+  if(isLoginAutofill(input.value)){input.value='';query='';render();return}
+  query=input.value.toLowerCase();const other=input.id==='search'?$('#mobileSearch'):$('#search');other.value=input.value;render();
+}
+function clearLoginFromSearch(){
+  let changed=false;[$('#search'),$('#mobileSearch')].forEach(input=>{if(isLoginAutofill(input.value)){input.value='';changed=true}});
+  if(changed){query='';render()}
+}
 
 const colorOf=name=>(projects.find(p=>p.name===name)||{}).color||'gray';
 
@@ -327,7 +338,7 @@ function renderProject(){
     return `<section class="column done-group project-group" data-date="${d}"><div class="column-head"><div><span class="day-number">${date.getDate()}</span><span class="day-label"><strong>${cap(date.toLocaleDateString('ru-RU',{weekday:'long'}))}</strong><small>${d===todayISO?'Сегодня · ':''}${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}</small></span></div><div class="day-summary"><span class="count">${g.length} ${taskWord(g.length)}</span></div></div><div class="task-list">${g.map(t=>card(t)).join('')}</div></section>`;
   }).join(''):`<section class="column"><div class="task-list">${emptyBlock('В проекте пока нет активных задач','Добавьте новую задачу или снимите фильтр проекта')}</div></section>`;
 }
-function noteHtml(){return filtersOn()||query?'<button type="button" class="filter-note" data-clear-filters>Сбросить фильтр ×</button>':''}
+function noteHtml(){return query?'<button type="button" class="filter-note" data-clear-filters>Сбросить поиск ×</button>':filtersOn()?'<button type="button" class="filter-note" data-clear-filters>Сбросить фильтр ×</button>':''}
 function renderDay(){
   const date=fromISO(activeDate);
   const full=cap(date.toLocaleDateString('ru-RU',{weekday:'long'}));
@@ -721,7 +732,7 @@ async function initCloud(){
   $$('[data-theme-choice]').forEach(button=>{button.classList.toggle('on',button.dataset.themeChoice===prefs.theme);button.onclick=()=>{prefs.theme=button.dataset.themeChoice;document.documentElement.dataset.theme=prefs.theme;savePrefs();$$('[data-theme-choice]').forEach(x=>x.classList.toggle('on',x===button))}});
   $('#profilePriority').onchange=e=>{prefs.priority=e.target.value;savePrefs();render()};$('#profileSort').onchange=e=>{prefs.sort=e.target.value;savePrefs();render()};$('#profileAddProject').onclick=()=>{closeSettings();openProject(null)};renderProfileControls();
   const cfg=window.FOCUS_SUPABASE||{};if(!cfg.url||!cfg.anonKey||!window.supabase){setCloudStatus('Нужна настройка');$('#cloudSignIn').disabled=true;$('#cloudSignUp').disabled=true;$('#authSignIn').disabled=true;$('#authSignUp').disabled=true;setAuthError('Синхронизация временно недоступна');return}
-  cloudClient=window.supabase.createClient(cfg.url,cfg.anonKey);const{data}=await cloudClient.auth.getSession();cloudUser=data.session&&data.session.user;renderCloudUser();if(cloudUser){hideAuthGate();reconcileCloud();startCloudPolling()}else showAuthGate();
+  cloudClient=window.supabase.createClient(cfg.url,cfg.anonKey);const{data}=await cloudClient.auth.getSession();cloudUser=data.session&&data.session.user;renderCloudUser();clearLoginFromSearch();setTimeout(clearLoginFromSearch,250);setTimeout(clearLoginFromSearch,1200);if(cloudUser){hideAuthGate();reconcileCloud();startCloudPolling()}else showAuthGate();
   cloudClient.auth.onAuthStateChange((event,session)=>{const previous=localStorage.getItem('focus_cloud_user'),next=session&&session.user&&session.user.id;cloudUser=session&&session.user;if(next&&previous!==next){localStorage.removeItem('focus_cloud_seen');localStorage.removeItem('focus_local_dirty');localStorage.setItem('focus_cloud_user',next)}renderCloudUser();if(cloudUser&&event==='SIGNED_IN')setTimeout(async()=>{await reconcileCloud();hideAuthGate();startCloudPolling()},0);if(!cloudUser){clearInterval(cloudPoller);cloudPoller=null;localStorage.removeItem('focus_cloud_user');localStorage.removeItem('focus_cloud_seen');showAuthGate()}});
   $('#cloudSignIn').onclick=()=>cloudLogin(false);$('#cloudSignUp').onclick=()=>cloudLogin(true);$('#cloudPassword').onkeydown=e=>{if(e.key==='Enter')cloudLogin(false)};
   $('#cloudSignOut').onclick=()=>cloudClient.auth.signOut();
@@ -834,7 +845,7 @@ $('#projectOverlay').onclick=e=>{if(e.target.id==='projectOverlay')closeProject(
 $('#settingsButton').onclick=openSettings;
 $('#profileNav').onclick=openSettings;
 $('#mobileMenuButton').onclick=e=>{e.stopPropagation();$('#mobileSearch').value=query;togglePop('#mobileMenuPop')};
-$('#mobileSearch').oninput=e=>{query=e.target.value.toLowerCase();$('#search').value=e.target.value;render()};
+$('#mobileSearch').oninput=e=>applySearchInput(e.target);
 $('#mobileAddProject').onclick=()=>{closePops();openProject(null)};
 $('#mobileSettings').onclick=()=>{closePops();openSettings()};
 $$('[data-settings-close]').forEach(b=>b.onclick=closeSettings);
@@ -895,7 +906,7 @@ $('#subInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addSub()}};
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){const f=document.querySelector('.overlay.open form');if(f){e.preventDefault();f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true}))}}
   if(e.key==='Escape'){if(drag)return endDrag(true);closeModal();closeDetail();closeProject();closeSettings();closePops()}});
-$('#search').oninput=e=>{query=e.target.value.toLowerCase();render()};
+$('#search').oninput=e=>applySearchInput(e.target);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&cloudUser)reconcileCloud()});
 $('#days').onclick=e=>{const b=e.target.closest('[data-date]');if(b){const dir=b.dataset.date>activeDate?1:b.dataset.date<activeDate?-1:0;activeDate=b.dataset.date;prefs.activeDate=activeDate;savePrefs();renderDays();render();boardEnter(dir)}};
 $('#prevWeek').onclick=()=>{weekStart=addDays(weekStart,-7);activeDate=toISO(weekStart);prefs.activeDate=activeDate;savePrefs();renderDays();render()};
