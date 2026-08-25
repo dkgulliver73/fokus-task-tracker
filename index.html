@@ -249,6 +249,7 @@ const filtersOn=()=>prefs.priority!=='all'||prefs.status!=='all';
 /* ===================== Неделя ===================== */
 function getWeek(){return Array.from({length:7},(_,i)=>{const date=addDays(weekStart,i),iso=toISO(date);return{date,iso,short:date.toLocaleDateString('ru-RU',{weekday:'short'}).replace('.',''),full:cap(date.toLocaleDateString('ru-RU',{weekday:'long'})),day:date.getDate()}})}
 function formatWeekRange(){const days=getWeek(),a=days[0].date,b=days[6].date;const same=a.getMonth()===b.getMonth()&&a.getFullYear()===b.getFullYear();return same?`${a.getDate()} — ${b.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}`:`${a.toLocaleDateString('ru-RU',{day:'numeric',month:'short'})} — ${b.toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}`}
+function activeTasksForWeek(){const dates=getWeek().map(d=>d.iso);return tasks.filter(t=>!t.done&&dates.some(d=>taskVisibleOnDate(t,d)&&!(t.dailyDone&&t.dailyDone[d])))}
 function renderDays(){
   const week=getWeek();
   $('#weekRange').textContent=formatWeekRange();
@@ -261,11 +262,12 @@ function renderDays(){
 /* ===================== Сайдбар ===================== */
 function renderSidebar(){
   const active=tasks.filter(t=>!t.done);
-  $('#totalCount').textContent=active.length;
+  const weekly=activeTasksForWeek();
+  $('#totalCount').textContent=weekly.length;$('#totalCount').title='Активных задач на выбранной неделе';
   $('#inboxCount').textContent=active.filter(t=>t.project===INBOX).length;
   $('#doneCount').textContent=tasks.filter(t=>t.done).length;
   $$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===prefs.view));
-  $('#projectList').innerHTML=projects.map(p=>`<button data-project="${escapeHtml(p.name)}" class="${prefs.project===p.name?'active':''}" title="${escapeHtml(p.name)}"><i class="dot ${p.color}"></i><span class="pname">${escapeHtml(p.name)}</span><b>${active.filter(t=>t.project===p.name).length}</b><i class="prj-edit" data-edit="${p.id}" title="Изменить проект">✎</i></button>`).join('');
+  $('#projectList').innerHTML=projects.map(p=>`<button data-project="${escapeHtml(p.name)}" class="${prefs.project===p.name?'active':''}" title="${escapeHtml(p.name)} · задачи на выбранной неделе"><i class="dot ${p.color}"></i><span class="pname">${escapeHtml(p.name)}</span><b title="На выбранной неделе">${weekly.filter(t=>t.project===p.name).length}</b><i class="prj-edit" data-edit="${p.id}" title="Изменить проект">✎</i></button>`).join('');
   $$('#projectList [data-project]').forEach(b=>b.onclick=e=>{
     const ed=e.target.closest('[data-edit]');
     if(ed){openProject(ed.dataset.edit);return}
@@ -284,7 +286,8 @@ function renderSidebar(){
 function renderMobileProjects(){
   const root=$('#mobileProjectList');if(!root)return;
   const active=tasks.filter(t=>!t.done);
-  root.innerHTML=`<button type="button" data-mobile-project="" class="${prefs.project?'':'on'}"><i class="dot gray"></i>Все проекты<b>${active.length}</b></button>`+projects.map(p=>`<div class="mobile-project-row"><button type="button" data-mobile-project="${escapeHtml(p.name)}" class="${prefs.project===p.name?'on':''}"><i class="dot ${p.color}"></i>${escapeHtml(p.name)}<b>${active.filter(t=>t.project===p.name).length}</b></button><button type="button" class="mobile-project-edit" data-mobile-edit="${p.id}" aria-label="Изменить ${escapeHtml(p.name)}">···</button></div>`).join('');
+  const weekly=activeTasksForWeek();
+  root.innerHTML=`<button type="button" data-mobile-project="" class="${prefs.project?'':'on'}"><i class="dot gray"></i>Все проекты за неделю<b>${weekly.length}</b></button>`+projects.map(p=>`<div class="mobile-project-row"><button type="button" data-mobile-project="${escapeHtml(p.name)}" class="${prefs.project===p.name?'on':''}"><i class="dot ${p.color}"></i>${escapeHtml(p.name)}<b>${weekly.filter(t=>t.project===p.name).length}</b></button><button type="button" class="mobile-project-edit" data-mobile-edit="${p.id}" aria-label="Изменить ${escapeHtml(p.name)}">···</button></div>`).join('');
   $$('[data-mobile-project]').forEach(button=>button.onclick=()=>{prefs.project=button.dataset.mobileProject||null;if(prefs.project)prefs.view='tasks';savePrefs();closePops();renderDays();render()});
   $$('[data-mobile-edit]').forEach(button=>button.onclick=()=>{closePops();openProject(button.dataset.mobileEdit)});
 }
