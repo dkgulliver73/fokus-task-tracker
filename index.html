@@ -69,6 +69,7 @@
     @media(max-width:620px){.mobile-day-head.show{position:absolute;left:50%;transform:translateX(-50%);gap:8px}.mobile-day-head>strong{width:28px;height:28px}.mobile-day-head b{font-size:11px}.topbar .title-wrap{position:static}.card-top{align-items:center;gap:8px}.card-context{gap:6px}.card-actions{gap:6px}.card-actions .priority{font-size:8px}.card-actions .complete{width:25px;height:25px}.card h3{margin-bottom:2px}}
     @media(max-width:620px){.topbar.day-view #viewTitle{display:none}.topbar.day-view .mobile-day-head.show{display:flex;align-items:baseline;gap:5px;white-space:nowrap}.topbar.day-view .mobile-day-head b{font-size:13px}.topbar.day-view .mobile-day-head small{font-size:9px;color:var(--muted)}}
     @media(max-width:620px){.topbar.day-view .title-wrap{flex:1;min-width:0}.topbar.day-view .mobile-day-head.show{position:static;width:100%;transform:none;justify-content:space-between;padding-left:4px;margin-right:8px}.topbar.day-view .mobile-day-head b{text-align:left}.topbar.day-view .mobile-day-head small{text-align:right}}
+    body.auth-required .app{pointer-events:none;filter:blur(5px);opacity:.35}.auth-gate{z-index:120;background:#08090df2}.auth-gate.open{display:grid}.auth-card{width:min(390px,100%);padding:28px}.auth-brand{display:flex;align-items:center;gap:11px;margin-bottom:24px}.auth-brand .logo{width:38px;height:38px}.auth-brand strong{font-size:22px}.auth-card h2{margin:0 0 7px;font-size:22px}.auth-card>p{margin:0 0 20px;color:var(--muted);font-size:11px;line-height:1.5}.auth-fields{display:grid;gap:9px}.auth-fields input{height:48px}.auth-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.auth-buttons button{height:43px;border:1px solid #343947;background:#151820;border-radius:9px}.auth-buttons .auth-primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}.auth-error{min-height:18px;margin:10px 0 0!important;color:#ff8f97!important}.auth-card.busy{pointer-events:none;opacity:.75}html[data-theme="light"] .auth-card{background:#fff}html[data-theme="light"] .auth-fields input,html[data-theme="light"] .auth-buttons button{background:#f7f8fa;color:#252936;border-color:#d8dce4}html[data-theme="light"] .auth-buttons .auth-primary{background:var(--accent);color:#fff}
   </style>
 </head>
 <body>
@@ -81,6 +82,7 @@
 <div class="overlay" id="projectOverlay"><form class="modal" id="projectForm" novalidate><div class="modal-head"><div><small id="projectKicker">НОВЫЙ ПРОЕКТ</small><h2>Проект</h2></div><button class="close" type="button" data-project-close>×</button></div><input id="projectName" required placeholder="Например, Личный блог"><div class="swatches" id="swatches"></div><div class="modal-actions"><button class="delete" type="button" id="deleteProject">Удалить</button><button type="button" data-project-close>Отмена</button><button class="save">Сохранить</button></div></form></div>
 <div class="overlay" id="settingsOverlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-head"><div><small>АККАУНТ И ДАННЫЕ</small><h2 id="settingsTitle">Данные Focus</h2></div><button class="close" type="button" data-settings-close>×</button></div><p class="settings-help">Войдите с одним логином на всех устройствах, чтобы включить синхронизацию.</p></section></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="overlay auth-gate" id="authGate"><section class="modal auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle"><div class="auth-brand"><span class="logo">F</span><strong>Focus</strong></div><h2 id="authTitle">Войдите в аккаунт</h2><p>Задачи загружаются из вашего рабочего пространства и синхронизируются между устройствами.</p><div class="auth-fields"><input type="text" id="authUsername" autocomplete="username" maxlength="24" placeholder="Логин"><input type="password" id="authPassword" autocomplete="current-password" placeholder="Пароль"></div><div class="auth-buttons"><button type="button" id="authSignUp">Создать аккаунт</button><button type="button" class="auth-primary" id="authSignIn">Войти</button></div><p class="auth-error" id="authError"></p></section></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase-config.js?v=2"></script>
 <script>
@@ -130,10 +132,8 @@ const HEX={purple:'#8d7cff',blue:'#62a8ff',pink:'#f4779a',yellow:'#efb55e',green
 const PALETTE=Object.keys(HEX);
 const VIEW_TITLES={tasks:'Задачи',inbox:'Входящие',done:'Выполненные'};
 
-const seed=[{id:1,title:'Собрать структуру главной страницы',project:'Новый сайт',due:'14:00',priority:'High',date:todayISO,done:false},{id:2,title:'Подготовить данные по парковкам',project:'Карта города',due:'18:00',priority:'Medium',date:todayISO,done:false},{id:3,title:'Проверить мобильную версию',project:'Новый сайт',due:'12:00',priority:'Medium',date:toISO(addDays(new Date(),1)),done:false},{id:4,title:'Отправить еженедельный отчёт',project:'Работа',due:'16:00',priority:'Low',date:toISO(addDays(new Date(),1)),done:false},{id:5,title:'Сценарий нового выпуска',project:'The Elder',due:'19:00',priority:'High',date:toISO(addDays(new Date(),2)),done:false},{id:6,title:'Настроить резервное копирование',project:'Личное',due:'10:00',priority:'Medium',date:toISO(addDays(new Date(),-2)),done:true},{id:7,title:'Обновить список конкурентов',project:'Карта города',due:'15:00',priority:'Low',date:toISO(addDays(new Date(),-1)),done:true}];
-
 let projects=load('focus_projects',[{id:'p1',name:'Новый сайт',color:'purple'},{id:'p2',name:'Карта города',color:'blue'},{id:'p3',name:'The Elder',color:'pink'},{id:'p4',name:'Работа',color:'yellow'},{id:'p5',name:'Личное',color:'green'}]);
-let tasks=load('focus_tasks',null)||seed;
+let tasks=load('focus_tasks',[]);
 let series=load('focus_series',[]);
 let prefs=Object.assign({view:'tasks',project:null,priority:'all',status:'all',sort:'manual',theme:'dark'},load('focus_prefs',{}));
 document.documentElement.dataset.theme=prefs.theme;
@@ -640,20 +640,25 @@ function loginEmail(login){
   const bytes=new TextEncoder().encode(normalized),encoded=btoa(String.fromCharCode(...bytes)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
   return `${encoded}@login.fokus.local`;
 }
-function cloudCredentials(){
-  const login=$('#cloudUsername').value.trim(),password=$('#cloudPassword').value;
+function cloudCredentials(source='cloud'){
+  const login=$(source==='gate'?'#authUsername':'#cloudUsername').value.trim(),password=$(source==='gate'?'#authPassword':'#cloudPassword').value;
   if(login.length<3||login.length>24)throw new Error('Логин: от 3 до 24 символов');
   if(password.length<6)throw new Error('Пароль: минимум 6 символов');
   return{login,password,email:loginEmail(login)};
 }
-async function cloudLogin(create=false){
-  let credentials;try{credentials=cloudCredentials()}catch(error){return toast(error.message)}
+async function cloudLogin(create=false,source='cloud'){
+  let credentials;try{credentials=cloudCredentials(source)}catch(error){if(source==='gate')return setAuthError(error.message);return toast(error.message)}
+  if(source==='gate'){setAuthError('');$('#authGate .auth-card').classList.add('busy')}
   setCloudStatus(create?'Создание…':'Вход…',true);
   const{login,password,email}=credentials;
   const{error}=create?await cloudClient.auth.signUp({email,password,options:{data:{login}}}):await cloudClient.auth.signInWithPassword({email,password});
-  if(error){setCloudStatus('Ошибка входа');return toast(error.message)}
+  if(source==='gate')$('#authGate .auth-card').classList.remove('busy');
+  if(error){setCloudStatus('Ошибка входа');if(source==='gate')return setAuthError(error.message);return toast(error.message)}
   toast(create?'Аккаунт создан':'Вход выполнен');
 }
+function setAuthError(message){$('#authError').textContent=message||''}
+function showAuthGate(){document.body.classList.add('auth-required');$('#authGate').classList.add('open');setTimeout(()=>$('#authUsername').focus(),50)}
+function hideAuthGate(){document.body.classList.remove('auth-required');$('#authGate').classList.remove('open');setAuthError('')}
 async function pushCloud(silent=false){
   if(!cloudClient||!cloudUser){if(!silent)toast('Сначала войдите в Supabase');return}
   setCloudStatus('Синхронизация…',true);
@@ -678,9 +683,9 @@ async function pullCloud(silent=false){
 async function reconcileCloud(){
   const{data,error}=await cloudClient.from('focus_state').select('payload,updated_at').eq('user_id',cloudUser.id).maybeSingle();if(error)return setCloudStatus('Ошибка синхронизации');
   if(!data)return pushCloud(true);
-  const dirty=localStorage.getItem('focus_local_dirty')==='1'||(!localStorage.getItem('focus_cloud_seen')&&!!localStorage.getItem('focus_local_updated'));
+  const dirty=localStorage.getItem('focus_local_dirty')==='1';
   const seen=localStorage.getItem('focus_cloud_seen');
-  if(dirty)await pushCloud(true);else if(!seen||data.updated_at>seen)applyCloudPayload(data.payload,data.updated_at);
+  if(!seen)applyCloudPayload(data.payload,data.updated_at);else if(dirty)await pushCloud(true);else if(data.updated_at>seen)applyCloudPayload(data.payload,data.updated_at);
   setCloudStatus('Синхронизировано',true);
 }
 function startCloudPolling(){clearInterval(cloudPoller);if(!cloudUser)return;cloudPoller=setInterval(()=>{if(document.visibilityState==='visible')reconcileCloud()},10000)}
@@ -692,11 +697,12 @@ async function initCloud(){
   modal.insertAdjacentHTML('beforeend','<div class="profile-controls"><label>Фильтр по приоритету<select id="profilePriority"><option value="all">Любой приоритет</option><option value="High">Высокий</option><option value="Medium">Средний</option><option value="Low">Низкий</option></select></label><label>Сортировка<select id="profileSort"><option value="manual">Вручную</option><option value="time">По времени</option><option value="priority">По приоритету</option><option value="title">По названию</option></select></label><label>Проекты</label><div class="profile-projects" id="profileProjectList"></div><button type="button" id="profileAddProject">＋ Добавить проект</button></div>');
   $$('[data-theme-choice]').forEach(button=>{button.classList.toggle('on',button.dataset.themeChoice===prefs.theme);button.onclick=()=>{prefs.theme=button.dataset.themeChoice;document.documentElement.dataset.theme=prefs.theme;savePrefs();$$('[data-theme-choice]').forEach(x=>x.classList.toggle('on',x===button))}});
   $('#profilePriority').onchange=e=>{prefs.priority=e.target.value;savePrefs();render()};$('#profileSort').onchange=e=>{prefs.sort=e.target.value;savePrefs();render()};$('#profileAddProject').onclick=()=>{closeSettings();openProject(null)};renderProfileControls();
-  const cfg=window.FOCUS_SUPABASE||{};if(!cfg.url||!cfg.anonKey||!window.supabase){setCloudStatus('Нужна настройка');$('#cloudSignIn').disabled=true;$('#cloudSignUp').disabled=true;return}
-  cloudClient=window.supabase.createClient(cfg.url,cfg.anonKey);const{data}=await cloudClient.auth.getSession();cloudUser=data.session&&data.session.user;renderCloudUser();if(cloudUser){reconcileCloud();startCloudPolling()}
-  cloudClient.auth.onAuthStateChange((event,session)=>{cloudUser=session&&session.user;renderCloudUser();if(cloudUser&&event==='SIGNED_IN')setTimeout(()=>{reconcileCloud();startCloudPolling()},0);if(!cloudUser){clearInterval(cloudPoller);cloudPoller=null}});
+  const cfg=window.FOCUS_SUPABASE||{};if(!cfg.url||!cfg.anonKey||!window.supabase){setCloudStatus('Нужна настройка');$('#cloudSignIn').disabled=true;$('#cloudSignUp').disabled=true;$('#authSignIn').disabled=true;$('#authSignUp').disabled=true;setAuthError('Синхронизация временно недоступна');return}
+  cloudClient=window.supabase.createClient(cfg.url,cfg.anonKey);const{data}=await cloudClient.auth.getSession();cloudUser=data.session&&data.session.user;renderCloudUser();if(cloudUser){hideAuthGate();reconcileCloud();startCloudPolling()}else showAuthGate();
+  cloudClient.auth.onAuthStateChange((event,session)=>{const previous=localStorage.getItem('focus_cloud_user'),next=session&&session.user&&session.user.id;cloudUser=session&&session.user;if(next&&previous!==next){localStorage.removeItem('focus_cloud_seen');localStorage.removeItem('focus_local_dirty');localStorage.setItem('focus_cloud_user',next)}renderCloudUser();if(cloudUser&&event==='SIGNED_IN')setTimeout(async()=>{await reconcileCloud();hideAuthGate();startCloudPolling()},0);if(!cloudUser){clearInterval(cloudPoller);cloudPoller=null;localStorage.removeItem('focus_cloud_user');localStorage.removeItem('focus_cloud_seen');showAuthGate()}});
   $('#cloudSignIn').onclick=()=>cloudLogin(false);$('#cloudSignUp').onclick=()=>cloudLogin(true);$('#cloudPassword').onkeydown=e=>{if(e.key==='Enter')cloudLogin(false)};
   $('#cloudSignOut').onclick=()=>cloudClient.auth.signOut();
+  $('#authSignIn').onclick=()=>cloudLogin(false,'gate');$('#authSignUp').onclick=()=>cloudLogin(true,'gate');$('#authPassword').onkeydown=e=>{if(e.key==='Enter')cloudLogin(false,'gate')};
 }
 function openSettings(){renderProfileControls();$('#settingsOverlay').classList.add('open')}
 function closeSettings(){$('#settingsOverlay').classList.remove('open')}
@@ -872,7 +878,7 @@ $('#prevWeek').onclick=()=>{weekStart=addDays(weekStart,-7);activeDate=toISO(wee
 $('#nextWeek').onclick=()=>{weekStart=addDays(weekStart,7);activeDate=toISO(weekStart);renderDays();render()};
 $('#todayButton').onclick=()=>{activeDate=todayISO;weekStart=mondayOf(new Date());prefs.view='tasks';savePrefs();renderDays();render()};
 
-prepareTaskForm();fillSelects();updateScheduleFields();renderDays();render();initCloud();
+prepareTaskForm();fillSelects();updateScheduleFields();renderDays();render();showAuthGate();initCloud();
 </script>
 </body>
 </html>
