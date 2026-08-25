@@ -77,6 +77,7 @@
     .brand{padding-left:4px;padding-right:4px}.brand>span:last-child{display:none}.focus-plaque{width:218px;height:68px;border-radius:12px;background:#fff;box-shadow:0 10px 30px #0005;border:1px solid #ffffff24;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#17212b;line-height:1}.focus-plaque strong{font-size:39px;letter-spacing:.13em;padding-left:.13em;font-weight:760}.focus-plaque small{font-size:7.5px;letter-spacing:.13em;font-weight:650;white-space:nowrap;color:#59616a}.auth-brand{justify-content:center}.auth-brand .focus-plaque{width:286px;height:88px;border-radius:15px;box-shadow:0 14px 38px #0005}.auth-brand .focus-plaque strong{font-size:50px}.auth-brand .focus-plaque small{font-size:9px}.auth-brand>strong{display:none}.filter-note{border:1px solid #7769fa66;background:#7769fa16;color:#bcb5ff;border-radius:8px;padding:5px 9px;font:inherit;cursor:pointer}.filter-note:hover{background:#7769fa28;color:#fff}
     .completed-today{grid-column:1/-1;margin-top:10px;padding-top:14px;border-top:1px solid var(--line)}.completed-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;color:#858c98;font-size:10px;font-weight:700;letter-spacing:.04em}.completed-title span{font-weight:500;color:#666e7b}.completed-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:9px}.card.done,.card.done-for-day{opacity:.74;background:color-mix(in srgb,var(--card) 78%,#245a43);border-color:#4a8b6b66}.card.done-for-day h3{text-decoration:line-through;color:#b2c8bb}.card.done-for-day .complete{background:#28664b;border-color:#55a17d;color:#fff}@media(max-width:700px){.completed-list{grid-template-columns:1fr}}
     html:not([data-theme="light"]) body{background:#222}html:not([data-theme="light"]) body:before{display:none}html:not([data-theme="light"]) .data-waves{opacity:1}html:not([data-theme="light"]) .board{background:linear-gradient(180deg,#101216cf,#0d0f13b8)}html:not([data-theme="light"]) .topbar,html:not([data-theme="light"]) .period{background:#111318e8}
+    .background-settings{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#12151c}.background-settings h3{margin:0 0 12px;font-size:12px}.bg-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px 14px}.bg-control{display:grid;grid-template-columns:1fr auto;gap:6px;color:var(--muted);font-size:9px}.bg-control input[type="range"]{grid-column:1/-1;width:100%;accent-color:#ff8820}.bg-control output{color:#c7ccd4;font-variant-numeric:tabular-nums}.bg-control select{grid-column:1/-1;height:36px;border:1px solid #343947;border-radius:8px;background:#151820;color:var(--text);padding:0 9px}.bg-toggle{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;color:#aeb4be;font-size:10px;padding-top:3px}.bg-toggle input{accent-color:#ff8820}.bg-reset{border:0;background:none;color:#858c98;font-size:9px;padding:0}.background-head{display:flex;justify-content:space-between;align-items:center}.background-settings small{display:block;margin-top:10px;color:#626a76;font-size:8px;line-height:1.4}@media(max-width:620px){.bg-grid{grid-template-columns:1fr}.bg-toggle{grid-column:1}}
   </style>
 </head>
 <body class="auth-required">
@@ -146,7 +147,9 @@ if(localStorage.getItem('focus_sync_protocol')!==SYNC_PROTOCOL){localStorage.rem
 let projects=load('focus_projects',[{id:'p1',name:'Новый сайт',color:'purple'},{id:'p2',name:'Карта города',color:'blue'},{id:'p3',name:'The Elder',color:'pink'},{id:'p4',name:'Работа',color:'yellow'},{id:'p5',name:'Личное',color:'green'}]);
 let tasks=load('focus_tasks',[]);
 let series=load('focus_series',[]);
+const BG_DEFAULTS={speed:32,amplitude:34,size:3,spacing:35,depth:68,direction:'forward',cursor:true,cursorStrength:45};
 let prefs=Object.assign({view:'tasks',project:null,priority:'all',status:'all',sort:'manual',theme:'dark'},load('focus_prefs',{}));
+prefs.background=Object.assign({},BG_DEFAULTS,prefs.background||{});
 prefs.priority='all';prefs.status='all';localStorage.setItem('focus_prefs',JSON.stringify(prefs));
 document.documentElement.dataset.theme=prefs.theme;
 document.querySelector('.primary').classList.add('add-icon');
@@ -738,8 +741,15 @@ async function initCloud(){
   help.insertAdjacentHTML('beforebegin','<div class="profile-summary"><span class="avatar">ДК</span><div><strong id="profileName">Профиль</strong><small>Рабочее пространство Focus</small></div></div>');
   help.insertAdjacentHTML('afterend','<div class="cloud-panel"><div class="cloud-head"><strong>Синхронизация</strong><span class="cloud-status" id="cloudStatus">Проверка…</span></div><div class="cloud-login" id="cloudLogin"><input type="text" id="cloudUsername" autocomplete="username" maxlength="24" placeholder="Логин"><input type="password" id="cloudPassword" autocomplete="current-password" placeholder="Пароль"><div class="cloud-login-buttons"><button type="button" id="cloudSignIn">Войти</button><button type="button" id="cloudSignUp">Создать аккаунт</button></div></div><div class="cloud-actions" id="cloudActions"><button type="button" id="cloudSignOut">Выйти из аккаунта</button></div><p class="cloud-hint">Изменения сохраняются автоматически. Используйте один логин на всех устройствах.</p></div>');
   modal.insertAdjacentHTML('beforeend','<div class="theme-setting"><span>Оформление</span><div class="theme-choice"><button type="button" data-theme-choice="light">Светлое</button><button type="button" data-theme-choice="dark">Тёмное</button></div></div>');
+  modal.insertAdjacentHTML('beforeend',`<section class="background-settings"><div class="background-head"><h3>Фон · 3D-точки</h3><button type="button" class="bg-reset" id="bgReset">Сбросить</button></div><div class="bg-grid"><label class="bg-control"><span>Скорость</span><output data-bg-output="speed"></output><input type="range" min="0" max="100" step="1" data-bg="speed"></label><label class="bg-control"><span>Амплитуда</span><output data-bg-output="amplitude"></output><input type="range" min="0" max="80" step="1" data-bg="amplitude"></label><label class="bg-control"><span>Размер точек</span><output data-bg-output="size"></output><input type="range" min="1" max="7" step="0.2" data-bg="size"></label><label class="bg-control"><span>Расстояние</span><output data-bg-output="spacing"></output><input type="range" min="20" max="60" step="1" data-bg="spacing"></label><label class="bg-control"><span>Глубина</span><output data-bg-output="depth"></output><input type="range" min="20" max="100" step="1" data-bg="depth"></label><label class="bg-control"><span>Направление</span><select data-bg="direction"><option value="forward">К зрителю</option><option value="backward">От зрителя</option><option value="left">Влево</option><option value="right">Вправо</option></select></label><label class="bg-toggle"><span>Реагировать на курсор</span><input type="checkbox" data-bg="cursor"></label><label class="bg-control"><span>Сила курсора</span><output data-bg-output="cursorStrength"></output><input type="range" min="0" max="100" step="1" data-bg="cursorStrength"></label></div><small>Настройки сохраняются только на этом устройстве и не меняют задачи.</small></section>`);
   modal.insertAdjacentHTML('beforeend','<div class="profile-controls"><label>Фильтр по приоритету<select id="profilePriority"><option value="all">Любой приоритет</option><option value="High">Высокий</option><option value="Medium">Средний</option><option value="Low">Низкий</option></select></label><label>Сортировка<select id="profileSort"><option value="manual">Вручную</option><option value="time">По времени</option><option value="priority">По приоритету</option><option value="title">По названию</option></select></label><label>Проекты</label><div class="profile-projects" id="profileProjectList"></div><button type="button" id="profileAddProject">＋ Добавить проект</button></div>');
   $$('[data-theme-choice]').forEach(button=>{button.classList.toggle('on',button.dataset.themeChoice===prefs.theme);button.onclick=()=>{prefs.theme=button.dataset.themeChoice;document.documentElement.dataset.theme=prefs.theme;savePrefs();$$('[data-theme-choice]').forEach(x=>x.classList.toggle('on',x===button))}});
+  function syncBackgroundControls(){
+    $$('[data-bg]').forEach(input=>{const key=input.dataset.bg;input.type==='checkbox'?input.checked=!!prefs.background[key]:input.value=prefs.background[key]});
+    $$('[data-bg-output]').forEach(out=>out.textContent=prefs.background[out.dataset.bg]);
+  }
+  $$('[data-bg]').forEach(input=>input.oninput=()=>{const key=input.dataset.bg;prefs.background[key]=input.type==='checkbox'?input.checked:input.tagName==='SELECT'?input.value:Number(input.value);const out=$(`[data-bg-output="${key}"]`);if(out)out.textContent=prefs.background[key];savePrefs()});
+  $('#bgReset').onclick=()=>{prefs.background={...BG_DEFAULTS};savePrefs();syncBackgroundControls()};syncBackgroundControls();
   $('#profilePriority').onchange=e=>{prefs.priority=e.target.value;savePrefs();render()};$('#profileSort').onchange=e=>{prefs.sort=e.target.value;savePrefs();render()};$('#profileAddProject').onclick=()=>{closeSettings();openProject(null)};renderProfileControls();
   const cfg=window.FOCUS_SUPABASE||{};if(!cfg.url||!cfg.anonKey||!window.supabase){setCloudStatus('Нужна настройка');$('#cloudSignIn').disabled=true;$('#cloudSignUp').disabled=true;$('#authSignIn').disabled=true;$('#authSignUp').disabled=true;setAuthError('Синхронизация временно недоступна');return}
   cloudClient=window.supabase.createClient(cfg.url,cfg.anonKey);const{data}=await cloudClient.auth.getSession();cloudUser=data.session&&data.session.user;renderCloudUser();clearLoginFromSearch();setTimeout(clearLoginFromSearch,250);setTimeout(clearLoginFromSearch,1200);if(cloudUser){hideAuthGate();reconcileCloud();startCloudPolling()}else showAuthGate();
@@ -925,18 +935,23 @@ $('#todayButton').onclick=()=>{activeDate=todayISO;weekStart=mondayOf(new Date()
 
 function initDataDots(){
   const canvas=$('#dataWaves'),ctx=canvas.getContext('2d'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  let width=0,height=0,dpr=1,raf=0;
+  let width=0,height=0,dpr=1,raf=0,mouseX=0,mouseY=0,targetX=0,targetY=0;
+  addEventListener('pointermove',e=>{if(innerWidth<700||!prefs.background.cursor)return;targetX=e.clientX/innerWidth*2-1;targetY=e.clientY/innerHeight*2-1},{passive:true});
+  addEventListener('pointerleave',()=>{targetX=0;targetY=0},{passive:true});
   function resize(){dpr=Math.min(devicePixelRatio||1,1.25);width=innerWidth;height=innerHeight;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
   function draw(time=0){
-    const light=document.documentElement.dataset.theme==='light',spacing=29,size=4.2,phase=time*.00032;
+    const light=document.documentElement.dataset.theme==='light',cfg=prefs.background||BG_DEFAULTS,spacing=Number(cfg.spacing)||35,size=Number(cfg.size)||3,speed=(Number(cfg.speed)||0)/100,amplitude=Number(cfg.amplitude)||0,depthAmount=(Number(cfg.depth)||68)/100;
+    const direction=cfg.direction||'forward',sign=direction==='backward'||direction==='left'?-1:1,phase=time*.00055*speed*sign,cursorPower=cfg.cursor?(Number(cfg.cursorStrength)||0)/100:0;
+    mouseX+=(targetX-mouseX)*.045;mouseY+=(targetY-mouseY)*.045;
     ctx.clearRect(0,0,width,height);if(!light){ctx.fillStyle='#222';ctx.fillRect(0,0,width,height)}
-    const cols=Math.ceil(width/spacing)+3,rows=Math.ceil(height/spacing)+3;
-    for(let row=-1;row<rows;row++)for(let col=-1;col<cols;col++){
-      const wave=Math.sin(col*.34+phase*1.7)+Math.cos(row*.29-phase*1.2);
-      const driftX=Math.sin(row*.23+phase)*3,driftY=Math.cos(col*.19-phase*.8)*3;
-      const x=col*spacing+driftX,y=row*spacing+driftY+wave*2.2;
-      const depth=(wave+2)/4,radius=Math.max(1.15,size*(.42+depth*.34));
-      ctx.globalAlpha=light?.16+depth*.08:.28+depth*.42;ctx.fillStyle=light?'#c76618':'#ff8820';
+    const cols=Math.ceil(width/spacing)*2+8,rows=Math.ceil(height/spacing)+16,horizon=height*(.29-mouseY*.055*cursorPower),vanishX=width/2+mouseX*width*.09*cursorPower;
+    for(let row=0;row<rows;row++)for(let col=0;col<cols;col++){
+      const z=row/(rows-1),perspective=Math.pow(z,1.55),scale=.12+perspective*(.88+depthAmount*.35),gridCol=col-cols/2;
+      const wave=Math.sin(gridCol*.42+row*.32+phase*8)*amplitude*scale;
+      let x=vanishX+gridCol*spacing*scale+mouseX*18*perspective*cursorPower,y=horizon+perspective*height*.86+wave;
+      if(direction==='left'||direction==='right')x+=Math.sin(row*.25+phase*9)*amplitude*scale*sign;
+      const radius=Math.max(.65,size*(.28+perspective*.92)),fade=Math.min(1,.18+perspective*1.15);
+      ctx.globalAlpha=(light?.16:.24)+fade*(light?.16:.56);ctx.fillStyle=light?'#c76618':'#ff8820';
       ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.fill();
     }
     ctx.globalAlpha=1;if(!reduced.matches)raf=requestAnimationFrame(draw);
