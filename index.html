@@ -74,7 +74,7 @@
     @media(max-width:620px){.topbar.day-view #viewTitle{display:none}.topbar.day-view .mobile-day-head.show{display:flex;align-items:baseline;gap:5px;white-space:nowrap}.topbar.day-view .mobile-day-head b{font-size:13px}.topbar.day-view .mobile-day-head small{font-size:9px;color:var(--muted)}}
     @media(max-width:620px){.topbar.day-view .title-wrap{flex:1;min-width:0}.topbar.day-view .mobile-day-head.show{position:static;width:100%;transform:none;justify-content:space-between;padding-left:4px;margin-right:8px}.topbar.day-view .mobile-day-head b{text-align:left}.topbar.day-view .mobile-day-head small{text-align:right}}
     body.auth-required .app{pointer-events:none;filter:blur(5px);opacity:.35}.auth-gate{z-index:120;background:#08090df2}.auth-gate.open{display:grid}.auth-card{width:min(390px,100%);padding:28px}.auth-brand{display:flex;align-items:center;gap:11px;margin-bottom:24px}.auth-brand .logo{width:38px;height:38px}.auth-brand strong{font-size:22px}.auth-card h2{margin:0 0 7px;font-size:22px}.auth-card>p{margin:0 0 20px;color:var(--muted);font-size:11px;line-height:1.5}.auth-fields{display:grid;gap:9px}.auth-fields input{height:48px}.auth-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.auth-buttons button{height:43px;border:1px solid #343947;background:#151820;border-radius:9px}.auth-buttons .auth-primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}.auth-error{min-height:18px;margin:10px 0 0!important;color:#ff8f97!important}.auth-card.busy{pointer-events:none;opacity:.75}html[data-theme="light"] .auth-card{background:#fff}html[data-theme="light"] .auth-fields input,html[data-theme="light"] .auth-buttons button{background:#f7f8fa;color:#252936;border-color:#d8dce4}html[data-theme="light"] .auth-buttons .auth-primary{background:var(--accent);color:#fff}
-    .focus-mark{background:none;box-shadow:0 8px 24px #2766ed32;overflow:visible}.focus-mark svg{display:block;width:100%;height:100%;filter:drop-shadow(0 5px 9px #1f58d938)}
+    .brand{padding-left:4px;padding-right:4px}.brand>span:last-child{display:none}.focus-plaque{width:218px;height:68px;border-radius:12px;background:#fff url('focus-logo.png') center/126% auto no-repeat;box-shadow:0 10px 30px #0005;border:1px solid #ffffff18}.auth-brand{justify-content:center}.auth-brand .focus-plaque{width:286px;height:94px;border-radius:15px;background-size:124%;box-shadow:0 14px 38px #0005}.auth-brand>strong{display:none}.filter-note{border:1px solid #7769fa66;background:#7769fa16;color:#bcb5ff;border-radius:8px;padding:5px 9px;font:inherit;cursor:pointer}.filter-note:hover{background:#7769fa28;color:#fff}
   </style>
 </head>
 <body class="auth-required">
@@ -137,8 +137,7 @@ const MOVE_MS=320,MOVE_EASE='cubic-bezier(0.23,1,0.32,1)';
 const HEX={purple:'#8d7cff',blue:'#62a8ff',pink:'#f4779a',yellow:'#efb55e',green:'#64d7a0',cyan:'#54d6d0',red:'#ff6c77',gray:'#7b8290'};
 const PALETTE=Object.keys(HEX);
 const VIEW_TITLES={tasks:'Задачи',inbox:'Входящие',done:'Выполненные'};
-const FOCUS_MARK='<svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="focusBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4f87ff"/><stop offset="1" stop-color="#2457dc"/></linearGradient><linearGradient id="focusMint" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#92efd2"/><stop offset="1" stop-color="#51cfa8"/></linearGradient></defs><path fill="url(#focusBlue)" d="M5 4h25a6 6 0 0 1 0 12H17v19a6 6 0 0 1-12 0z"/><path fill="url(#focusMint)" d="M7 18h23a6 6 0 0 1 0 12H7z"/><path d="m11 27 5-4 5 2 7-5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="28" cy="20" r="2" fill="#fff"/></svg>';
-$$('.logo').forEach(el=>{el.classList.add('focus-mark');el.innerHTML=FOCUS_MARK});
+$$('.logo').forEach(el=>{el.className='logo focus-plaque';el.textContent=''});
 const SYNC_PROTOCOL='4';
 if(localStorage.getItem('focus_sync_protocol')!==SYNC_PROTOCOL){localStorage.removeItem('focus_local_dirty');localStorage.removeItem('focus_cloud_seen');localStorage.setItem('focus_sync_protocol',SYNC_PROTOCOL)}
 
@@ -146,6 +145,7 @@ let projects=load('focus_projects',[{id:'p1',name:'Новый сайт',color:'p
 let tasks=load('focus_tasks',[]);
 let series=load('focus_series',[]);
 let prefs=Object.assign({view:'tasks',project:null,priority:'all',status:'all',sort:'manual',theme:'dark'},load('focus_prefs',{}));
+prefs.priority='all';prefs.status='all';localStorage.setItem('focus_prefs',JSON.stringify(prefs));
 document.documentElement.dataset.theme=prefs.theme;
 document.querySelector('.primary').classList.add('add-icon');
 const profileNav=document.createElement('button');profileNav.type='button';profileNav.className='mobile-profile-nav';profileNav.id='profileNav';profileNav.innerHTML='<b>ДК</b>Профиль';document.querySelector('.nav').appendChild(profileNav);
@@ -327,7 +327,7 @@ function renderProject(){
     return `<section class="column done-group project-group" data-date="${d}"><div class="column-head"><div><span class="day-number">${date.getDate()}</span><span class="day-label"><strong>${cap(date.toLocaleDateString('ru-RU',{weekday:'long'}))}</strong><small>${d===todayISO?'Сегодня · ':''}${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}</small></span></div><div class="day-summary"><span class="count">${g.length} ${taskWord(g.length)}</span></div></div><div class="task-list">${g.map(t=>card(t)).join('')}</div></section>`;
   }).join(''):`<section class="column"><div class="task-list">${emptyBlock('В проекте пока нет активных задач','Добавьте новую задачу или снимите фильтр проекта')}</div></section>`;
 }
-function noteHtml(){return filtersOn()||query?'<span class="filter-note">фильтр активен</span>':''}
+function noteHtml(){return filtersOn()||query?'<button type="button" class="filter-note" data-clear-filters>Сбросить фильтр ×</button>':''}
 function renderDay(){
   const date=fromISO(activeDate);
   const full=cap(date.toLocaleDateString('ru-RU',{weekday:'long'}));
@@ -539,6 +539,7 @@ function flyHome(clone,from,target,vx,vy,tilt){
 
 /* ===================== Привязки доски ===================== */
 function bindDynamic(){
+  $$('[data-clear-filters]').forEach(b=>b.onclick=()=>{prefs.priority='all';prefs.status='all';query='';$('#search').value='';$('#mobileSearch').value='';savePrefs();render()});
   $$('[data-open]').forEach(b=>b.onclick=()=>openModal(b.dataset.newDate,b.dataset.newProject));
   $$('[data-complete]').forEach(b=>b.onclick=e=>{e.stopPropagation();completeForDate(Number(b.dataset.complete),activeDate)});
   $$('.card').forEach(c=>{
