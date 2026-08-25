@@ -142,8 +142,8 @@ document.querySelector('.primary').classList.add('add-icon');
 const profileNav=document.createElement('button');profileNav.type='button';profileNav.className='mobile-profile-nav';profileNav.id='profileNav';profileNav.innerHTML='<b>ДК</b>Профиль';document.querySelector('.nav').appendChild(profileNav);
 const mobileDayHead=document.createElement('div');mobileDayHead.id='mobileDayHead';mobileDayHead.className='mobile-day-head';document.querySelector('.title-wrap').appendChild(mobileDayHead);
 
-let weekStart=mondayOf(new Date());
-let activeDate=todayISO;
+let activeDate=/^\d{4}-\d{2}-\d{2}$/.test(prefs.activeDate||'')?prefs.activeDate:todayISO;
+let weekStart=mondayOf(fromISO(activeDate));
 let query='';
 let detailId=null,editingProject=null,draftColor='purple';
 
@@ -168,7 +168,7 @@ function touchLocal(){if(!cloudApplying){localStorage.setItem('focus_local_updat
 const save=(touch=true)=>{localStorage.setItem('focus_tasks',JSON.stringify(tasks));if(touch){touchLocal();queueCloudPush()}};
 const saveSeries=(touch=true)=>{localStorage.setItem('focus_series',JSON.stringify(series));if(touch){touchLocal();queueCloudPush()}};
 const saveProjects=(touch=true)=>{localStorage.setItem('focus_projects',JSON.stringify(projects));if(touch){touchLocal();queueCloudPush()}};
-const savePrefs=(touch=true)=>{localStorage.setItem('focus_prefs',JSON.stringify(prefs));if(touch){touchLocal();queueCloudPush()}};
+const savePrefs=(touch=false)=>{localStorage.setItem('focus_prefs',JSON.stringify(prefs));if(touch){touchLocal();queueCloudPush()}};
 
 function occurrenceDates(s,horizon){
   const r=s.repeat||{},start=fromISO(s.startDate),limit=fromISO(horizon),dates=[];
@@ -850,7 +850,7 @@ $('#taskForm').onsubmit=e=>{
     saveSeries();ensureOccurrences();newId=(tasks.find(t=>t.seriesId===id)||{}).id;
   }
   save();closeModal();
-  if(prefs.view==='tasks'){activeDate=date;weekStart=mondayOf(fromISO(date))}
+  if(prefs.view==='tasks'){activeDate=date;weekStart=mondayOf(fromISO(date));prefs.activeDate=activeDate;savePrefs()}
   renderDays();render();if(newId)popIn(newId);
 };
 $('#detailForm').onsubmit=e=>{
@@ -876,10 +876,10 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){if(drag)return endDrag(true);closeModal();closeDetail();closeProject();closeSettings();closePops()}});
 $('#search').oninput=e=>{query=e.target.value.toLowerCase();render()};
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&cloudUser)reconcileCloud()});
-$('#days').onclick=e=>{const b=e.target.closest('[data-date]');if(b){const dir=b.dataset.date>activeDate?1:b.dataset.date<activeDate?-1:0;activeDate=b.dataset.date;renderDays();render();boardEnter(dir)}};
-$('#prevWeek').onclick=()=>{weekStart=addDays(weekStart,-7);activeDate=toISO(weekStart);renderDays();render()};
-$('#nextWeek').onclick=()=>{weekStart=addDays(weekStart,7);activeDate=toISO(weekStart);renderDays();render()};
-$('#todayButton').onclick=()=>{activeDate=todayISO;weekStart=mondayOf(new Date());prefs.view='tasks';savePrefs();renderDays();render()};
+$('#days').onclick=e=>{const b=e.target.closest('[data-date]');if(b){const dir=b.dataset.date>activeDate?1:b.dataset.date<activeDate?-1:0;activeDate=b.dataset.date;prefs.activeDate=activeDate;savePrefs();renderDays();render();boardEnter(dir)}};
+$('#prevWeek').onclick=()=>{weekStart=addDays(weekStart,-7);activeDate=toISO(weekStart);prefs.activeDate=activeDate;savePrefs();renderDays();render()};
+$('#nextWeek').onclick=()=>{weekStart=addDays(weekStart,7);activeDate=toISO(weekStart);prefs.activeDate=activeDate;savePrefs();renderDays();render()};
+$('#todayButton').onclick=()=>{activeDate=todayISO;weekStart=mondayOf(new Date());prefs.view='tasks';prefs.activeDate=activeDate;savePrefs();renderDays();render()};
 
 prepareTaskForm();fillSelects();updateScheduleFields();renderDays();render();showAuthGate();initCloud();
 </script>
