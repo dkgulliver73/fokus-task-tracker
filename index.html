@@ -61,6 +61,7 @@
     .profile-controls{display:grid;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.profile-controls label{display:grid;gap:6px;color:var(--muted);font-size:10px}.profile-controls select{height:42px;background:#12151c;border:1px solid #343947;border-radius:8px;color:var(--text);padding:0 10px}.profile-projects{display:grid;gap:6px}.profile-projects .mobile-project-row>button{min-height:40px;border:1px solid #343947;background:#12151c;border-radius:8px;color:var(--text);padding:8px 10px;text-align:left}.profile-projects .mobile-project-row>button:first-child{display:flex;align-items:center;gap:8px}.profile-projects b{margin-left:auto}
     @media(max-width:620px){html,body{height:100%;overflow:hidden}.app{height:100dvh;padding:0}.app main{height:calc(100dvh - 68px);display:grid;grid-template-rows:46px 46px minmax(0,1fr);overflow:hidden}.board,.board.no-period{height:auto!important;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:28px}.topbar{height:46px}.period{height:46px}.topbar,.period{position:relative;z-index:2}.nav{grid-template-columns:repeat(4,1fr)}.nav button span{display:none}.nav button{font-size:10px;border-radius:10px}.nav button b{position:static;margin:0 0 2px;padding:2px 6px}.mobile-profile-nav{display:flex!important}.primary.add-icon:before{display:block}.primary{font-size:0!important;padding:0!important}.mobile-menu-action,#filterBtn,#sortBtn{display:none!important}.column-head{margin-top:0}.mobile-menu-footer{grid-template-columns:1fr}.mobile-menu-footer #mobileSettings{display:none}.column{min-height:100%}}
     .profile-controls>button{min-height:42px;border:1px solid #7769fa;background:#272348;color:#ddd9ff;border-radius:8px}
+    .profile-button{width:100%;padding:11px 8px;border:1px solid transparent;background:none;color:var(--text);text-align:left;border-radius:11px}.profile-button:hover{background:#171a21;border-color:var(--line)}.profile-button>span:last-child{display:grid}.profile-button small{color:#626976;font-size:10px}
     @media(max-width:620px){.board.no-period{grid-row:2/4!important;height:auto!important}.nav{padding:3px;background:#151820;border:1px solid #272c37;border-radius:14px;box-shadow:0 10px 28px #0005}.nav button{min-width:0;color:#858d9a;transition:background 150ms ease,color 150ms ease}.nav button.active{background:#25213f;color:#fff}.nav button.active:after{content:"";position:absolute;top:3px;left:50%;width:18px;height:2px;border-radius:2px;background:#8d82ff;transform:translateX(-50%)}.nav button b{background:transparent!important;color:#747c89!important;font-size:8px;padding:0}.nav button.active b{color:#aaa2ff!important}.nav #profileNav b{font-size:9px;font-weight:800;letter-spacing:.04em}aside{background:color-mix(in srgb,var(--side) 94%,transparent);backdrop-filter:blur(18px);border-top:0;padding:5px 8px 7px}}
     html[data-theme="light"] .nav{background:#f1f3f7;border-color:#dde1e8;box-shadow:0 8px 24px #333b5012}html[data-theme="light"] .nav button.active{background:#fff;color:#252936;box-shadow:0 3px 12px #30384d16}html[data-theme="light"] aside{background:#fff}
     @media(max-width:620px){.primary.add-icon:before,.primary.add-icon:after{display:block}}
@@ -75,7 +76,7 @@
 </head>
 <body class="auth-required">
 <div class="app">
-  <aside><div class="brand"><span class="logo">F</span><span>Focus</span></div><nav class="nav"><button data-view="tasks" class="active"><span>⌂</span>Задачи <b id="totalCount">0</b></button><button data-view="inbox"><span>◫</span>Входящие <b id="inboxCount">0</b></button><button data-view="done"><span>✓</span>Готово <b id="doneCount">0</b></button></nav><div class="section-title"><span>ПРОЕКТЫ</span><button id="addProject" title="Новый проект">＋</button></div><div class="projects" id="projectList"></div><div class="aside-bottom"><div class="week-progress"><span>Прогресс недели</span><strong id="progressText"></strong></div><div class="bar"><i id="progressBar"></i></div><button class="settings" id="settingsButton">⚙ Данные</button><div class="profile"><span class="avatar">ДК</span><div><strong>Данил</strong><small>Личное пространство</small></div></div></div></aside>
+  <aside><div class="brand"><span class="logo">F</span><span>Focus</span></div><nav class="nav"><button data-view="tasks" class="active"><span>⌂</span>Задачи <b id="totalCount">0</b></button><button data-view="inbox"><span>◫</span>Входящие <b id="inboxCount">0</b></button><button data-view="done"><span>✓</span>Готово <b id="doneCount">0</b></button></nav><div class="section-title"><span>ПРОЕКТЫ</span><button id="addProject" title="Новый проект">＋</button></div><div class="projects" id="projectList"></div><div class="aside-bottom"><div class="week-progress"><span>Прогресс недели</span><strong id="progressText"></strong></div><div class="bar"><i id="progressBar"></i></div><button class="profile profile-button" id="settingsButton"><span class="avatar">ДК</span><span><strong>Данил</strong><small>Профиль и данные</small></span></button></div></aside>
   <main><header class="topbar"><div class="title-wrap"><h1 id="viewTitle">Задачи</h1><button class="chip" id="projectChip"></button></div><div class="actions"><input class="search" id="search" placeholder="⌕  Поиск задач…"><button class="mini-action mobile-menu-action" id="mobileMenuButton" title="Проекты и данные" aria-label="Проекты и данные">•••</button><button class="mini-action" id="filterBtn" title="Фильтр" aria-label="Фильтр">☷</button><button class="mini-action" id="sortBtn" title="Сортировка" aria-label="Сортировка">↕</button><button class="primary" data-open aria-label="Новая задача">＋ Новая задача</button><div class="pop" id="mobileMenuPop"><div class="pop-title">ПОИСК</div><input class="mobile-menu-search" id="mobileSearch" placeholder="Поиск задач…"><div class="pop-title" style="margin-top:12px">ПРОЕКТЫ</div><div class="mobile-projects" id="mobileProjectList"></div><div class="mobile-menu-footer"><button type="button" id="mobileAddProject">＋ Проект</button><button type="button" id="mobileSettings">⚙ Данные и вход</button></div></div><div class="pop" id="filterPop"><div class="pop-title">ПРИОРИТЕТ</div><div class="pop-row" data-key="priority"><button type="button" data-value="all">Любой</button><button type="button" data-value="High">Высокий</button><button type="button" data-value="Medium">Средний</button><button type="button" data-value="Low">Низкий</button></div><div class="pop-title">СТАТУС</div><div class="pop-row" data-key="status"><button type="button" data-value="all">Все</button><button type="button" data-value="active">Активные</button><button type="button" data-value="done">Выполненные</button></div><button type="button" class="pop-reset" id="resetFilters">Сбросить фильтры</button></div><div class="pop" id="sortPop"><div class="pop-title">СОРТИРОВКА</div><div class="pop-col" data-key="sort"><button type="button" data-value="manual">Вручную (перетаскивание)</button><button type="button" data-value="time">По времени</button><button type="button" data-value="priority">По приоритету</button><button type="button" data-value="title">По названию</button></div></div></div></header><div class="period" id="period"><button id="prevWeek" title="Предыдущая неделя">‹</button><div class="range"><strong id="weekRange"></strong></div><button id="nextWeek" title="Следующая неделя">›</button><button class="today" id="todayButton">Сегодня</button><div class="days" id="days"></div></div><div class="board" id="board"></div></main>
 </div>
 <div class="overlay" id="overlay"><form class="modal" id="taskForm" novalidate><div class="modal-head"><div><small>НОВАЯ ЗАДАЧА</small><h2>Что нужно сделать?</h2></div><button class="close" type="button" data-close>×</button></div><input id="taskTitle" required placeholder="Например, подготовить презентацию"><label class="field-label task-notes"><span>Заметки</span><textarea id="taskDescription" placeholder="Контекст, детали или ожидаемый результат…"></textarea></label><div class="form-row"><select id="taskProject"></select><input type="date" id="taskDate" required></div><div class="form-row"><select id="taskPriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select><label class="field-label">Рабочих дней<input type="number" id="taskDuration" min="1" max="260" value="1"></label></div><div class="schedule"><p class="schedule-title">ПОВТОР</p><div class="repeat-layout"><select id="repeatType"><option value="none">Не повторять</option><option value="daily">Каждые N дней</option><option value="weekly">По дням недели</option><option value="monthly">По числам месяца</option></select><label class="field-label" id="repeatIntervalField"><span>Каждые</span><div class="repeat-control"><input type="number" id="repeatInterval" min="1" max="99" value="1"><span id="repeatUnit">нед.</span></div></label></div><div class="schedule-extra" id="weeklyOptions"><div class="weekday-picker" id="weekdayPicker"><label><input type="checkbox" value="1"><span>Пн</span></label><label><input type="checkbox" value="2"><span>Вт</span></label><label><input type="checkbox" value="3"><span>Ср</span></label><label><input type="checkbox" value="4"><span>Чт</span></label><label><input type="checkbox" value="5"><span>Пт</span></label></div></div><div class="schedule-extra" id="monthlyOptions"><label class="field-label">Числа месяца<input id="monthDays" placeholder="Например: 1, 10, 25"></label></div><div class="schedule-extra" id="repeatEndOptions"><div class="form-row repeat-end-row"><select id="repeatEndType"><option value="never">Без окончания</option><option value="date">До даты</option><option value="count">После N повторений</option></select><input type="date" id="repeatEndDate"><input type="number" id="repeatCount" min="1" max="999" value="10" aria-label="Количество повторений"></div></div></div><div class="modal-actions"><button type="button" data-close>Отмена</button><button class="save">Создать задачу</button></div></form></div>
@@ -250,7 +251,7 @@ function renderSidebar(){
     if(ed){openProject(ed.dataset.edit);return}
     const name=b.dataset.project;
     prefs.project=prefs.project===name?null:name;
-    if(prefs.project&&prefs.view==='inbox')prefs.view='tasks';
+    if(prefs.project)prefs.view='tasks';
     savePrefs();renderDays();render();
   });
   const weekDates=getWeek().map(d=>d.iso),weekSlots=[];
@@ -264,13 +265,13 @@ function renderMobileProjects(){
   const root=$('#mobileProjectList');if(!root)return;
   const active=tasks.filter(t=>!t.done);
   root.innerHTML=`<button type="button" data-mobile-project="" class="${prefs.project?'':'on'}"><i class="dot gray"></i>Все проекты<b>${active.length}</b></button>`+projects.map(p=>`<div class="mobile-project-row"><button type="button" data-mobile-project="${escapeHtml(p.name)}" class="${prefs.project===p.name?'on':''}"><i class="dot ${p.color}"></i>${escapeHtml(p.name)}<b>${active.filter(t=>t.project===p.name).length}</b></button><button type="button" class="mobile-project-edit" data-mobile-edit="${p.id}" aria-label="Изменить ${escapeHtml(p.name)}">···</button></div>`).join('');
-  $$('[data-mobile-project]').forEach(button=>button.onclick=()=>{prefs.project=button.dataset.mobileProject||null;if(prefs.project&&prefs.view==='inbox')prefs.view='tasks';savePrefs();closePops();renderDays();render()});
+  $$('[data-mobile-project]').forEach(button=>button.onclick=()=>{prefs.project=button.dataset.mobileProject||null;if(prefs.project)prefs.view='tasks';savePrefs();closePops();renderDays();render()});
   $$('[data-mobile-edit]').forEach(button=>button.onclick=()=>{closePops();openProject(button.dataset.mobileEdit)});
 }
 function renderProfileControls(){
   const root=$('#profileProjectList');if(!root)return;
   root.innerHTML=projects.map(p=>`<div class="mobile-project-row"><button type="button" data-profile-project="${escapeHtml(p.name)}"><i class="dot ${p.color}"></i>${escapeHtml(p.name)}<b>${tasks.filter(t=>!t.done&&t.project===p.name).length}</b></button><button type="button" class="mobile-project-edit" data-profile-edit="${p.id}">···</button></div>`).join('');
-  $$('[data-profile-project]').forEach(b=>b.onclick=()=>{prefs.project=b.dataset.profileProject;savePrefs();closeSettings();renderDays();render()});
+  $$('[data-profile-project]').forEach(b=>b.onclick=()=>{prefs.project=b.dataset.profileProject;prefs.view='tasks';savePrefs();closeSettings();renderDays();render()});
   $$('[data-profile-edit]').forEach(b=>b.onclick=()=>{closeSettings();openProject(b.dataset.profileEdit)});
   $('#profilePriority').value=prefs.priority;$('#profileSort').value=prefs.sort;
 }
@@ -293,11 +294,11 @@ const emptyBlock=(title,sub)=>`<div class="empty-day"><strong>${title}</strong>$
 /* ===================== Рендер ===================== */
 function render(){
   renderSidebar();
-  const dayView=prefs.view==='tasks';
-  $('#viewTitle').textContent=VIEW_TITLES[prefs.view];
+  const projectView=prefs.view==='tasks'&&!!prefs.project,dayView=prefs.view==='tasks'&&!projectView;
+  $('#viewTitle').textContent=projectView?prefs.project:VIEW_TITLES[prefs.view];
   $('.topbar').classList.toggle('day-view',dayView);
   const chip=$('#projectChip');
-  chip.classList.toggle('show',!!prefs.project);
+  chip.classList.toggle('show',!!prefs.project&&!projectView);
   if(prefs.project)chip.innerHTML=`<i class="dot ${colorOf(prefs.project)}"></i>${escapeHtml(prefs.project)} ×`;
   $('#period').style.display=dayView?'':'none';
   mobileDayHead.classList.toggle('show',dayView);
@@ -305,8 +306,17 @@ function render(){
   board.classList.toggle('no-period',!dayView);
   board.classList.toggle('stack',!dayView);
   updateChips();
-  if(dayView)renderDay();else if(prefs.view==='inbox')renderInbox();else renderDone();
+  if(projectView)renderProject();else if(dayView)renderDay();else if(prefs.view==='inbox')renderInbox();else renderDone();
   bindDynamic();
+}
+function renderProject(){
+  const list=tasks.filter(t=>!t.done&&matches(t)),groups={};
+  list.forEach(t=>{(groups[t.date]=groups[t.date]||[]).push(t)});
+  const dates=Object.keys(groups).sort();
+  $('#board').innerHTML=dates.length?dates.map(d=>{
+    const date=fromISO(d),g=sortTasks(groups[d]);
+    return `<section class="column done-group project-group" data-date="${d}"><div class="column-head"><div><span class="day-number">${date.getDate()}</span><span class="day-label"><strong>${cap(date.toLocaleDateString('ru-RU',{weekday:'long'}))}</strong><small>${d===todayISO?'Сегодня · ':''}${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}</small></span></div><div class="day-summary"><span class="count">${g.length} ${taskWord(g.length)}</span></div></div><div class="task-list">${g.map(t=>card(t)).join('')}</div></section>`;
+  }).join(''):`<section class="column"><div class="task-list">${emptyBlock('В проекте пока нет активных задач','Добавьте новую задачу или снимите фильтр проекта')}</div></section>`;
 }
 function noteHtml(){return filtersOn()||query?'<span class="filter-note">фильтр активен</span>':''}
 function renderDay(){
