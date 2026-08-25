@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" role="img" aria-labelledby="title">
+  <title id="title">Focus</title>
+  <rect width="600" height="160" rx="24" fill="#ffffff"/>
+  <g transform="translate(28 24)" fill="none" stroke="#17212b" stroke-width="11" stroke-linecap="round">
+    <path d="M42 4v17M42 91v17M-8 56H9M75 56h17"/>
+    <path d="M19 18a43 43 0 0 0-20 27M65 18a43 43 0 0 1 20 27M19 94A43 43 0 0 1-1 67M65 94a43 43 0 0 0 20-27"/>
+  </g>
+  <circle cx="70" cy="80" r="18" fill="#10964c"/>
+  <g transform="translate(130 28)">
+    <rect x="0" y="61" width="28" height="43" rx="5" fill="#a9d8bc"/>
+    <rect x="40" y="35" width="28" height="69" rx="5" fill="#66bd88"/>
+    <rect x="80" width="28" height="104" rx="5" fill="#10964c"/>
+    <rect x="-7" y="116" width="123" height="7" rx="3.5" fill="#10964c"/>
+  </g>
+  <text x="284" y="104" fill="#17212b" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="72" font-weight="650" letter-spacing="13">FOCUS</text>
+</svg>
