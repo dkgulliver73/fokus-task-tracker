@@ -125,7 +125,7 @@
     #settingsOverlay .modal-head h2{margin-bottom:0}.account-summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.9fr);gap:12px}.account-summary .profile-summary,.account-summary .cloud-panel{margin:0;min-height:78px}.account-summary .profile-summary{padding:14px 16px}.account-summary .cloud-panel{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px 14px;padding:12px 14px!important}.account-summary .cloud-head{display:grid;gap:4px}.account-summary .cloud-actions.show{display:block;margin:0}.account-summary .cloud-hint{display:none}.account-summary .cloud-login{grid-column:1/-1}.account-summary .cloud-actions button{min-height:34px;white-space:nowrap}
     #settingsOverlay .theme-setting{margin:0;padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}#settingsOverlay .background-settings{grid-column:1;margin:0;align-self:stretch}#settingsOverlay .profile-controls{grid-column:2;margin:0;align-self:stretch;padding:14px;border:1px solid #303948;border-radius:14px;background:#111721}#settingsOverlay .profile-controls label{font-size:9px}#settingsOverlay .profile-controls select{height:38px;margin-top:6px}#settingsOverlay .profile-projects{max-height:142px;overflow:auto}.bg-toggle{min-width:0}.bg-toggle span{max-width:90px;line-height:1.25}.bg-control:has([data-bg="cursorStrength"]){grid-column:span 2}
     .startup-screen{position:fixed;inset:0;z-index:140;display:grid;place-items:center;background:radial-gradient(circle at 50% 46%,#191735 0,transparent 34%),#080b11;opacity:0;visibility:hidden;transition:opacity .28s ease,visibility .28s ease}.startup-screen.open{opacity:1;visibility:visible}.startup-inner{display:grid;justify-items:center;gap:18px;text-align:center;animation:startupIn .55s var(--ease-out)}.startup-mark{width:78px;height:78px;border-radius:24px;display:grid;place-items:center;background:linear-gradient(145deg,#8177ff,#5f55dc);box-shadow:0 22px 60px #5e53df55;color:#fff;font-size:34px;font-weight:800;letter-spacing:-.04em}.startup-title{font-size:22px;font-weight:760;letter-spacing:.12em}.startup-status{min-height:18px;color:#8e97a6;font-size:11px}.startup-loader{width:146px;height:3px;overflow:hidden;border-radius:4px;background:#222837}.startup-loader:after{content:"";display:block;width:48%;height:100%;border-radius:4px;background:linear-gradient(90deg,#6e64f4,#a29aff);animation:startupLoad 1.15s ease-in-out infinite}.auth-card{animation:authEnter .45s var(--ease-out)}.auth-card.busy{opacity:1}.auth-card.busy .auth-fields,.auth-card.busy .auth-buttons{opacity:.42;pointer-events:none}.auth-stage{margin:-8px 0 12px;color:#9b94f6;font-size:10px;min-height:15px}.auth-card:not(.busy) .auth-stage:empty{display:none}@keyframes startupLoad{0%{transform:translateX(-110%)}55%,100%{transform:translateX(210%)}}@keyframes startupIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}@keyframes authEnter{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
-    .card.drag-arming{transform:translateY(-3px) scale(1.018);border-color:#5e579f;box-shadow:0 18px 42px #0008,0 0 0 3px #7167f812}.drag-clone{opacity:1!important;border-color:#8c82ff!important;box-shadow:0 30px 76px #000c,0 0 0 1px #9b93ff66!important;filter:saturate(1.12);animation:dragLift .24s var(--ease-out);will-change:transform}.drag-clone:before{background:#8177ff!important}.card.dragging{display:none!important;visibility:visible!important}.drop-marker{transition:height .34s var(--ease-out),opacity .24s ease,margin .34s var(--ease-out)}.drop-marker.ready{border-color:#8177ff99;background:#7167f818;box-shadow:inset 0 0 28px #7167f81c}.drop-marker.ready:before{background:#9b93ff;box-shadow:0 0 18px #776df5}@keyframes dragLift{from{opacity:.65;filter:saturate(.9);box-shadow:0 8px 22px #0007}to{opacity:1;filter:saturate(1.12);box-shadow:0 30px 76px #000c,0 0 0 1px #9b93ff66}}
+    .drag-clone{opacity:1!important;border-color:#8c82ff!important;border-radius:14px!important;box-shadow:0 28px 68px #000c,0 0 0 1px #9b93ff55!important;filter:saturate(1.08);will-change:transform}.drag-clone:before{background:#8177ff!important}.card.dragging{display:none!important}.drop-marker.ready{border-color:#8177ff99;background:#7167f818;box-shadow:inset 0 0 28px #7167f81c}.drop-marker.ready:before{background:#9b93ff;box-shadow:0 0 18px #776df5}
     @media(max-width:620px){
       .app{padding-bottom:70px}.app main{height:calc(100dvh - 70px)}aside{height:70px;padding:7px 9px calc(8px + env(safe-area-inset-bottom));background:#0b1018e8;backdrop-filter:blur(24px) saturate(140%)}
       .nav{height:100%;padding:4px;border-radius:16px;background:#111722;border-color:#283140;box-shadow:0 14px 35px #0007}.nav button{min-height:48px;border-radius:12px;font-size:10px;font-weight:600}.nav .active{background:linear-gradient(145deg,#302b58,#24233f);box-shadow:none}.nav button.active:after{background:#9c94ff}
@@ -192,7 +192,7 @@ let cloudClient=null,cloudUser=null,cloudTimer=null,cloudPoller=null,cloudApplyi
 const todayISO=toISO(new Date());
 const INBOX='Без проекта';
 const REDUCED=matchMedia('(prefers-reduced-motion: reduce)');
-const MOVE_MS=430,MOVE_EASE='cubic-bezier(0.22,0.82,0.28,1)';
+const MOVE_MS=320,MOVE_EASE='cubic-bezier(0.23,1,0.32,1)';
 const HEX={purple:'#8d7cff',blue:'#62a8ff',pink:'#f4779a',yellow:'#efb55e',green:'#64d7a0',cyan:'#54d6d0',red:'#ff6c77',gray:'#7b8290'};
 const PALETTE=Object.keys(HEX);
 const VIEW_TITLES={tasks:'Задачи',inbox:'Входящие',done:'Выполненные'};
@@ -451,7 +451,7 @@ function dbg(msg){
 if(DBG)addEventListener('DOMContentLoaded',()=>dbg('страница загружена'));
 
 /* Пружина Apple-style: duration .5s, bounce .2 → ζ=0.8, ωn=20.9 рад/с */
-const SPRING_K=438,SPRING_C=33.4,LIFT=1.055,TILT_MAX=6,TILT_PER_PX=125,TOUCH_HOLD=220,MOUSE_INTENT=4,TOUCH_INTENT=12,EDGE=64,EDGE_SPEED=14;
+const SPRING_K=438,SPRING_C=33.4,LIFT=1.03,TILT_MAX=5,TILT_PER_PX=140,TOUCH_HOLD=250,MOUSE_INTENT=4,TOUCH_INTENT=10,EDGE=64,EDGE_SPEED=14;
 let drag=null,pending=null,justDragged=false;
 function velocityOf(s){if(s.length<2)return{vx:0,vy:0};const a=s[0],b=s[s.length-1],dt=(b.t-a.t)/1000;if(dt<=0)return{vx:0,vy:0};return{vx:(b.x-a.x)/dt,vy:(b.y-a.y)/dt}}
 function onCardPointerDown(e,card){
@@ -460,7 +460,6 @@ function onCardPointerDown(e,card){
   if(e.target.closest('[data-complete]'))return;
   clearNativeSelection();
   const touch=e.pointerType!=='mouse';
-  card.classList.add('drag-arming');
   pending={card,id:Number(card.dataset.id),pointerId:e.pointerId,sx:e.clientX,sy:e.clientY,lastY:e.clientY,touch,scrolling:false,timer:null};
   if(touch)pending.timer=setTimeout(()=>{if(pending)startDrag(pending.sx,pending.sy)},TOUCH_HOLD);
   window.addEventListener('pointermove',onWindowMove);
@@ -495,13 +494,13 @@ function onWindowUp(e){
   if(pending&&e.pointerId===pending.pointerId)return cancelPending();
   if(drag&&e.pointerId===drag.pointerId)endDrag();
 }
-function cancelPending(){if(!pending)return;clearTimeout(pending.timer);pending.card.classList.remove('drag-arming');pending=null;detachWindow()}
+function cancelPending(){if(!pending)return;clearTimeout(pending.timer);pending=null;detachWindow()}
 function detachWindow(){window.removeEventListener('pointermove',onWindowMove);window.removeEventListener('pointerup',onWindowUp);window.removeEventListener('pointercancel',onWindowCancel);window.removeEventListener('mouseup',onSafetyUp);window.removeEventListener('blur',onSafetyUp)}
 function startDrag(x,y){
   dbg('ЖЕСТ НАЧАЛСЯ');
   clearNativeSelection();
   const p=pending;clearTimeout(p.timer);pending=null;
-  const card=p.card,rect=card.getBoundingClientRect(),list=card.parentElement;card.classList.remove('drag-arming');
+  const card=p.card,rect=card.getBoundingClientRect(),list=card.parentElement;
   const clone=card.cloneNode(true);
   clone.classList.add('drag-clone');
   clone.style.cssText=`left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;height:${rect.height}px`;
@@ -547,16 +546,17 @@ function updateTarget(d){
   $$('.column').forEach(c=>c.classList.toggle('drag-over',c===col));
   if(!col)return;
   const list=col.querySelector('.task-list');if(!list)return;
-  const cards=[...list.querySelectorAll('.card:not(.dragging)')];
+  const cards=[...list.querySelectorAll(':scope > .card:not(.dragging)')];
   const before=cards.find(c=>{const r=c.getBoundingClientRect();const sameRow=d.y>=r.top&&d.y<=r.bottom;return d.y<r.top||(sameRow&&d.x<r.left+r.width/2)});
-  placeMarker(list,before||list.querySelector('.quick-add'));
+  placeMarker(list,before||list.querySelector(':scope > .quick-add'));
 }
 function placeMarker(list,before){
-  if(drag.marker.parentElement===list&&drag.marker.nextElementSibling===before)return;
+  const anchor=before&&before.parentElement===list?before:list.querySelector(':scope > .quick-add');
+  if(drag.marker.parentElement===list&&drag.marker.nextElementSibling===anchor)return;
   drag.moved=true;
   const old=cardPositions();
-  list.insertBefore(drag.marker,before);
-  animateGridFrom(old,390);
+  list.insertBefore(drag.marker,anchor||null);
+  animateGridFrom(old,270);
 }
 function endDrag(cancelled){
   dbg('жест завершён'+(cancelled?' (отмена)':''));
@@ -601,9 +601,9 @@ function flyHome(clone,from,target,vx,vy,tilt){
     /* Настоящая карточка появляется под клоном, а клон уходит кроссфейдом — пустого кадра нет. */
     target.style.transition='none';target.style.opacity='1';
     requestAnimationFrame(()=>{target.style.removeProperty('transition');target.style.removeProperty('opacity')});
-    const fade=clone.animate([{opacity:1},{opacity:0}],{duration:100,easing:'linear',fill:'forwards'});
+    const fade=clone.animate([{opacity:1},{opacity:0}],{duration:70,easing:'linear',fill:'forwards'});
     fade.onfinish=()=>clone.remove();
-    setTimeout(()=>clone.remove(),160);
+    setTimeout(()=>clone.remove(),110);
   };
   const left=parseFloat(clone.style.left)||0,top=parseFloat(clone.style.top)||0;
   const startTransform=clone.style.transform;
@@ -611,9 +611,9 @@ function flyHome(clone,from,target,vx,vy,tilt){
   const landing=clone.animate([
     {transform:startTransform,boxShadow:'0 26px 60px #000b'},
     {transform:endTransform,boxShadow:'0 7px 22px #0004'}
-  ],{duration:340,easing:'cubic-bezier(.2,.78,.24,1)',fill:'forwards'});
+  ],{duration:190,easing:'cubic-bezier(.2,.82,.25,1)',fill:'forwards'});
   landing.onfinish=done;
-  setTimeout(done,430);
+  setTimeout(done,260);
 }
 
 /* ===================== Привязки доски ===================== */
