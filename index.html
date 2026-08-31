@@ -211,6 +211,7 @@ document.documentElement.dataset.theme=prefs.theme;
 document.querySelector('.primary').classList.add('add-icon');
 const profileNav=document.createElement('button');profileNav.type='button';profileNav.className='mobile-profile-nav';profileNav.id='profileNav';profileNav.innerHTML='<b>ДК</b>Профиль';document.querySelector('.nav').appendChild(profileNav);
 const mobileDayHead=document.createElement('div');mobileDayHead.id='mobileDayHead';mobileDayHead.className='mobile-day-head';document.querySelector('.title-wrap').appendChild(mobileDayHead);
+const weekNumber=document.createElement('small');weekNumber.id='weekNumber';document.querySelector('.range').appendChild(weekNumber);
 
 let activeDate=todayISO;
 let weekStart=mondayOf(fromISO(activeDate));
@@ -308,11 +309,13 @@ const filtersOn=()=>prefs.priority!=='all'||prefs.status!=='all';
 
 /* ===================== Неделя ===================== */
 function getWeek(){return Array.from({length:7},(_,i)=>{const date=addDays(weekStart,i),iso=toISO(date);return{date,iso,short:date.toLocaleDateString('ru-RU',{weekday:'short'}).replace('.',''),full:cap(date.toLocaleDateString('ru-RU',{weekday:'long'})),day:date.getDate()}})}
+function isoWeekNumber(date){const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7));const yearStart=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil((((d-yearStart)/86400000)+1)/7)}
 function formatWeekRange(){const days=getWeek(),a=days[0].date,b=days[6].date;const same=a.getMonth()===b.getMonth()&&a.getFullYear()===b.getFullYear();return same?`${a.getDate()} — ${b.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}`:`${a.toLocaleDateString('ru-RU',{day:'numeric',month:'short'})} — ${b.toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}`}
 function activeTasksForWeek(){const dates=getWeek().map(d=>d.iso);return tasks.filter(t=>!t.done&&dates.some(d=>taskVisibleOnDate(t,d)&&!(t.dailyDone&&t.dailyDone[d])))}
 function renderDays(){
   const week=getWeek();
   $('#weekRange').textContent=formatWeekRange();
+  $('#weekNumber').textContent=`Неделя ${isoWeekNumber(week[0].date)}`;
   $('#days').innerHTML=week.map(d=>{
     const n=tasks.filter(t=>taskOnDate(t,d.iso)&&!t.done&&!(t.dailyDone&&t.dailyDone[d.iso])&&(!prefs.project||t.project===prefs.project)).length;
     return `<button data-date="${d.iso}" title="${d.full}, ${d.date.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})} — ${n} ${taskWord(n)}" class="${d.iso===activeDate?'active ':''}${d.iso===todayISO?'today-dot':''}"><span>${d.short}</span><strong>${d.day}</strong></button>`;
