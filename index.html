@@ -297,6 +297,7 @@ const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>'
 const load=(key,fallback)=>{try{const v=JSON.parse(localStorage.getItem(key));return v==null?fallback:v}catch(e){return fallback}};
 const label=p=>p==='High'?'Высокий':p==='Medium'?'Средний':'Низкий';
 const prioRank={High:0,Medium:1,Low:2};
+const normalizePriority=p=>p==='High'||p==='Medium'||p==='Low'?p:'Medium';
 const timeKey=t=>/^\d\d:\d\d$/.test(t.due||'')?(+t.due.slice(0,2))*60+(+t.due.slice(3)):10000;
 const shortDate=iso=>fromISO(iso).toLocaleDateString('ru-RU',{day:'numeric',month:'short'}).replace('.','');
 const numericDate=d=>d.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'});
@@ -395,6 +396,7 @@ tasks=tasks.map((t,i)=>{
     date:date||toISO(addDays(weekStart,i%7)),
     done:typeof t.done==='boolean'?t.done:t.status==='done',
     due:/^\d\d:\d\d$/.test(t.due||'')?t.due:'Без времени',
+    priority:normalizePriority(t.priority),
     description:t.description||'',
     subtasks:Array.isArray(t.subtasks)?t.subtasks:[],
     durationWorkdays:Math.max(1,Number(t.durationWorkdays)||1),
@@ -524,12 +526,13 @@ function card(t,o={}){
   const st=t.subtasks||[],sdone=st.filter(s=>s.done).length;
   const days=taskDates(t),dailyDone=dailyDoneCount(t),long=days.length>1;
   const completed=!!(t.done||o.doneForDay);
+  const priority=normalizePriority(t.priority);
   const when=o.showDate?`◷ ${shortDate(t.date)}${t.due!=='Без времени'?' · '+t.due:''}`:`◷ ${t.due}`;
   return `<article class="card ${t.done?'done':''} ${o.doneForDay?'done-for-day':''}"${o.drag?' data-drag="1"':''} data-id="${t.id}">
     <div class="card-head">
       <div class="card-main"><h3 class="card-title">${escapeHtml(t.title)}</h3>${t.description?`<p class="card-description">${escapeHtml(t.description)}</p>`:''}</div>
       <div class="card-side">
-        <div class="card-side-top"><span class="priority ${t.priority.toLowerCase()}">${label(t.priority)}</span><button type="button" class="complete ${long?'daily-complete':''}" data-complete="${t.id}" aria-label="${completed?'Вернуть задачу в работу':long?'Отметить выполненной сегодня':'Отметить задачу выполненной'}" aria-pressed="${completed}" title="${completed?'Вернуть в работу':long?'Выполнено сегодня':'Отметить выполненной'}"></button></div>
+        <div class="card-side-top"><span class="priority ${priority.toLowerCase()}">${label(priority)}</span><button type="button" class="complete ${long?'daily-complete':''}" data-complete="${t.id}" aria-label="${completed?'Вернуть задачу в работу':long?'Отметить выполненной сегодня':'Отметить задачу выполненной'}" aria-pressed="${completed}" title="${completed?'Вернуть в работу':long?'Выполнено сегодня':'Отметить выполненной'}"></button></div>
         <span class="tag ${t.color}">${escapeHtml(t.project)}</span>
         <span class="card-when ${t.date<todayISO&&!completed?'overdue-date':''}">${when}</span>
         ${t.description?'<span class="card-note-indicator" title="У задачи есть описание">✎ Заметка</span>':''}
@@ -1013,7 +1016,7 @@ async function pushCloud(silent=false){
 function applyCloudPayload(data,updatedAt){
   if(!data||!Array.isArray(data.tasks)||!Array.isArray(data.projects))throw new Error('В Supabase неверный формат данных');
   cloudApplying=true;tasks=data.tasks;series=Array.isArray(data.series)?data.series:[];projects=data.projects;
-  tasks=tasks.map(t=>({...t,durationWorkdays:Math.max(1,Number(t.durationWorkdays)||1),dailyDone:t.dailyDone||{},subtasks:Array.isArray(t.subtasks)?t.subtasks:[],color:colorOf(t.project)}));
+  tasks=tasks.map(t=>({...t,priority:normalizePriority(t.priority),durationWorkdays:Math.max(1,Number(t.durationWorkdays)||1),dailyDone:t.dailyDone||{},subtasks:Array.isArray(t.subtasks)?t.subtasks:[],color:colorOf(t.project)}));
   save(false);saveSeries(false);saveProjects(false);localStorage.removeItem('focus_local_dirty');if(updatedAt)localStorage.setItem('focus_cloud_seen',updatedAt);cloudApplying=false;renderDays();render();
 }
 async function pullCloud(silent=false){
@@ -1067,7 +1070,7 @@ function exportData(){
 function validBackup(data){return data&&Array.isArray(data.tasks)&&Array.isArray(data.projects)&&data.tasks.every(t=>t&&t.id!=null&&typeof t.title==='string')&&data.projects.every(p=>p&&typeof p.name==='string')}
 function restoreData(data){
   if(!validBackup(data))throw new Error('Это не резервная копия Focus');
-  projects=data.projects;tasks=data.tasks;series=Array.isArray(data.series)?data.series:[];prefs=Object.assign({view:'tasks',project:null,priority:'all',status:'all',sort:'manual'},data.prefs||{});
+  projects=data.projects;tasks=data.tasks.map(t=>({...t,priority:normalizePriority(t.priority)}));series=Array.isArray(data.series)?data.series:[];prefs=Object.assign({view:'tasks',project:null,priority:'all',status:'all',sort:'manual'},data.prefs||{});
   recolorTasks();saveSeries();saveProjects();savePrefs();activeDate=todayISO;weekStart=mondayOf(new Date());closeSettings();renderDays();render();toast('Данные восстановлены');
 }
 
