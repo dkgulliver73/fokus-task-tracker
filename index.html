@@ -246,15 +246,14 @@
     html[data-theme="light"] .card:hover{border-color:#b9c0cd!important;box-shadow:0 14px 32px #24324b16!important}
     html[data-theme="light"] .card.done,html[data-theme="light"] .card.done-for-day{background:linear-gradient(145deg,#f2fbf6,#eaf7f0);border-color:#a8d7bf}
     .drag-clone{border-radius:14px!important;box-shadow:0 28px 68px #000c,0 0 0 1px #9b93ff55!important}
-    /* Task card: content first, auxiliary details aligned to the right. */
-    .card .card-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(96px,auto);align-items:start;gap:16px}
-    .card-main{min-width:0}.card .card-head .card-title{min-width:0;margin:0!important;padding-top:1px;font-size:15px;line-height:1.35;font-weight:650;letter-spacing:-.01em}
-    .card-description{margin:10px 0 0;color:#868e9d;font-size:11px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
-    .card-side{display:grid;justify-items:end;gap:8px;min-width:0;text-align:right}.card-side-top{display:flex;align-items:center;justify-content:flex-end;gap:8px;width:100%}
-    .card-side .complete{width:34px;height:34px;margin:0;flex:none;border-color:#323946;border-radius:9px;background:#131923;color:#bbc1cd}.card-side .complete:hover{border-color:#7568fa;color:#fff;background:#191f2b;box-shadow:0 0 0 3px #7769fa18}.card-side .priority,.card-side .tag,.card-side .card-when,.card-note-indicator{max-width:100%;white-space:nowrap}.card-side .priority,.card-side .card-when,.card-note-indicator{font-size:9px;color:#7f8898}.card-side .tag{overflow:hidden;text-overflow:ellipsis;padding:4px 8px;border:1px solid color-mix(in srgb,var(--tag) 24%,transparent);border-radius:20px;font-size:9px}
-    .card-note-indicator{color:#8d94a0}.card-aux{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    /* Selected task card: Library-style hierarchy without a decorative top stripe. */
+    .card .card-head{display:block}.card-main{min-width:0}.card .card-title{min-width:0;margin:0!important;font-size:15px;line-height:1.35;font-weight:650;letter-spacing:-.01em}
+    .card-description{min-height:58px;margin:13px 0 12px;padding:12px 13px;border:1px solid #242c37;border-radius:10px;background:#0c1118;color:#9ba4b2;font-size:11px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}.card-description.empty{color:#596373;font-style:italic}
+    .card-meta-line{display:flex;align-items:center;gap:7px;min-width:0;flex-wrap:wrap}.card-meta-line .tag{max-width:145px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:4px 8px;border:1px solid color-mix(in srgb,var(--tag) 24%,transparent);border-radius:20px;font-size:9px}.card-meta-line .priority{font-size:9px;color:#7f8898}.card-aux{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .card-bottom{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:13px;padding-top:12px;border-top:1px solid #29313e}.card-bottom .card-when{margin-left:auto;color:#939cab;font-size:10px;white-space:nowrap}.card-bottom .complete{width:34px;height:34px;margin:0;flex:none;border-color:#323946;border-radius:9px;background:#131923;color:#bbc1cd}.card-bottom .complete:hover{border-color:#7568fa;color:#fff;background:#191f2b;box-shadow:0 0 0 3px #7769fa18}
+    html[data-theme="light"] .card-description{border-color:#dce2e9;background:#f3f5f8;color:#606b7a}html[data-theme="light"] .card-description.empty{color:#929bab}html[data-theme="light"] .card-bottom .complete{background:#f4f6f9;border-color:#d5dce6;color:#687385}
     @media(max-width:700px){.task-list{grid-template-columns:1fr}}
-    @media(max-width:620px){.task-list{gap:12px}.card{padding:15px;border-radius:14px}.card .card-head{grid-template-columns:minmax(0,1fr) minmax(82px,auto);gap:12px}.card-description{-webkit-line-clamp:4}.card-side{gap:7px}.card-side .tag{max-width:92px}.card-side .complete{width:34px;height:34px}}
+    @media(max-width:620px){.task-list{gap:12px}.card{padding:15px;border-radius:14px}.card-description{-webkit-line-clamp:4}.card-meta-line .tag{max-width:118px}.card-bottom{gap:8px}.card-bottom .complete{width:34px;height:34px}}
     @media(prefers-reduced-motion:reduce){.card:hover,.card:active{transform:none}}
   </style>
 </head>
@@ -529,18 +528,12 @@ function card(t,o={}){
   const priority=normalizePriority(t.priority);
   const when=o.showDate?`◷ ${shortDate(t.date)}${t.due!=='Без времени'?' · '+t.due:''}`:`◷ ${t.due}`;
   return `<article class="card ${t.done?'done':''} ${o.doneForDay?'done-for-day':''}"${o.drag?' data-drag="1"':''} data-id="${t.id}">
-    <div class="card-head">
-      <div class="card-main"><h3 class="card-title">${escapeHtml(t.title)}</h3>${t.description?`<p class="card-description">${escapeHtml(t.description)}</p>`:''}</div>
-      <div class="card-side">
-        <div class="card-side-top"><span class="priority ${priority.toLowerCase()}">${label(priority)}</span><button type="button" class="complete ${long?'daily-complete':''}" data-complete="${t.id}" aria-label="${completed?'Вернуть задачу в работу':long?'Отметить выполненной сегодня':'Отметить задачу выполненной'}" aria-pressed="${completed}" title="${completed?'Вернуть в работу':long?'Выполнено сегодня':'Отметить выполненной'}"></button></div>
-        <span class="tag ${t.color}">${escapeHtml(t.project)}</span>
-        <span class="card-when ${t.date<todayISO&&!completed?'overdue-date':''}">${when}</span>
-        ${t.description?'<span class="card-note-indicator" title="У задачи есть описание">✎ Заметка</span>':''}
-        ${(t.seriesId||st.length)?`<span class="card-aux">${t.seriesId?'<span class="recurring-mark" title="Регулярная задача">↻</span>':''}${st.length?`<span class="sub-mini ${sdone===st.length?'full':''}">☷ ${sdone}/${st.length}</span>`:''}</span>`:''}
-      </div>
-    </div>
+    <div class="card-head"><div class="card-main"><h3 class="card-title">${escapeHtml(t.title)}</h3></div></div>
+    <p class="card-description ${t.description?'':'empty'}">${t.description?escapeHtml(t.description):'Описание не добавлено'}</p>
+    <div class="card-meta-line"><span class="tag ${t.color}">${escapeHtml(t.project)}</span><span class="priority ${priority.toLowerCase()}">${label(priority)}</span>${(t.seriesId||st.length)?`<span class="card-aux">${t.seriesId?'<span class="recurring-mark" title="Регулярная задача">↻</span>':''}${st.length?`<span class="sub-mini ${sdone===st.length?'full':''}">☷ ${sdone}/${st.length}</span>`:''}</span>`:''}</div>
     ${long?`<div class="focus-progress">Фокус: ${dailyDone} из ${days.length} рабочих дней</div>`:''}
     ${st.length?`<div class="sub-bar"><i style="transform:scaleX(${(sdone/st.length).toFixed(3)})"></i></div>`:''}
+    <div class="card-bottom"><span class="card-when ${t.date<todayISO&&!completed?'overdue-date':''}">${when}</span><button type="button" class="complete ${long?'daily-complete':''}" data-complete="${t.id}" aria-label="${completed?'Вернуть задачу в работу':long?'Отметить выполненной сегодня':'Отметить задачу выполненной'}" aria-pressed="${completed}" title="${completed?'Вернуть в работу':long?'Выполнено сегодня':'Отметить выполненной'}"></button></div>
   </article>`;
 }
 const emptyBlock=(title,sub)=>`<div class="empty-day"><strong>${title}</strong>${sub}</div>`;
