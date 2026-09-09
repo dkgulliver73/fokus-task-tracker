@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Focus — Task Tracker</title>
-  <link rel="stylesheet" href="./focus-modules.css?v=20260909-4">
+  <link rel="stylesheet" href="./focus-modules.css?v=20260909-5">
   <style>
     :root{--bg:#0c0d10;--side:#0e1014;--card:#181a20;--line:#252933;--text:#f3f4f6;--muted:#747b88;--accent:#7769fa;--green:#61d39a;--orange:#f0ad5d;--ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1);--dur-press:160ms;--dur-hover:150ms;--dur-pop:160ms;--dur-modal:200ms;--dur-move:320ms}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 82% 18%,#10242a 0,transparent 40%),radial-gradient(circle at 60% -15%,#211b3d 0,transparent 36%),#090b0f;color:var(--text);font:14px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(#8fa5bb0a 1px,transparent 1px),linear-gradient(90deg,#8fa5bb0a 1px,transparent 1px);background-size:44px 28px;mask-image:linear-gradient(to bottom,transparent 12%,#000 54%,#000 100%)}button,input,select{font:inherit}button{cursor:pointer;color:inherit}.data-waves{position:fixed;inset:0;z-index:0;width:100%;height:100%;pointer-events:none;opacity:.94}.app{position:relative;z-index:1;min-height:100vh;display:grid;grid-template-columns:238px 1fr;background:transparent}
     aside{height:100vh;position:sticky;top:0;background:var(--side);border-right:1px solid var(--line);padding:24px 15px;display:flex;flex-direction:column}.brand{font-size:21px;font-weight:800;display:flex;align-items:center;gap:10px;padding:0 8px 28px}.logo{width:31px;height:31px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(145deg,#9485ff,#5e50df);box-shadow:0 7px 25px #6558e744}.nav,.projects{display:grid;gap:5px}.nav button,.projects button,.settings{border:0;background:none;border-radius:9px;padding:10px 11px;text-align:left;color:#969ca7;display:flex;gap:10px;align-items:center}.nav button:hover,.projects button:hover,.nav .active{background:#1c1f2d;color:white}.nav b,.projects b{margin-left:auto;font-size:10px;background:#22262f;color:#8b929e;border-radius:20px;padding:2px 7px}.section-title{margin:30px 10px 10px;display:flex;justify-content:space-between;font-size:10px;font-weight:800;letter-spacing:.14em;color:#5e6571}.section-title button{border:0;background:none;color:#747b87}.dot{width:8px;height:8px;border-radius:3px}.purple{--tag:#9b8dff}.blue{--tag:#63a8ff}.pink{--tag:#f4779a}.yellow{--tag:#efb55e}.green{--tag:#64d7a0}.dot.purple{background:#8d7cff}.dot.blue{background:#62a8ff}.dot.pink{background:#f4779a}.dot.yellow{background:#efb55e}.aside-bottom{margin-top:auto}.week-progress{display:flex;justify-content:space-between;color:#878e9a;font-size:11px;padding:0 8px}.bar{height:4px;background:#22252c;border-radius:9px;overflow:hidden;margin:9px 8px 17px}.bar i{display:block;height:100%;background:var(--accent)}.settings{width:100%;border-bottom:1px solid var(--line);border-radius:0;padding-bottom:16px}.profile{display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:center;padding:16px 8px 0}.avatar{width:34px;height:34px;border-radius:50%;background:#302a51;color:#c9c2ff;display:grid;place-items:center;font-size:10px;font-weight:800}.profile div{display:grid}.profile small{color:#626976;font-size:10px}.profile button{border:0;background:none;color:#6f7682}
@@ -70,7 +70,7 @@
     .mobile-day-head{display:none}
     @media(max-width:620px){.nav button b{display:none!important}.nav #profileNav{font-size:0}.nav #profileNav b{display:grid!important;place-items:center;width:28px;height:28px;border-radius:50%;background:#302a51!important;color:#c9c2ff!important;font-size:9px}.mobile-day-head.show{display:flex;align-items:center;gap:7px;min-width:0}.mobile-day-head>strong{width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:9px;background:var(--accent);color:#fff;font-size:13px}.mobile-day-head>span{display:grid;min-width:0}.mobile-day-head b{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mobile-day-head small{font-size:8px;color:var(--muted);white-space:nowrap}.topbar .title-wrap{flex:1;justify-content:space-between}.topbar .title-wrap h1{flex:none}.topbar .actions{flex:none}.column:not(.inbox):not(.done-group)>.column-head{display:none}.column.inbox .day-number{display:none}.column.inbox .column-head>div{gap:0}}
     .card-actions{display:flex;align-items:center;gap:8px;flex:none}.card-actions .complete{margin-left:0}.card-actions .priority{white-space:nowrap}.card>.card-note{margin-top:8px;color:#6d7480;font-size:9px}
-    .card-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.card-head .card-context{flex-wrap:wrap}.card-head .complete{margin:0;flex:none}.card-meta-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px;color:#777e8a;font-size:9px}.card-meta-row .priority{white-space:nowrap}.card-meta-row+.card-title{margin-top:10px}.recurring-mark{display:inline-flex;align-items:center;gap:4px;margin:0;padding:3px 6px;border-radius:6px;background:#282444;color:#afa6ff;font-size:8px}.recurring-mark:after{content:"Повтор"}.card-title{margin-bottom:3px!important}
+    .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.card-head .card-title{min-width:0;margin:0!important;padding-top:2px;font-size:14px;line-height:1.4}.card-head .complete{margin:0;flex:none}.card-priority-row{display:flex;align-items:center;margin-top:9px;color:#777e8a;font-size:9px}.card-priority-row .priority{white-space:nowrap}.card-meta-row{display:flex;align-items:center;justify-content:flex-start;gap:8px;margin-top:9px;color:#777e8a;font-size:9px}.card-meta-row .card-context{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap}.recurring-mark{display:inline-flex;align-items:center;gap:4px;margin:0;padding:3px 6px;border-radius:6px;background:#282444;color:#afa6ff;font-size:8px}.recurring-mark:after{content:"Повтор"}.complete{position:relative}.complete:before{content:"";width:13px;height:13px;border:1.5px solid currentColor;border-radius:4px;box-sizing:border-box}.complete:after{content:"✓";position:absolute;left:50%;top:50%;font-size:11px;font-weight:900;line-height:1;transform:translate(-50%,-54%) scale(0);transition:transform 140ms var(--ease-out)}.card.done .complete:after,.card.done-for-day .complete:after{transform:translate(-50%,-54%) scale(1)}.card.done .complete:before,.card.done-for-day .complete:before{border-color:transparent}.complete:focus-visible{outline:2px solid #8e82ff;outline-offset:2px}
     @media(max-width:620px){.mobile-day-head.show{position:absolute;left:50%;transform:translateX(-50%);gap:8px}.mobile-day-head>strong{width:28px;height:28px}.mobile-day-head b{font-size:11px}.topbar .title-wrap{position:static}.card-top{align-items:center;gap:8px}.card-context{gap:6px}.card-actions{gap:6px}.card-actions .priority{font-size:8px}.card-actions .complete{width:25px;height:25px}.card h3{margin-bottom:2px}}
     @media(max-width:620px){.topbar.day-view #viewTitle{display:none}.topbar.day-view .mobile-day-head.show{display:flex;align-items:baseline;gap:5px;white-space:nowrap}.topbar.day-view .mobile-day-head b{font-size:13px}.topbar.day-view .mobile-day-head small{font-size:9px;color:var(--muted)}}
     @media(max-width:620px){.topbar.day-view .title-wrap{flex:1;min-width:0}.topbar.day-view .mobile-day-head.show{position:static;width:100%;transform:none;justify-content:space-between;padding-left:4px;margin-right:8px}.topbar.day-view .mobile-day-head b{text-align:left}.topbar.day-view .mobile-day-head small{text-align:right}}
@@ -494,9 +494,9 @@ function card(t,o={}){
   const completed=!!(t.done||o.doneForDay);
   const when=o.showDate?`◷ ${shortDate(t.date)}${t.due!=='Без времени'?' · '+t.due:''}`:`◷ ${t.due}`;
   return `<article class="card ${t.done?'done':''} ${o.doneForDay?'done-for-day':''}"${o.drag?' data-drag="1"':''} data-id="${t.id}">
-    <div class="card-head"><span class="card-context"><span class="tag ${t.color}">${escapeHtml(t.project)}</span>${t.seriesId?'<span class="recurring-mark" title="Регулярная задача">↻</span>':''}${st.length?`<span class="sub-mini ${sdone===st.length?'full':''}">☷ ${sdone}/${st.length}</span>`:''}</span><button class="complete ${long?'daily-complete':''}" data-complete="${t.id}" title="${completed?'Вернуть в работу':long?'Выполнено сегодня':'Выполнить'}">${completed?'✓':'○'}</button></div>
-    <div class="card-meta-row"><span class="card-when ${t.date<todayISO&&!completed?'overdue-date':''}">${when}</span><span class="priority ${t.priority.toLowerCase()}">${label(t.priority)}</span></div>
-    <h3 class="card-title">${escapeHtml(t.title)}</h3>
+    <div class="card-head"><h3 class="card-title">${escapeHtml(t.title)}</h3><button type="button" class="complete ${long?'daily-complete':''}" data-complete="${t.id}" aria-label="${completed?'Вернуть задачу в работу':long?'Отметить выполненной сегодня':'Отметить задачу выполненной'}" aria-pressed="${completed}" title="${completed?'Вернуть в работу':long?'Выполнено сегодня':'Отметить выполненной'}"></button></div>
+    <div class="card-priority-row"><span class="priority ${t.priority.toLowerCase()}">${label(t.priority)}</span></div>
+    <div class="card-meta-row"><span class="card-context"><span class="tag ${t.color}">${escapeHtml(t.project)}</span><span class="card-when ${t.date<todayISO&&!completed?'overdue-date':''}">${when}</span>${t.seriesId?'<span class="recurring-mark" title="Регулярная задача">↻</span>':''}${st.length?`<span class="sub-mini ${sdone===st.length?'full':''}">☷ ${sdone}/${st.length}</span>`:''}</span></div>
     ${long?`<div class="focus-progress">Фокус: ${dailyDone} из ${days.length} рабочих дней</div>`:''}
     ${st.length?`<div class="sub-bar"><i style="transform:scaleX(${(sdone/st.length).toFixed(3)})"></i></div>`:''}
     ${t.description?'<div class="card-note" title="Есть описание">✎ заметка</div>':''}
@@ -1119,7 +1119,6 @@ $('#deleteProject').onclick=()=>{
   saveProjects();recolorTasks();savePrefs();closeProject();renderDays();render();
 };
 $$('[data-project-close]').forEach(b=>b.onclick=closeProject);
-$('#projectOverlay').onclick=e=>{if(e.target.id==='projectOverlay')closeProject()};
 
 $('#settingsButton').onclick=openSettings;
 $('#profileNav').onclick=openSettings;
@@ -1131,7 +1130,6 @@ $('#mobileSearch').oninput=e=>applySearchInput(e.target);
 $('#mobileAddProject').onclick=()=>{closePops();openProject(null)};
 $('#mobileSettings').onclick=()=>{closePops();openSettings()};
 $$('[data-settings-close]').forEach(b=>b.onclick=closeSettings);
-$('#settingsOverlay').onclick=e=>{if(e.target.id==='settingsOverlay')closeSettings()};
 $('#filterBtn').onclick=e=>{e.stopPropagation();togglePop('#filterPop')};
 $('#sortBtn').onclick=e=>{e.stopPropagation();togglePop('#sortPop')};
 $$('.pop').forEach(p=>p.onclick=e=>e.stopPropagation());
@@ -1140,9 +1138,7 @@ $('#resetFilters').onclick=()=>{prefs.priority='all';prefs.status='all';savePref
 document.addEventListener('click',closePops);
 
 $$('[data-close]').forEach(b=>b.onclick=closeModal);
-$('#overlay').onclick=e=>{if(e.target.id==='overlay')closeModal()};
 $$('[data-detail-close]').forEach(b=>b.onclick=closeDetail);
-$('#detailOverlay').onclick=e=>{if(e.target.id==='detailOverlay')closeDetail()};
 
 $('#taskForm').onsubmit=e=>{
   e.preventDefault();
@@ -1234,6 +1230,6 @@ function initDataDots(){
 prepareTaskForm();fillSelects();updateScheduleFields();renderDays();render();showAuthGate();initDataDots();initCloud();
 window.FocusModulesContext=()=>({client:cloudClient,user:cloudUser,projects});
 </script>
-<script src="./focus-modules.js?v=20260909-4"></script>
+<script src="./focus-modules.js?v=20260909-5"></script>
 </body>
 </html>
