@@ -281,6 +281,12 @@
       .nav button.active:before{color:#fff}.nav button.active:after{display:none!important}
       .nav button:active{transform:scale(.96)}
     }
+    @media(max-width:620px){
+      .app main{height:100dvh!important}
+      aside{top:auto!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;height:58px!important;padding:0 16px!important}
+      aside .nav{height:58px}
+      .board,.board.no-period{padding-bottom:90px!important}
+    }
     @media(prefers-reduced-motion:reduce){.card:hover,.card:active{transform:none}}
   </style>
 </head>
