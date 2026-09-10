@@ -30,3 +30,6 @@
   .module-mode .vault-toolbar .module-button{min-height:38px}
   .module-mode .library-batch-bar{bottom:calc(78px + env(safe-area-inset-bottom))}
 }
+
+.library-card{cursor:pointer}
+.library-card button{cursor:pointer}
