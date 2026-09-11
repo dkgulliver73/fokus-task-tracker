@@ -314,10 +314,10 @@
     .home-day-status i{display:inline!important;width:auto!important;height:auto!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;font-style:normal;font-size:1.05em;line-height:1}
     .home-day-status.complete{color:#81c59e}
     .home-day-status.active{color:#a69dff}
-    .home-calendar-weekdays .weekend{color:#949caf}
-    .home-calendar-day.weekend:not(.selected):not(.today){background:#151a22;border-color:#2c3441}
-    .home-calendar-day.weekend:not(.selected):not(.today):hover{background:#1a202a;border-color:#414b5b}
-    .home-calendar-day.outside-month.weekend:not(.selected){background:#11161d;border-color:#252d38}
+    .home-calendar-weekdays .weekend{color:#b0a8c4}
+    .home-calendar-day.weekend:not(.selected):not(.today){background:linear-gradient(145deg,#1b1b29,#151720);border-color:#3b3949}
+    .home-calendar-day.weekend:not(.selected):not(.today):hover{background:linear-gradient(145deg,#222134,#191b27);border-color:#504c61}
+    .home-calendar-day.outside-month.weekend:not(.selected){background:#161721;border-color:#32313e}
     .home-calendar-day.outside-month .home-date{color:#8993a2}
     .home-calendar-day.outside-month .home-month-name{color:#596373}
     .home-calendar-day.outside-month.selected{border-color:#8a80ff;background:linear-gradient(145deg,#292451,#171d2c);box-shadow:0 0 0 1px #7769fa66}
@@ -348,7 +348,7 @@
       .home-dashboard .home-calendar-head{margin-bottom:10px}
       .home-dashboard .home-calendar h2{margin:0}
       .home-dashboard .home-calendar{height:auto;align-self:start}
-      .home-dashboard .home-day-panel{height:var(--home-panel-height);align-self:start}
+      .home-dashboard .home-day-panel{align-self:start}
       .home-day-status.complete,.home-day-status.complete i{padding:0!important;border:0!important;border-left:0!important;outline:0!important;background:transparent!important;box-shadow:none!important}
       .home-day-status.complete:before,.home-day-status.complete i:before{content:none!important}
     }
@@ -704,6 +704,7 @@ function renderHome(){
   }
   const selectedDate=fromISO(homeSelectedDate),selectedTasks=sortTasks(tasks.filter(task=>taskVisibleOnDate(task,homeSelectedDate))),selectedDone=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).length,monthName=selectedDate.toLocaleDateString('ru-RU',{month:'long'}),weekday=cap(selectedDate.toLocaleDateString('ru-RU',{weekday:'long'}));
   $('#board').innerHTML=`<section class="home-dashboard" aria-label="Обзор задач" style="--home-panel-height:${weekCount*94+48}px"><section class="home-calendar"><header class="home-calendar-head"><h2>${cap(title)}</h2></header><div class="home-calendar-weekdays">${weekDays.map((day,index)=>`<span class="${index>4?'weekend':''}">${day}</span>`).join('')}</div><div class="home-calendar-grid" style="--home-weeks:${weekCount}">${cells.join('')}</div></section><aside class="home-day-panel"><div class="home-day-panel-head"><div class="home-day-date"><span>${weekday}</span><h3>${selectedDate.getDate()} <small>${monthName}</small></h3></div><button type="button" class="home-day-add" data-open data-new-date="${homeSelectedDate}">＋ Новая задача</button><small class="home-day-summary">${selectedTasks.length?`${selectedTasks.length} ${taskWord(selectedTasks.length)}${selectedDone?` · ${selectedDone} выполнено`:''}`:'Нет задач'}</small></div><div class="home-day-task-list">${selectedTasks.length?selectedTasks.map(task=>{const done=task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate]);return `<button type="button" class="home-day-task ${done?'done':''}" data-home-task="${task.id}"><span class="tag ${task.color}">${escapeHtml(task.project)}</span><strong>${done?'<i aria-hidden="true">✓</i> ':''}${escapeHtml(task.title)}</strong><small>${task.due==='Без времени'?'Без времени':task.due}</small></button>`}).join(''):`<div class="home-day-empty">На этот день задач нет</div>`}</div></aside></section>`;
+  if(matchMedia('(min-width:621px)').matches){const calendar=$('.home-dashboard .home-calendar'),panel=$('.home-dashboard .home-day-panel');panel.style.height=`${calendar.offsetHeight}px`;}
   $$('[data-home-date]').forEach(button=>button.onclick=()=>{homeSelectedDate=button.dataset.homeDate;const date=fromISO(homeSelectedDate);if(date.getMonth()!==homeMonth.getMonth()||date.getFullYear()!==homeMonth.getFullYear())homeMonth=new Date(date.getFullYear(),date.getMonth(),1);render()});
   $$('[data-home-task]').forEach(button=>button.onclick=()=>openDetail(Number(button.dataset.homeTask)));
 }
