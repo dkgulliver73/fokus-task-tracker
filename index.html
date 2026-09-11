@@ -301,13 +301,24 @@
     .home-calendar-day.outside-month .home-day-count{color:#566171}
     .home-calendar-day.state-complete .home-day-count{color:#82b99d}
     .home-calendar-day.state-overdue .home-day-count{color:#d69a70}
+    .home-day-count.has-completed{color:#9ca5b4}
+    .home-day-count.has-completed em{color:#82b99d;font-style:normal}
+    .home-day-count.complete-count{color:#82b99d}
     .home-day-indicator{width:5px;height:5px;border-radius:50%;background:#9a8fff;box-shadow:0 0 8px #8f82ff70}
     .home-day-indicator.complete{background:#70ba91;box-shadow:0 0 8px #70ba9155}
     .home-day-indicator.overdue{background:#dd9467;box-shadow:0 0 8px #dd946755}
     .home-dashboard .home-calendar-grid{grid-template-rows:repeat(6,minmax(54px,1fr))}
+    .home-day-panel-head{gap:2px}
+    .home-day-panel-head h3{font-size:48px;line-height:.98;letter-spacing:-.055em}
+    .home-day-panel-head b{color:#9ca6b7;font-size:15px;font-weight:650;line-height:1.25;text-transform:lowercase}
+    .home-day-summary{margin-top:11px;color:#7e8999;font-size:12px;font-weight:600}
+    .home-day-task.done{border-color:#283a35;background:#111a18;color:#8f9b99}
+    .home-day-task.done strong{color:#aebbb7;text-decoration:line-through;text-decoration-color:#5d746b}
+    .home-day-task.done strong i{display:inline-block;margin-right:3px;color:#77bd98;font-style:normal;text-decoration:none}
+    .home-day-task.done small{color:#71827b}
     .home-day-panel{animation:home-panel-in .18s ease-out both}
     @keyframes home-panel-in{from{opacity:.55;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-    @media(max-width:900px){.home-dashboard .home-calendar-grid{grid-template-rows:none}.home-calendar-day.today .home-date{font-size:14px}.home-calendar-day.today:not(.selected) .home-date:after{margin-top:3px}}
+    @media(max-width:900px){.home-dashboard .home-calendar-grid{grid-template-rows:none}.home-calendar-day.today .home-date{font-size:14px}.home-calendar-day.today:not(.selected) .home-date:after{margin-top:3px}.home-day-panel-head h3{font-size:40px}}
     @media(prefers-reduced-motion:reduce){.home-day-panel{animation:none}}
   </style>
 </head>
@@ -636,14 +647,15 @@ function renderHome(){
   const year=homeMonth.getFullYear(),month=homeMonth.getMonth(),first=new Date(year,month,1),offset=(first.getDay()+6)%7;
   const title=homeMonth.toLocaleDateString('ru-RU',{month:'long',year:'numeric'}),weekDays=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],gridStart=addDays(first,-offset),cells=[];
   for(let index=0;index<42;index++){
-    const date=addDays(gridStart,index),iso=toISO(date),onDay=tasks.filter(task=>taskOnDate(task,iso)),active=onDay.filter(task=>!task.done&&!(task.dailyDone&&task.dailyDone[iso])),isToday=iso===todayISO,isSelected=iso===homeSelectedDate,isOutside=date.getMonth()!==month;
+    const date=addDays(gridStart,index),iso=toISO(date),onDay=tasks.filter(task=>taskOnDate(task,iso)),completed=onDay.filter(task=>task.done||(task.dailyDone&&task.dailyDone[iso])),active=onDay.filter(task=>!task.done&&!(task.dailyDone&&task.dailyDone[iso])),isToday=iso===todayISO,isSelected=iso===homeSelectedDate,isOutside=date.getMonth()!==month;
     const state=active.length&&iso<todayISO?'overdue':active.length?'active':onDay.length?'complete':'free';
-    const stateText=state==='overdue'?'Просрочено':state==='active'?`${active.length} ${taskWord(active.length)}`:state==='complete'?'Выполнено':'Свободно';
+    const stateText=state==='overdue'?'Просрочено':state==='active'?`${active.length} ${taskWord(active.length)}`:state==='complete'?`${completed.length} выполнено`:'Свободно';
+    const countHtml=completed.length&&active.length?`<span class="home-day-count has-completed"><em>${completed.length} выполнено</em> из ${onDay.length}</span>`:`<span class="home-day-count ${state==='complete'?'complete-count':''}">${stateText}</span>`;
     const stateDot=state==='free'?'':`<span class="home-day-indicator ${state}" aria-hidden="true"></span>`;
-    cells.push(`<button type="button" class="home-calendar-day ${isToday?'today':''} ${isSelected?'selected':''} ${isOutside?'outside-month':''} state-${state}" data-home-date="${iso}" aria-pressed="${isSelected}" title="${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}: ${stateText}"><span class="home-date">${date.getDate()}</span><span class="home-day-count">${stateText}</span>${stateDot}</button>`);
+    cells.push(`<button type="button" class="home-calendar-day ${isToday?'today':''} ${isSelected?'selected':''} ${isOutside?'outside-month':''} state-${state}" data-home-date="${iso}" aria-pressed="${isSelected}" title="${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}: ${stateText}"><span class="home-date">${date.getDate()}</span>${countHtml}${stateDot}</button>`);
   }
-  const selectedDate=fromISO(homeSelectedDate),selectedActive=sortTasks(tasks.filter(task=>taskVisibleOnDate(task,homeSelectedDate)&&!task.done&&!(task.dailyDone&&task.dailyDone[homeSelectedDate]))),pretty=selectedDate.toLocaleDateString('ru-RU',{day:'numeric',month:'long'}),weekday=cap(selectedDate.toLocaleDateString('ru-RU',{weekday:'long'}));
-  $('#board').innerHTML=`<section class="home-dashboard" aria-label="Обзор задач"><section class="home-calendar"><header class="home-calendar-head"><div><div class="home-calendar-kicker">Обзор задач</div><h2>${cap(title)}</h2></div><div class="home-calendar-controls"><button type="button" id="homePrevMonth" aria-label="Предыдущий месяц">‹</button><button type="button" id="homeToday">Сегодня</button><button type="button" id="homeNextMonth" aria-label="Следующий месяц">›</button></div></header><div class="home-calendar-weekdays">${weekDays.map(day=>`<span>${day}</span>`).join('')}</div><div class="home-calendar-grid">${cells.join('')}</div></section><aside class="home-day-panel"><div class="home-day-panel-head"><span>${weekday}</span><h3>${pretty}</h3><b>${selectedActive.length} ${taskWord(selectedActive.length)}</b></div><div class="home-day-task-list">${selectedActive.length?selectedActive.map(task=>`<button type="button" class="home-day-task" data-home-task="${task.id}"><span class="tag ${task.color}">${escapeHtml(task.project)}</span><strong>${escapeHtml(task.title)}</strong><small>${task.due==='Без времени'?'Без времени':task.due}</small></button>`).join(''):`<div class="home-day-empty">На этот день задач нет</div>`}</div></aside></section>`;
+  const selectedDate=fromISO(homeSelectedDate),selectedTasks=sortTasks(tasks.filter(task=>taskVisibleOnDate(task,homeSelectedDate))),selectedDone=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).length,monthName=selectedDate.toLocaleDateString('ru-RU',{month:'long'}),weekday=cap(selectedDate.toLocaleDateString('ru-RU',{weekday:'long'}));
+  $('#board').innerHTML=`<section class="home-dashboard" aria-label="Обзор задач"><section class="home-calendar"><header class="home-calendar-head"><div><div class="home-calendar-kicker">Обзор задач</div><h2>${cap(title)}</h2></div><div class="home-calendar-controls"><button type="button" id="homePrevMonth" aria-label="Предыдущий месяц">‹</button><button type="button" id="homeToday">Сегодня</button><button type="button" id="homeNextMonth" aria-label="Следующий месяц">›</button></div></header><div class="home-calendar-weekdays">${weekDays.map(day=>`<span>${day}</span>`).join('')}</div><div class="home-calendar-grid">${cells.join('')}</div></section><aside class="home-day-panel"><div class="home-day-panel-head"><span>${weekday}</span><h3>${selectedDate.getDate()}</h3><b>${monthName}</b><small class="home-day-summary">${selectedTasks.length?`${selectedTasks.length} ${taskWord(selectedTasks.length)}${selectedDone?` · ${selectedDone} выполнено`:''}`:'Нет задач'}</small></div><div class="home-day-task-list">${selectedTasks.length?selectedTasks.map(task=>{const done=task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate]);return `<button type="button" class="home-day-task ${done?'done':''}" data-home-task="${task.id}"><span class="tag ${task.color}">${escapeHtml(task.project)}</span><strong>${done?'<i aria-hidden="true">✓</i> ':''}${escapeHtml(task.title)}</strong><small>${task.due==='Без времени'?'Без времени':task.due}</small></button>`}).join(''):`<div class="home-day-empty">На этот день задач нет</div>`}</div></aside></section>`;
   $('#homePrevMonth').onclick=()=>{homeMonth=new Date(year,month-1,1);render()};
   $('#homeNextMonth').onclick=()=>{homeMonth=new Date(year,month+1,1);render()};
   $('#homeToday').onclick=()=>{homeMonth=new Date(fromISO(todayISO).getFullYear(),fromISO(todayISO).getMonth(),1);homeSelectedDate=todayISO;render()};
