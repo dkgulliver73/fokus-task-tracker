@@ -307,6 +307,16 @@
     .home-day-count.complete-count{color:#82b99d}
     .outside-month-name{font-size:10px;font-weight:700;text-transform:lowercase}
     .home-dashboard .home-calendar-grid{grid-template-rows:repeat(var(--home-weeks,5),minmax(54px,1fr))}
+    .home-date-stack{display:grid;gap:5px;align-content:start}
+    .home-calendar-day .home-date{display:block;min-width:0;height:auto;border-radius:0;background:transparent;color:#f0f2f7;font-size:clamp(23px,2vw,30px);font-weight:800;line-height:.95;letter-spacing:-.045em}
+    .home-month-name{color:#7d8798;font-size:11px;font-weight:650;line-height:1.1}
+    .home-day-completion{display:inline-flex;align-items:center;gap:4px;color:#81c59e;font-size:12px;font-weight:800;line-height:1;white-space:nowrap}
+    .home-day-completion i{font-style:normal;font-size:13px}
+    .home-calendar-day.outside-month .home-date{color:#8993a2}
+    .home-calendar-day.outside-month .home-month-name{color:#596373}
+    .home-calendar-day.outside-month.selected{border-color:#8a80ff;background:linear-gradient(145deg,#292451,#171d2c);box-shadow:0 0 0 1px #7769fa66}
+    .home-calendar-day.outside-month.selected .home-date{color:#fff}
+    .home-calendar-day.outside-month.selected .home-month-name{color:#b8b0ee}
     .home-day-panel-head{gap:2px}
     .home-day-panel-head h3{font-size:48px;line-height:.98;letter-spacing:-.055em}
     .home-day-panel-head b{color:#9ca6b7;font-size:15px;font-weight:650;line-height:1.25;text-transform:lowercase}
@@ -317,7 +327,7 @@
     .home-day-task.done small{color:#71827b}
     .home-day-panel{animation:home-panel-in .18s ease-out both}
     @keyframes home-panel-in{from{opacity:.55;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-    @media(max-width:900px){.home-dashboard .home-calendar-grid{grid-template-rows:none}.home-calendar-day.today .home-date{font-size:14px}.home-calendar-day.today:not(.selected) .home-date:after{margin-top:3px}.home-day-panel-head h3{font-size:40px}}
+    @media(max-width:900px){.home-dashboard .home-calendar-grid{grid-template-rows:none}.home-calendar-day.today .home-date{font-size:clamp(21px,4vw,26px)}.home-calendar-day.today:not(.selected) .home-date:after{margin-top:3px}.home-day-panel-head h3{font-size:40px}}
     @media(prefers-reduced-motion:reduce){.home-day-panel{animation:none}}
   </style>
 </head>
@@ -649,9 +659,9 @@ function renderHome(){
     const date=addDays(gridStart,index),iso=toISO(date),onDay=tasks.filter(task=>taskOnDate(task,iso)),completed=onDay.filter(task=>task.done||(task.dailyDone&&task.dailyDone[iso])),active=onDay.filter(task=>!task.done&&!(task.dailyDone&&task.dailyDone[iso])),isToday=iso===todayISO,isSelected=iso===homeSelectedDate,isOutside=date.getMonth()!==month;
     const state=active.length&&iso<todayISO?'overdue':active.length?'active':onDay.length?'complete':'free';
     const stateText=completed.length&&active.length?`${completed.length} из ${onDay.length} выполнено`:state==='overdue'?'Просрочено':state==='active'?`${active.length} ${taskWord(active.length)}`:state==='complete'?`${completed.length} выполнено`:'Свободно';
-    const shortMonth=date.toLocaleDateString('ru-RU',{month:'short'}).replace('.','');
-    const countHtml=isOutside?`<span class="home-day-count outside-month-name">${shortMonth}</span>`:completed.length&&active.length?`<span class="home-day-count has-completed"><em>✓ ${completed.length}/${onDay.length}</em></span>`:`<span class="home-day-count ${state==='complete'?'complete-count':''}">${state==='complete'?`<em>✓</em> ${stateText}`:stateText}</span>`;
-    cells.push(`<button type="button" class="home-calendar-day ${isToday?'today':''} ${isSelected?'selected':''} ${isOutside?'outside-month':''} state-${state}" data-home-date="${iso}" aria-pressed="${isSelected}" title="${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}: ${stateText}"><span class="home-date">${date.getDate()}</span>${countHtml}</button>`);
+    const monthLabel=cap(date.toLocaleDateString('ru-RU',{month:'long'}));
+    const completionHtml=completed.length?`<span class="home-day-completion" title="${completed.length} выполнено"><i aria-hidden="true">✓</i> ${completed.length}</span>`:'';
+    cells.push(`<button type="button" class="home-calendar-day ${isToday?'today':''} ${isSelected?'selected':''} ${isOutside?'outside-month':''} state-${state}" data-home-date="${iso}" aria-pressed="${isSelected}" title="${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}: ${stateText}"><span class="home-date-stack"><span class="home-date">${date.getDate()}</span><span class="home-month-name">${monthLabel}</span></span>${completionHtml}</button>`);
   }
   const selectedDate=fromISO(homeSelectedDate),selectedTasks=sortTasks(tasks.filter(task=>taskVisibleOnDate(task,homeSelectedDate))),selectedDone=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).length,monthName=selectedDate.toLocaleDateString('ru-RU',{month:'long'}),weekday=cap(selectedDate.toLocaleDateString('ru-RU',{weekday:'long'}));
   $('#board').innerHTML=`<section class="home-dashboard" aria-label="Обзор задач"><section class="home-calendar"><header class="home-calendar-head"><div><div class="home-calendar-kicker">Обзор задач</div><h2>${cap(title)}</h2></div><div class="home-calendar-controls"><button type="button" id="homePrevMonth" aria-label="Предыдущий месяц">‹</button><button type="button" id="homeToday">Сегодня</button><button type="button" id="homeNextMonth" aria-label="Следующий месяц">›</button></div></header><div class="home-calendar-weekdays">${weekDays.map(day=>`<span>${day}</span>`).join('')}</div><div class="home-calendar-grid" style="--home-weeks:${weekCount}">${cells.join('')}</div></section><aside class="home-day-panel"><div class="home-day-panel-head"><span>${weekday}</span><h3>${selectedDate.getDate()}</h3><b>${monthName}</b><small class="home-day-summary">${selectedTasks.length?`${selectedTasks.length} ${taskWord(selectedTasks.length)}${selectedDone?` · ${selectedDone} выполнено`:''}`:'Нет задач'}</small></div><div class="home-day-task-list">${selectedTasks.length?selectedTasks.map(task=>{const done=task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate]);return `<button type="button" class="home-day-task ${done?'done':''}" data-home-task="${task.id}"><span class="tag ${task.color}">${escapeHtml(task.project)}</span><strong>${done?'<i aria-hidden="true">✓</i> ':''}${escapeHtml(task.title)}</strong><small>${task.due==='Без времени'?'Без времени':task.due}</small></button>`}).join(''):`<div class="home-day-empty">На этот день задач нет</div>`}</div></aside></section>`;
