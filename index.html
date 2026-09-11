@@ -344,9 +344,11 @@
       .home-dashboard{height:100%}
       .home-dashboard .home-calendar,.home-dashboard .home-day-panel{min-height:0}
       .home-dashboard .home-calendar{overflow:hidden}
-      .home-dashboard .home-calendar-grid{min-height:0}
+      .home-dashboard .home-calendar-grid{min-height:0;flex:none;grid-template-rows:repeat(var(--home-weeks,5),88px)}
       .home-dashboard .home-calendar-head{margin-bottom:10px}
       .home-dashboard .home-calendar h2{margin:0}
+      .home-dashboard .home-calendar{height:auto;align-self:start}
+      .home-day-status.complete{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
     }
     .home-day-panel-head{grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:8px 12px}
     .home-day-date{display:grid;gap:2px;min-width:0}
@@ -692,7 +694,7 @@ function renderHome(){
     const state=active.length&&iso<todayISO?'overdue':active.length?'active':onDay.length?'complete':'free';
     const stateText=completed.length&&active.length?`${completed.length} из ${onDay.length} выполнено`:state==='overdue'?'Просрочено':state==='active'?`${active.length} ${taskWord(active.length)}`:state==='complete'?`${completed.length} выполнено`:'Свободно';
     const monthLabel=cap(date.toLocaleDateString('ru-RU',{month:'long'}));
-    const statusHtml=active.length?`<span class="home-day-statuses"><span class="home-day-status active" title="${active.length} активных задач"><i aria-hidden="true">●</i> ${active.length} ${taskWord(active.length)}</span></span>`:'';
+    const statusHtml=completed.length||active.length?`<span class="home-day-statuses">${completed.length?`<span class="home-day-status complete" title="${completed.length} выполнено"><i aria-hidden="true">✓</i> ${completed.length} ${taskWord(completed.length)}</span>`:''}${active.length?`<span class="home-day-status active" title="${active.length} активных задач"><i aria-hidden="true">●</i> ${active.length} ${taskWord(active.length)}</span>`:''}</span>`:'';
     cells.push(`<button type="button" class="home-calendar-day ${isToday?'today':''} ${isSelected?'selected':''} ${isOutside?'outside-month':''} ${isWeekend?'weekend':''} state-${state}" data-home-date="${iso}" aria-pressed="${isSelected}" title="${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}: ${stateText}"><span class="home-date-stack"><span class="home-date">${date.getDate()}</span><span class="home-month-name">${monthLabel}</span></span>${statusHtml}</button>`);
   }
   const selectedDate=fromISO(homeSelectedDate),selectedTasks=sortTasks(tasks.filter(task=>taskVisibleOnDate(task,homeSelectedDate))),selectedDone=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).length,monthName=selectedDate.toLocaleDateString('ru-RU',{month:'long'}),weekday=cap(selectedDate.toLocaleDateString('ru-RU',{weekday:'long'}));
