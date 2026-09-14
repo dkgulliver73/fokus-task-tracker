@@ -306,11 +306,12 @@
     .home-day-count.complete-count{color:#82b99d}
     .outside-month-name{font-size:10px;font-weight:700;text-transform:lowercase}
     .home-dashboard .home-calendar-grid{grid-template-rows:repeat(var(--home-weeks,5),minmax(0,1fr))}
-    .home-date-stack{display:grid;gap:5px;align-content:start}
-    .home-calendar-day .home-date{display:block;min-width:0;height:auto;border-radius:0;background:transparent;color:#f0f2f7;font-size:clamp(23px,2vw,30px);font-weight:800;line-height:.95;letter-spacing:-.045em}
-    .home-month-name{color:#7d8798;font-size:11px;font-weight:650;line-height:1.1}
-    .home-day-statuses{display:grid;gap:4px;align-content:end}
-    .home-day-status{display:inline-flex;align-items:center;gap:4px;max-width:100%;font-size:clamp(9px,.85vw,12px);font-weight:800;line-height:1;white-space:nowrap}
+    .home-date-stack{display:flex;align-items:baseline;gap:8px;min-width:0;white-space:nowrap}
+    .home-calendar-day .home-date,.home-calendar-day.today .home-date,.home-calendar-day.selected .home-date,.home-calendar-day.today.selected .home-date{display:block;min-width:0;height:auto;border-radius:0;background:transparent;color:#f0f2f7;font-family:inherit;font-size:clamp(23px,2vw,30px);font-weight:800;line-height:.95;letter-spacing:-.045em}
+    .home-calendar-day.selected .home-date,.home-calendar-day.today.selected .home-date{color:#fff}
+    .home-month-name{color:#7d8798;font-size:11px;font-weight:650;line-height:1;white-space:nowrap}
+    .home-day-statuses{display:grid;gap:5px;align-content:end;width:100%;margin-top:auto}
+    .home-day-status{display:inline-flex;align-items:center;gap:4px;max-width:100%;font-size:clamp(9px,.78vw,11px);font-weight:800;line-height:1.15;white-space:nowrap}
     .home-day-status i{display:inline!important;width:auto!important;height:auto!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;font-style:normal;font-size:1.05em;line-height:1}
     .home-day-status.complete{color:#81c59e}
     .home-day-status.active{color:#a69dff}
@@ -345,12 +346,14 @@
       .home-dashboard .home-calendar,.home-dashboard .home-day-panel{min-height:0}
       .home-dashboard .home-calendar{overflow:hidden}
       .home-dashboard .home-calendar-grid{min-height:0;flex:none;grid-template-rows:repeat(var(--home-weeks,5),88px)}
+      .home-dashboard .home-calendar-day{padding:10px 12px}
       .home-dashboard .home-calendar-head{margin-bottom:10px}
       .home-dashboard .home-calendar h2{margin:0}
       .home-dashboard .home-calendar{height:auto;align-self:start}
       .home-dashboard .home-day-panel{align-self:start}
       .home-day-status.complete,.home-day-status.complete i{padding:0!important;border:0!important;border-left:0!important;outline:0!important;background:transparent!important;box-shadow:none!important}
       .home-day-status.complete:before,.home-day-status.complete i:before{content:none!important}
+      .home-calendar-day.today .home-date,.home-calendar-day.selected .home-date,.home-calendar-day.today.selected .home-date{font-size:clamp(23px,2vw,30px);font-weight:800;line-height:.95}
     }
     .home-day-panel-head{grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:8px 12px}
     .home-day-date{display:grid;gap:2px;min-width:0}
@@ -379,7 +382,7 @@
       .home-view .home-calendar-weekdays,.home-view .home-calendar-grid{gap:3px}.home-view .home-calendar-weekdays{margin-bottom:4px;font-size:10px}
       .home-view .home-calendar-grid{display:grid;flex:none;min-height:0;grid-template-rows:repeat(var(--home-weeks,5),56px)!important}
       .home-view .home-calendar-day{min-width:0;min-height:0!important;padding:6px 5px;border-radius:9px}.home-view .home-calendar-day:hover{transform:none}
-      .home-view .home-date-stack{gap:0}.home-view .home-calendar-day .home-date{font-size:21px;line-height:1}.home-view .home-month-name{display:none}
+      .home-view .home-date-stack{gap:0}.home-view .home-calendar-day .home-date,.home-view .home-calendar-day.today .home-date,.home-view .home-calendar-day.selected .home-date,.home-view .home-calendar-day.today.selected .home-date{font-size:21px;font-weight:800;line-height:1}.home-view .home-month-name{display:none}
       .home-view .home-calendar-day.today{border-color:#4d5260;background:#171c26}.home-view .home-calendar-day.selected{border-color:#887dff;background:linear-gradient(145deg,#302a5c,#1c2130);box-shadow:0 0 0 1px #7769fa55}
       .home-view .home-day-statuses{gap:0}.home-view .home-day-status{font-size:11px;line-height:1.1;gap:3px}.home-view .home-day-statuses:has(.active) .complete{display:none}.home-view .home-day-status i{font-size:11px}
       .home-view .home-calendar-day.weekend:not(.selected):not(.today){background:#181923;border-color:#30313e}.home-view .home-calendar-day.outside-month{background:#11151d!important;border-color:#252b36!important}.home-view .home-calendar-day.outside-month .home-date{color:#687383}
@@ -1526,7 +1529,9 @@ $('#detailComplete').onclick=()=>{tasks=tasks.map(t=>t.id===detailId?{...t,done:
 $('#subInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addSub()}};
 
 document.addEventListener('keydown',e=>{
-  if(e.key.toLowerCase()==='k'&&(e.metaKey||e.ctrlKey)){e.preventDefault();$('#searchOverlay').classList.contains('open')?closeSearch():openSearch();return}
+  if(!e||typeof e.key!=='string')return;
+  const key=e.key.toLowerCase();
+  if(key==='k'&&(e.metaKey||e.ctrlKey)){e.preventDefault();$('#searchOverlay').classList.contains('open')?closeSearch():openSearch();return}
   if(e.key==='Tab'&&$('#searchOverlay').classList.contains('open')){e.preventDefault();$('#search').focus();return}
   if(e.key==='Escape'&&$('#searchOverlay').classList.contains('open')){e.preventDefault();closeSearch();return}
   if(e.key==='Tab'&&$('#rolloverOverlay').classList.contains('open')){
