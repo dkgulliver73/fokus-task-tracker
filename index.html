@@ -393,17 +393,22 @@
       #mobileQuickAdd{display:grid!important;place-items:center!important;background:var(--accent)!important;color:#fff!important;font-size:27px!important;font-weight:400!important;line-height:1!important;box-shadow:0 8px 20px #7769fa44}#mobileQuickAdd:active{transform:scale(.94)}
     }
   </style>
+  <style>
+    .task-template-hint{margin:14px 0 0;color:#818b9a;font-size:10px;line-height:1.45}.template-shell{max-width:1180px;margin:auto}.template-hero{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:18px}.template-kicker{margin:0;color:#978dff;font-size:10px;font-weight:800;letter-spacing:.15em}.template-hero h2{margin:6px 0 0;font-size:27px}.template-hero p{margin:7px 0 0;color:#8791a1;font-size:12px}.template-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:12px}.template-card{display:grid;gap:12px;text-align:left;border:1px solid #2b3442;border-radius:15px;background:linear-gradient(145deg,#171e2ae8,#111722e8);padding:16px;color:var(--text);box-shadow:var(--shadow-sm)}.template-card:hover{border-color:#5952a3;transform:translateY(-2px)}.template-card-head,.template-card-meta,.template-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}.template-card h3{margin:0;font-size:16px}.template-rule{margin:0;color:#aeb6c3;font-size:12px}.template-next{margin:0;color:#7e8999;font-size:10px}.template-status{border:1px solid #3c7659;border-radius:20px;background:#183426;color:#89dfaf;padding:4px 8px;font-size:9px;font-weight:750}.template-status.paused{border-color:#685c3b;background:#2d281a;color:#e5c277}.template-status.completed{border-color:#424c5a;background:#1d232d;color:#a0aaba}.template-link{margin:0;padding:0;border:0;background:none;color:#b9b2ff;font-size:10px;text-align:left;cursor:pointer}.template-link:hover{color:#fff;text-decoration:underline}.template-delete-dialog{width:min(460px,100%)}.template-delete-dialog>p{color:#8c96a5;line-height:1.5}.template-delete-actions{display:grid;gap:8px;margin-top:18px}.template-delete-actions button{min-height:46px;border:1px solid #394351;border-radius:10px;background:#131923;color:#d9dee7;text-align:left;padding:0 13px}.template-delete-actions .danger{border-color:#713b43;color:#ffabb1;background:#29171c}.template-delete-actions button:hover{border-color:#8178f5;color:#fff}@media(max-width:700px){.template-hero{align-items:stretch;flex-direction:column}.template-grid{grid-template-columns:1fr}.template-hero .primary{width:100%}}
+  </style>
 </head>
 <body class="auth-required booting">
 <div class="startup-screen open" id="startupScreen" role="status" aria-live="polite"><div class="startup-inner"><div class="startup-mark">F</div><div class="startup-title">FOCUS</div><div class="startup-status" id="startupStatus">Подключаем рабочее пространство…</div><div class="startup-loader"></div></div></div>
 <canvas class="data-waves" id="dataWaves" aria-hidden="true"></canvas>
 <div class="app">
-  <aside><div class="brand"><span class="logo">F</span><span>Focus</span></div><nav class="nav"><button type="button" data-view="home" id="homeNav">Главная</button><div class="nav-task-group open" id="taskNavGroup"><button type="button" data-view="tasks" class="nav-primary" id="taskNavButton" aria-expanded="true" aria-controls="taskNavContent">Задачи <b id="totalCount">0</b></button><div class="task-nav-content" id="taskNavContent"><div class="task-subnav" id="taskSubnav"><button type="button" data-view="inbox">Входящие <b id="inboxCount">0</b></button><button type="button" data-view="done">Выполненные <b id="doneCount">0</b></button></div><div class="section-title task-projects-title"><button class="task-projects-toggle" id="projectNavToggle" type="button" aria-expanded="true" aria-controls="projectList">ПРОЕКТЫ</button><button class="task-projects-add" id="addProject" type="button" title="Новый проект" aria-label="Новый проект">＋</button></div><div class="projects" id="projectList"></div></div></div><button type="button" id="mobileQuickAdd" aria-label="Новая задача">＋</button><button type="button" data-module="library">Библиотека</button><button type="button" data-module="vault">Доступы</button></nav><div class="aside-bottom"><div class="week-progress"><span>Прогресс недели</span><strong id="progressText"></strong></div><div class="bar"><i id="progressBar"></i></div><button class="profile profile-button" id="settingsButton"><span class="avatar">ДК</span><span><strong>Данил</strong><small>Профиль и данные</small></span></button></div></aside>
+  <aside><div class="brand"><span class="logo">F</span><span>Focus</span></div><nav class="nav"><button type="button" data-view="home" id="homeNav">Главная</button><div class="nav-task-group open" id="taskNavGroup"><button type="button" data-view="tasks" class="nav-primary" id="taskNavButton" aria-expanded="true" aria-controls="taskNavContent">Задачи <b id="totalCount">0</b></button><div class="task-nav-content" id="taskNavContent"><div class="task-subnav" id="taskSubnav"><button type="button" data-view="inbox">Входящие <b id="inboxCount">0</b></button><button type="button" data-view="done">Выполненные <b id="doneCount">0</b></button><button type="button" data-view="templates">Шаблоны</button></div><div class="section-title task-projects-title"><button class="task-projects-toggle" id="projectNavToggle" type="button" aria-expanded="true" aria-controls="projectList">ПРОЕКТЫ</button><button class="task-projects-add" id="addProject" type="button" title="Новый проект" aria-label="Новый проект">＋</button></div><div class="projects" id="projectList"></div></div></div><button type="button" id="mobileQuickAdd" aria-label="Новая задача">＋</button><button type="button" data-module="library">Библиотека</button><button type="button" data-module="vault">Доступы</button></nav><div class="aside-bottom"><div class="week-progress"><span>Прогресс недели</span><strong id="progressText"></strong></div><div class="bar"><i id="progressBar"></i></div><button class="profile profile-button" id="settingsButton"><span class="avatar">ДК</span><span><strong>Данил</strong><small>Профиль и данные</small></span></button></div></aside>
   <main><header class="topbar"><div class="title-wrap"><h1 id="viewTitle">Задачи</h1><button class="chip" id="projectChip"></button></div><time class="header-clock" id="headerClock" aria-label="Текущее время"></time><div class="actions"><button class="mini-action search-action" id="searchButton" type="button" title="Поиск (Cmd/Ctrl+K)" aria-label="Открыть поиск" aria-haspopup="dialog">⌕</button><button class="mini-action mobile-menu-action" id="mobileMenuButton" title="Проекты и данные" aria-label="Проекты и данные">•••</button><button class="mini-action" id="filterBtn" title="Фильтр" aria-label="Фильтр">☷</button><button class="mini-action" id="sortBtn" title="Сортировка" aria-label="Сортировка">↕</button><button class="primary" data-open aria-label="Новая задача">＋ Новая задача</button><div class="pop" id="mobileMenuPop"><div class="pop-title">ПОИСК</div><input class="mobile-menu-search" id="mobileSearch" placeholder="Поиск задач…"><div class="pop-title" style="margin-top:12px">ПРОЕКТЫ</div><div class="mobile-projects" id="mobileProjectList"></div><div class="mobile-menu-footer"><button type="button" id="mobileAddProject">＋ Проект</button><button type="button" id="mobileSettings">⚙ Данные и вход</button></div></div><div class="pop" id="filterPop"><div class="pop-title">ПРИОРИТЕТ</div><div class="pop-row" data-key="priority"><button type="button" data-value="all">Любой</button><button type="button" data-value="High">Высокий</button><button type="button" data-value="Medium">Средний</button><button type="button" data-value="Low">Низкий</button></div><div class="pop-title">СТАТУС</div><div class="pop-row" data-key="status"><button type="button" data-value="all">Все</button><button type="button" data-value="active">Активные</button><button type="button" data-value="done">Выполненные</button></div><button type="button" class="pop-reset" id="resetFilters">Сбросить фильтры</button></div><div class="pop" id="sortPop"><div class="pop-title">СОРТИРОВКА</div><div class="pop-col" data-key="sort"><button type="button" data-value="manual">Вручную (перетаскивание)</button><button type="button" data-value="time">По времени</button><button type="button" data-value="priority">По приоритету</button><button type="button" data-value="title">По названию</button></div></div></div></header><div class="period" id="period"><button id="prevWeek" title="Предыдущая неделя">‹</button><div class="range"><strong id="weekRange"></strong></div><button id="nextWeek" title="Следующая неделя">›</button><button class="today" id="todayButton">Сегодня</button><div class="days" id="days"></div></div><div class="board" id="board"></div></main>
 </div>
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Поиск задач"><div class="search-panel"><span aria-hidden="true">⌕</span><input class="search" id="search" placeholder="Поиск по названию, описанию или проекту…"><kbd>Esc</kbd></div></div>
-<div class="overlay" id="overlay"><form class="modal" id="taskForm" novalidate><div class="modal-head"><div><small>НОВАЯ ЗАДАЧА</small><h2>Что нужно сделать?</h2></div><button class="close" type="button" data-close>×</button></div><input id="taskTitle" required placeholder="Например, подготовить презентацию"><label class="field-label task-notes"><span>Заметки</span><textarea id="taskDescription" placeholder="Контекст, детали или ожидаемый результат…"></textarea></label><div class="form-row"><select id="taskProject"></select><input type="date" id="taskDate" required></div><div class="form-row"><select id="taskPriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select><label class="field-label">Рабочих дней<input type="number" id="taskDuration" min="1" max="260" value="1"></label></div><div class="schedule"><p class="schedule-title">ПОВТОР</p><div class="repeat-layout"><select id="repeatType"><option value="none">Не повторять</option><option value="daily">Каждые N дней</option><option value="weekly">По дням недели</option><option value="monthly">По числам месяца</option></select><label class="field-label" id="repeatIntervalField"><span>Каждые</span><div class="repeat-control"><input type="number" id="repeatInterval" min="1" max="99" value="1"><span id="repeatUnit">нед.</span></div></label></div><div class="schedule-extra" id="weeklyOptions"><div class="weekday-picker" id="weekdayPicker"><label><input type="checkbox" value="1"><span>Пн</span></label><label><input type="checkbox" value="2"><span>Вт</span></label><label><input type="checkbox" value="3"><span>Ср</span></label><label><input type="checkbox" value="4"><span>Чт</span></label><label><input type="checkbox" value="5"><span>Пт</span></label></div></div><div class="schedule-extra" id="monthlyOptions"><label class="field-label">Числа месяца<input id="monthDays" placeholder="Например: 1, 10, 25"></label></div><div class="schedule-extra" id="repeatEndOptions"><div class="form-row repeat-end-row"><select id="repeatEndType"><option value="never">Без окончания</option><option value="date">До даты</option><option value="count">После N повторений</option></select><input type="date" id="repeatEndDate"><input type="number" id="repeatCount" min="1" max="999" value="10" aria-label="Количество повторений"></div></div></div><div class="modal-actions"><button type="button" data-close>Отмена</button><button class="save">Создать задачу</button></div></form></div>
+<div class="overlay" id="overlay"><form class="modal" id="taskForm" novalidate><div class="modal-head"><div><small>НОВАЯ ЗАДАЧА</small><h2>Что нужно сделать?</h2></div><button class="close" type="button" data-close>×</button></div><input id="taskTitle" required placeholder="Например, подготовить презентацию"><label class="field-label task-notes"><span>Заметки</span><textarea id="taskDescription" placeholder="Контекст, детали или ожидаемый результат…"></textarea></label><div class="form-row"><select id="taskProject"></select><input type="date" id="taskDate" required></div><div class="form-row"><select id="taskPriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select><label class="field-label">Рабочих дней<input type="number" id="taskDuration" min="1" max="260" value="1"></label></div><p class="task-template-hint">Для автоматических повторов используйте раздел «Шаблоны».</p><div class="modal-actions"><button type="button" data-close>Отмена</button><button class="save">Создать задачу</button></div></form></div>
 <div class="overlay" id="detailOverlay"><form class="modal detail-modal" id="detailForm" novalidate><div class="modal-head"><div><small>ЗАДАЧА</small><h2>Подробности задачи</h2></div><button class="close" type="button" data-detail-close>×</button></div><input id="detailTitle" required placeholder="Название задачи"><textarea id="detailDescription" placeholder="Описание, заметки или результат…"></textarea><div class="form-row"><select id="detailProject"></select><input type="date" id="detailDate" required></div><div class="form-row"><input id="detailTime" placeholder="Время, например 14:30"><select id="detailPriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select></div><div class="form-row"><label class="field-label">Рабочих дней<input type="number" id="detailDuration" min="1" max="260" value="1"></label><p class="series-note" id="seriesNote"></p></div><div class="subs"><div class="subs-head"><span>ПОДЗАДАЧИ</span><small id="subsCount"></small></div><div class="subs-list" id="subsList"></div><input id="subInput" placeholder="＋ Новый шаг — Enter, чтобы добавить"></div><div class="modal-actions"><button class="delete" type="button" id="deleteTask">Удалить</button><button class="finish" type="button" id="detailComplete">✓ Выполнить</button><button class="save">Сохранить</button></div></form></div>
+<div class="overlay" id="templateOverlay"><form class="modal detail-modal" id="templateForm" novalidate><div class="modal-head"><div><small id="templateKicker">НОВЫЙ ШАБЛОН</small><h2 id="templateTitle">Шаблон задачи</h2></div><button class="close" type="button" data-template-close>×</button></div><input id="templateName" required placeholder="Например, PriceIndex"><label class="field-label task-notes"><span>Описание</span><textarea id="templateDescription" placeholder="Контекст или инструкция для каждой задачи…"></textarea></label><div class="form-row"><select id="templateProject"></select><input type="date" id="templateStartDate" required></div><div class="form-row"><input id="templateTime" placeholder="Время, например 14:30"><select id="templatePriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select></div><div class="form-row"><label class="field-label">Рабочих дней<input type="number" id="templateDuration" min="1" max="260" value="1"></label><label class="field-label">Статус<select id="templateStatus"><option value="active">Активен</option><option value="paused">На паузе</option><option value="completed">Завершён</option></select></label></div><div class="schedule"><p class="schedule-title">РАСПИСАНИЕ</p><div class="repeat-layout"><select id="templateRepeatType"><option value="daily">Каждые N рабочих дней</option><option value="weekly">По дням недели</option><option value="monthly">По числам месяца</option></select><label class="field-label" id="templateIntervalField"><span>Каждые</span><div class="repeat-control"><input type="number" id="templateInterval" min="1" max="99" value="1"><span id="templateRepeatUnit">раб. дн.</span></div></label></div><div class="schedule-extra" id="templateWeeklyOptions"><div class="weekday-picker" id="templateWeekdayPicker"><label><input type="checkbox" value="1"><span>Пн</span></label><label><input type="checkbox" value="2"><span>Вт</span></label><label><input type="checkbox" value="3"><span>Ср</span></label><label><input type="checkbox" value="4"><span>Чт</span></label><label><input type="checkbox" value="5"><span>Пт</span></label></div></div><div class="schedule-extra" id="templateMonthlyOptions"><label class="field-label">Числа месяца<input id="templateMonthDays" placeholder="Например: 1, 10, 25"></label></div><div class="schedule-extra show" id="templateEndOptions"><div class="form-row repeat-end-row"><select id="templateEndType"><option value="never">Без окончания</option><option value="date">До даты</option><option value="count">После N повторений</option></select><input type="date" id="templateEndDate"><input type="number" id="templateCount" min="1" max="999" value="10" aria-label="Количество повторений"></div></div></div><div class="modal-actions"><button class="delete" type="button" id="deleteTemplate">Удалить</button><button type="button" data-template-close>Отмена</button><button class="save">Сохранить шаблон</button></div></form></div>
+<div class="overlay" id="templateDeleteOverlay"><section class="modal template-delete-dialog"><div class="modal-head"><div><small>УДАЛЕНИЕ ШАБЛОНА</small><h2>Удалить шаблон?</h2></div><button class="close" type="button" data-template-delete-close>×</button></div><p>Выполненные задачи останутся в истории.</p><div class="template-delete-actions"><button type="button" id="deleteTemplateOnly">Удалить только шаблон</button><button type="button" id="deleteTemplateFuture" class="danger">Удалить шаблон и будущие задачи</button></div><div class="modal-actions"><button type="button" data-template-delete-close>Отмена</button></div></section></div>
 <div class="overlay" id="projectOverlay"><form class="modal" id="projectForm" novalidate><div class="modal-head"><div><small id="projectKicker">НОВЫЙ ПРОЕКТ</small><h2>Проект</h2></div><button class="close" type="button" data-project-close>×</button></div><input id="projectName" required placeholder="Например, Личный блог"><div class="swatches" id="swatches"></div><div class="modal-actions"><button class="delete" type="button" id="deleteProject">Удалить</button><button type="button" data-project-close>Отмена</button><button class="save">Сохранить</button></div></form></div>
 <div class="overlay" id="rolloverOverlay"><section class="modal rollover-modal" role="dialog" aria-modal="true" aria-labelledby="rolloverTitle"><div class="modal-head"><div><small>ПЛАН НА СЕГОДНЯ</small><h2 id="rolloverTitle">Незавершённые задачи</h2></div><button class="close" type="button" id="rolloverClose" aria-label="Закрыть">×</button></div><div class="rollover-progress"><span id="rolloverProgressText"></span><i id="rolloverProgressBar"></i></div><div class="rollover-card"><div class="rollover-meta" id="rolloverMeta"></div><h3 id="rolloverTaskTitle"></h3><div class="rollover-note" id="rolloverNote"></div></div><div class="rollover-date-row" id="rolloverDateRow"><input type="date" id="rolloverDate"><button type="button" id="rolloverDateApply">Перенести</button></div><div class="rollover-actions"><button type="button" class="rollover-primary" id="rolloverToday">На сегодня</button><button type="button" class="rollover-complete" id="rolloverComplete">Завершить</button><button type="button" id="rolloverChoose">Выбрать дату</button><button type="button" id="rolloverKeep">Оставить на исходной дате</button><button type="button" id="rolloverTomorrow">Напомнить завтра</button><button type="button" class="rollover-open" id="rolloverOpen">Открыть задачу</button></div></section></div>
 <div class="overlay" id="settingsOverlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-head"><div><small>АККАУНТ И ДАННЫЕ</small><h2 id="settingsTitle">Данные Focus</h2></div><button class="close" type="button" data-settings-close>×</button></div><p class="settings-help">Войдите с одним логином на всех устройствах, чтобы включить синхронизацию.</p></section></div>
@@ -461,7 +466,7 @@ const REDUCED=matchMedia('(prefers-reduced-motion: reduce)');
 const MOVE_MS=320,MOVE_EASE='cubic-bezier(0.23,1,0.32,1)';
 const HEX={purple:'#8d7cff',blue:'#62a8ff',pink:'#f4779a',yellow:'#efb55e',green:'#64d7a0',cyan:'#54d6d0',red:'#ff6c77',gray:'#7b8290'};
 const PALETTE=Object.keys(HEX);
-const VIEW_TITLES={home:'Главная',tasks:'Задачи',inbox:'Входящие',done:'Выполненные'};
+const VIEW_TITLES={home:'Главная',tasks:'Задачи',inbox:'Входящие',done:'Выполненные',templates:'Шаблоны'};
 $$('.logo').forEach(el=>{el.className='logo focus-plaque';el.innerHTML='<strong>FOCUS</strong><small>ФОКУС | ЗАДАЧИ | ПРОГРЕСС</small>'});
 const SYNC_PROTOCOL='4';
 if(localStorage.getItem('focus_sync_protocol')!==SYNC_PROTOCOL){localStorage.removeItem('focus_local_dirty');localStorage.removeItem('focus_cloud_seen');localStorage.setItem('focus_sync_protocol',SYNC_PROTOCOL)}
@@ -469,6 +474,9 @@ if(localStorage.getItem('focus_sync_protocol')!==SYNC_PROTOCOL){localStorage.rem
 let projects=load('focus_projects',[{id:'p1',name:'Новый сайт',color:'purple'},{id:'p2',name:'Карта города',color:'blue'},{id:'p3',name:'The Elder',color:'pink'},{id:'p4',name:'Работа',color:'yellow'},{id:'p5',name:'Личное',color:'green'}]);
 let tasks=load('focus_tasks',[]);
 let series=load('focus_series',[]);
+const templateStatus=value=>['active','paused','completed'].includes(value)?value:'active';
+const normalizeTemplate=s=>({...s,status:templateStatus(s.status),due:/^\d\d:\d\d$/.test(s.due||'')?s.due:'Без времени',skippedOccurrences:Array.isArray(s.skippedOccurrences)?s.skippedOccurrences:[]});
+series=series.map(normalizeTemplate);
 const BG_DEFAULTS={speed:32,amplitude:34,size:3,spacing:35,depth:68,direction:'forward',cursor:true,cursorStrength:45};
 let prefs=Object.assign({view:'home',project:null,priority:'all',status:'all',sort:'manual',theme:'dark'},load('focus_prefs',{}));
 prefs.background=Object.assign({},BG_DEFAULTS,prefs.background||{});
@@ -581,10 +589,13 @@ function occurrenceDates(s,horizon){
 function ensureOccurrences(){
   const h=new Date();h.setMonth(h.getMonth()+3);const horizon=toISO(h);
   const known=new Set(tasks.map(t=>t.occurrenceKey).filter(Boolean));
-  series.forEach(s=>occurrenceDates(s,horizon).forEach(date=>{
-    const key=s.id+'@'+date;if(known.has(key))return;known.add(key);
-    tasks.push({id:Date.now()+Math.floor(Math.random()*1000000),title:s.title,project:s.project,due:s.due||'Без времени',priority:s.priority,date,done:false,description:s.description||'',subtasks:[],durationWorkdays:s.durationWorkdays||1,dailyDone:{},seriesId:s.id,occurrenceKey:key,color:colorOf(s.project)});
-  }));
+  series.filter(s=>templateStatus(s.status)==='active').forEach(s=>{
+    const skipped=new Set(s.skippedOccurrences||[]);
+    occurrenceDates(s,horizon).forEach(date=>{
+      const key=s.id+'@'+date;if(known.has(key)||skipped.has(key))return;known.add(key);
+      tasks.push({id:Date.now()+Math.floor(Math.random()*1000000),title:s.title,project:s.project,due:s.due||'Без времени',priority:s.priority,date,done:false,description:s.description||'',subtasks:[],durationWorkdays:s.durationWorkdays||1,dailyDone:{},seriesId:s.id,occurrenceKey:key,templateDetached:false,color:colorOf(s.project)});
+    });
+  });
 }
 ensureOccurrences();save(false);saveSeries(false);saveProjects(false);
 
@@ -629,7 +640,7 @@ function renderSidebar(){
   $('#inboxCount').textContent=active.filter(t=>t.project===INBOX).length;
   $('#doneCount').textContent=tasks.filter(t=>t.done).length;
   $$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===prefs.view));
-  taskNavGroup.classList.toggle('has-active-child',prefs.view==='inbox'||prefs.view==='done');
+  taskNavGroup.classList.toggle('has-active-child',prefs.view==='inbox'||prefs.view==='done'||prefs.view==='templates');
   $('#projectList').innerHTML=projects.map(p=>`<button data-project="${escapeHtml(p.name)}" class="${prefs.project===p.name?'active':''}" title="${escapeHtml(p.name)}"><i class="dot ${p.color}"></i><span class="pname">${escapeHtml(p.name)}</span><i class="prj-edit" data-edit="${p.id}" title="Изменить проект">✎</i></button>`).join('');
   $$('#projectList [data-project]').forEach(b=>b.onclick=e=>{
     const ed=e.target.closest('[data-edit]');
@@ -702,7 +713,7 @@ function render(){
   board.classList.toggle('stack',!dayView);
   board.classList.toggle('home-dashboard-board',homeView);
   updateChips();
-  if(homeView)renderHome();else if(projectView)renderProject();else if(dayView)renderDay();else if(prefs.view==='inbox')renderInbox();else renderDone();
+  if(homeView)renderHome();else if(projectView)renderProject();else if(dayView)renderDay();else if(prefs.view==='inbox')renderInbox();else if(prefs.view==='templates')renderTemplates();else renderDone();
   bindDynamic();
 }
 function renderHomeLegacy(){
@@ -772,6 +783,32 @@ function renderDone(){
     const date=fromISO(d),g=sortTasks(groups[d]);
     return `<section class="column done-group" data-date="${d}"><div class="column-head"><div><span class="day-number">${date.getDate()}</span><span class="day-label"><strong>${cap(date.toLocaleDateString('ru-RU',{weekday:'long'}))}</strong><small>${d===todayISO?'Сегодня · ':''}${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}</small></span></div><div class="day-summary"><span class="count">${g.length} ${taskWord(g.length)}</span></div></div><div class="task-list">${g.map(t=>card(t,{showDate:false})).join('')}</div></section>`;
   }).join(''):`<section class="column"><div class="task-list">${emptyBlock('Пока ничего не выполнено','Отмечайте задачи галочкой — они соберутся здесь')}</div></section>`;
+}
+
+function templateStatusLabel(status){return status==='paused'?'На паузе':status==='completed'?'Завершён':'Активен'}
+function templateRuleLabel(template){
+  const r=template.repeat||{},n=Math.max(1,Number(r.interval)||1);
+  if(r.type==='daily')return n===1?'Каждый рабочий день':`Каждые ${n} рабочих дня`;
+  if(r.type==='weekly'){
+    const names={1:'понедельник',2:'вторник',3:'среду',4:'четверг',5:'пятницу'};
+    const days=(r.weekdays||[]).map(day=>names[day]).filter(Boolean);
+    return n===1?(days.length?`Каждый ${days.join(', ')}`:'Каждую неделю'):(days.length?`Раз в ${n} недели · ${days.join(', ')}`:`Раз в ${n} недели`);
+  }
+  const days=(r.monthDays||[]).join(', ');return `${n===1?'Каждый месяц':`Раз в ${n} месяца`}${days?' · '+days+' числа':''}`;
+}
+function nextTemplateDate(template){
+  if(templateStatus(template.status)!=='active')return null;
+  const horizon=toISO(addDays(fromISO(todayISO),370));
+  const skipped=new Set(template.skippedOccurrences||[]);
+  return occurrenceDates(template,horizon).find(date=>date>=todayISO&&!skipped.has(template.id+'@'+date))||null;
+}
+function renderTemplates(){
+  const cards=series.map(template=>{
+    const next=nextTemplateDate(template),status=templateStatus(template.status);
+    const nextLabel=next?fromISO(next).toLocaleDateString('ru-RU',{day:'numeric',month:'long'}):status==='active'?'Нет ближайшей даты':'Создание задач остановлено';
+    return `<button type="button" class="template-card" data-template-open="${template.id}"><div class="template-card-head"><h3>${escapeHtml(template.title)}</h3><span class="template-status ${status}">${templateStatusLabel(status)}</span></div><div class="template-card-meta"><span class="tag ${colorOf(template.project)}">${escapeHtml(template.project)}</span><span class="priority-badge ${normalizePriority(template.priority).toLowerCase()}">${label(normalizePriority(template.priority))}</span></div><p class="template-rule">${escapeHtml(templateRuleLabel(template))}</p><div class="template-card-foot"><p class="template-next">Следующая: ${nextLabel}</p><span>›</span></div></button>`;
+  }).join('');
+  $('#board').innerHTML=`<section class="template-shell"><header class="template-hero"><div><p class="template-kicker">АВТОМАТИЗАЦИЯ ЗАДАЧ</p><h2>Шаблоны</h2><p>Шаблон создаёт будущие задачи по расписанию. Уже созданные задачи остаются самостоятельными.</p></div><button type="button" class="primary" data-template-new>＋ Новый шаблон</button></header><div class="template-grid">${cards||emptyBlock('Шаблонов пока нет','Создайте шаблон для регулярных задач — Focus подготовит будущие экземпляры.')}</div></section>`;
 }
 
 /* ===================== Анимации перестановки ===================== */
@@ -927,13 +964,14 @@ function endDrag(cancelled){
   if(!moving){d.clone.remove();d.marker.remove();d.card.classList.remove('dragging');return}
   const before=cardPositions();
   if(!cancelled&&d.day){
-    tasks=tasks.filter(t=>t.id!==d.id);moving.date=d.day.dataset.date;tasks.push(moving);activeDate=moving.date;
+    tasks=tasks.filter(t=>t.id!==d.id);moving.date=d.day.dataset.date;if(moving.seriesId)moving.templateDetached=true;tasks.push(moving);activeDate=moving.date;
   }else if(!cancelled){
     const next=d.marker.nextElementSibling;
     const beforeId=next&&next.classList.contains('card')?Number(next.dataset.id):null;
     const col=d.marker.closest('.column');
     const rest=tasks.filter(t=>t.id!==d.id);
     if(col)moving.date=col.dataset.date;
+    if(moving.seriesId)moving.templateDetached=true;
     let at;
     if(beforeId!==null)at=rest.findIndex(t=>t.id===beforeId);
     else{const idx=rest.map((t,i)=>t.date===moving.date?i:-1).filter(i=>i>=0);at=idx.length?idx[idx.length-1]+1:rest.length}
@@ -976,6 +1014,8 @@ function flyHome(clone,from,target,vx,vy,tilt){
 function bindDynamic(){
   $$('[data-clear-filters]').forEach(b=>b.onclick=()=>{prefs.priority='all';prefs.status='all';query='';$('#search').value='';$('#mobileSearch').value='';$('#searchButton').classList.remove('on');savePrefs();render()});
   $$('[data-open]').forEach(b=>b.onclick=()=>openModal(b.dataset.newDate,b.dataset.newProject));
+  $$('[data-template-new]').forEach(b=>b.onclick=()=>openTemplate());
+  $$('[data-template-open]').forEach(b=>b.onclick=()=>openTemplate(b.dataset.templateOpen));
   $$('[data-complete]').forEach(b=>b.onclick=e=>{e.stopPropagation();completeForDate(Number(b.dataset.complete),activeDate)});
   $$('.card').forEach(c=>{
     c.onclick=e=>{if(e.target.closest('[data-complete]')||justDragged)return;openDetail(Number(c.dataset.id))};
@@ -1091,11 +1131,62 @@ function openModal(date,project){
   $('#taskDate').value=date||(prefs.view==='tasks'?activeDate:todayISO);
   $('#taskProject').value=preset;
   $('#taskDescription').value='';
-  $('#taskDuration').value=1;$('#repeatType').value='none';$('#repeatInterval').value=1;$('#repeatEndType').value='never';
-  $$('#weekdayPicker input').forEach(i=>i.checked=false);updateScheduleFields();
+  $('#taskDuration').value=1;
   setTimeout(()=>$('#taskTitle').focus(),30);
 }
 function closeModal(){$('#overlay').classList.remove('open');$('#taskForm').reset()}
+
+let editingTemplateId=null;
+function updateTemplateScheduleFields(){
+  const type=$('#templateRepeatType').value,end=$('#templateEndType').value;
+  $('#templateWeeklyOptions').classList.toggle('show',type==='weekly');
+  $('#templateMonthlyOptions').classList.toggle('show',type==='monthly');
+  $('#templateRepeatUnit').textContent=type==='daily'?'раб. дн.':type==='monthly'?'мес.':'нед.';
+  $('#templateEndDate').style.display=end==='date'?'':'none';
+  $('#templateCount').style.display=end==='count'?'':'none';
+}
+function templateRepeatFromForm(){
+  return{type:$('#templateRepeatType').value,interval:Math.max(1,Number($('#templateInterval').value)||1),weekdays:$$('#templateWeekdayPicker input:checked').map(input=>Number(input.value)),monthDays:$('#templateMonthDays').value.split(',').map(value=>Number(value.trim())).filter(day=>day>=1&&day<=31),endType:$('#templateEndType').value,endDate:$('#templateEndDate').value,count:Math.max(1,Number($('#templateCount').value)||1)};
+}
+function openTemplate(id=null){
+  const template=id?series.find(item=>item.id===id):null;
+  editingTemplateId=template?template.id:null;
+  $('#templateProject').innerHTML=projectOptions(template&&template.project);
+  $('#templateKicker').textContent=template?'ШАБЛОН ЗАДАЧИ':'НОВЫЙ ШАБЛОН';
+  $('#templateTitle').textContent=template?'Шаблон задачи':'Новый шаблон';
+  $('#deleteTemplate').hidden=!template;
+  $('#templateName').value=template?template.title:'';
+  $('#templateDescription').value=template?template.description||'':'';
+  $('#templateProject').value=template?template.project:(prefs.project||INBOX);
+  $('#templatePriority').value=template?normalizePriority(template.priority):'Medium';
+  $('#templateTime').value=template&&template.due!=='Без времени'?template.due:'';
+  $('#templateStartDate').value=template?template.startDate:todayISO;
+  $('#templateDuration').value=template?template.durationWorkdays||1:1;
+  $('#templateStatus').value=template?templateStatus(template.status):'active';
+  const repeat=template&&template.repeat||{};
+  $('#templateRepeatType').value=repeat.type||'weekly';
+  $('#templateInterval').value=Math.max(1,Number(repeat.interval)||1);
+  $('#templateMonthDays').value=(repeat.monthDays||[]).join(', ');
+  $('#templateEndType').value=repeat.endType||'never';
+  $('#templateEndDate').value=repeat.endDate||'';
+  $('#templateCount').value=Math.max(1,Number(repeat.count)||10);
+  $$('#templateWeekdayPicker input').forEach(input=>input.checked=(repeat.weekdays||[]).map(Number).includes(Number(input.value)));
+  updateTemplateScheduleFields();
+  $('#templateOverlay').classList.add('open');
+  setTimeout(()=>$('#templateName').focus(),30);
+}
+function closeTemplate(){$('#templateOverlay').classList.remove('open');editingTemplateId=null;$('#templateForm').reset()}
+function refreshFutureTemplateTasks(template){
+  if(templateStatus(template.status)!=='active')return;
+  tasks=tasks.filter(task=>!(task.seriesId===template.id&&!task.done&&task.date>todayISO&&!task.templateDetached));
+  ensureOccurrences();
+}
+function removeTemplate(id,removeFuture){
+  if(removeFuture)tasks=tasks.filter(task=>!(task.seriesId===id&&!task.done&&task.date>todayISO));
+  tasks=tasks.map(task=>task.seriesId===id?({...task,seriesId:undefined,occurrenceKey:undefined,templateDetached:true}):task);
+  series=series.filter(template=>template.id!==id);
+  saveSeries();save();closeTemplate();$('#templateDeleteOverlay').classList.remove('open');renderDays();render();toast(removeFuture?'Шаблон и будущие задачи удалены':'Шаблон удалён; задачи сохранены');
+}
 
 /* ===================== Модалка деталей + подзадачи ===================== */
 function openDetail(id){
@@ -1108,7 +1199,9 @@ function openDetail(id){
   $('#detailTime').value=t.due==='Без времени'?'':t.due;
   $('#detailPriority').value=t.priority;
   $('#detailDuration').value=t.durationWorkdays||1;
-  $('#seriesNote').textContent=t.seriesId?'↻ Это отдельное повторение регулярной задачи':'';
+  const template=t.seriesId&&series.find(item=>item.id===t.seriesId);
+  $('#seriesNote').innerHTML=template?`Создано по шаблону: <button type="button" class="template-link" data-series-template="${template.id}">${escapeHtml(template.title)} · ${escapeHtml(templateRuleLabel(template))}</button>`:'';
+  const templateLink=$('#seriesNote [data-series-template]');if(templateLink)templateLink.onclick=()=>{closeDetail();prefs.view='templates';savePrefs();renderDays();render();setTimeout(()=>openTemplate(template.id),0)};
   $('#detailComplete').textContent=t.done?'↶ Вернуть в работу':taskDates(t).length>1?'✓ Завершить досрочно':'✓ Выполнить';
   $('#subInput').value='';
   renderSubs();
@@ -1201,8 +1294,8 @@ async function pushCloud(silent=false){
 }
 function applyCloudPayload(data,updatedAt){
   if(!data||!Array.isArray(data.tasks)||!Array.isArray(data.projects))throw new Error('В Supabase неверный формат данных');
-  cloudApplying=true;tasks=data.tasks;series=Array.isArray(data.series)?data.series:[];projects=data.projects;
-  tasks=tasks.map(t=>({...t,priority:normalizePriority(t.priority),durationWorkdays:Math.max(1,Number(t.durationWorkdays)||1),dailyDone:t.dailyDone||{},subtasks:Array.isArray(t.subtasks)?t.subtasks:[],color:colorOf(t.project)}));
+  cloudApplying=true;tasks=data.tasks;series=Array.isArray(data.series)?data.series.map(normalizeTemplate):[];projects=data.projects;
+  tasks=tasks.map(t=>({...t,priority:normalizePriority(t.priority),durationWorkdays:Math.max(1,Number(t.durationWorkdays)||1),dailyDone:t.dailyDone||{},subtasks:Array.isArray(t.subtasks)?t.subtasks:[],color:colorOf(t.project)}));ensureOccurrences();
   save(false);saveSeries(false);saveProjects(false);localStorage.removeItem('focus_local_dirty');if(updatedAt)localStorage.setItem('focus_cloud_seen',updatedAt);cloudApplying=false;renderDays();render();
 }
 async function pullCloud(silent=false){
@@ -1256,7 +1349,7 @@ function exportData(){
 function validBackup(data){return data&&Array.isArray(data.tasks)&&Array.isArray(data.projects)&&data.tasks.every(t=>t&&t.id!=null&&typeof t.title==='string')&&data.projects.every(p=>p&&typeof p.name==='string')}
 function restoreData(data){
   if(!validBackup(data))throw new Error('Это не резервная копия Focus');
-  projects=data.projects;tasks=data.tasks.map(t=>({...t,priority:normalizePriority(t.priority)}));series=Array.isArray(data.series)?data.series:[];prefs=Object.assign({view:'tasks',project:null,priority:'all',status:'all',sort:'manual'},data.prefs||{});
+  projects=data.projects;tasks=data.tasks.map(t=>({...t,priority:normalizePriority(t.priority)}));series=Array.isArray(data.series)?data.series.map(normalizeTemplate):[];prefs=Object.assign({view:'tasks',project:null,priority:'all',status:'all',sort:'manual'},data.prefs||{});
   recolorTasks();saveSeries();saveProjects();savePrefs();activeDate=todayISO;weekStart=mondayOf(new Date());closeSettings();renderDays();render();toast('Данные восстановлены');
 }
 
@@ -1269,16 +1362,6 @@ function updateChips(){
 function closePops(){$$('.pop').forEach(p=>p.classList.remove('open'))}
 function togglePop(id){const p=$(id),was=p.classList.contains('open');closePops();if(!was)p.classList.add('open')}
 
-function updateScheduleFields(){
-  const type=$('#repeatType').value,end=$('#repeatEndType').value;
-  $('#weeklyOptions').classList.toggle('show',type==='weekly');
-  $('#monthlyOptions').classList.toggle('show',type==='monthly');
-  $('#repeatEndOptions').classList.toggle('show',type!=='none');
-  $('#repeatIntervalField').style.display=type==='none'?'none':'';
-  $('#repeatUnit').textContent=type==='daily'?'дн.':type==='monthly'?'мес.':'нед.';
-  $('#repeatEndDate').style.display=end==='date'?'':'none';
-  $('#repeatCount').style.display=end==='count'?'':'none';
-}
 function enhanceStepper(input,suffix='дн.'){
   const label=input.closest('.field-label'),box=document.createElement('div');
   if(label&&label.firstChild&&label.firstChild.nodeType===3)label.firstChild.textContent='Длительность';
@@ -1303,8 +1386,8 @@ function prepareTaskForm(){
 }
 
 /* ===================== Статические обработчики ===================== */
-$('#repeatType').onchange=updateScheduleFields;
-$('#repeatEndType').onchange=updateScheduleFields;
+$('#templateRepeatType').onchange=updateTemplateScheduleFields;
+$('#templateEndType').onchange=updateTemplateScheduleFields;
 $$('.nav [data-view]').forEach(b=>b.onclick=()=>{
   prefs.view=b.dataset.view;
   if(prefs.view==='home'){homeSelectedDate=todayISO;homeMonth=new Date(fromISO(todayISO).getFullYear(),fromISO(todayISO).getMonth(),1)}
@@ -1329,22 +1412,22 @@ $('#projectForm').onsubmit=e=>{
     const oldName=p.name;
     if(projects.some(x=>x.name===name&&x.id!==editingProject))return formError(form,$('#projectName'),'Проект с таким названием уже есть');
     p.name=name;p.color=draftColor;
-    tasks=tasks.map(t=>t.project===oldName?{...t,project:name}:t);
+    tasks=tasks.map(t=>t.project===oldName?{...t,project:name}:t);series=series.map(template=>template.project===oldName?{...template,project:name}:template);
     if(prefs.project===oldName)prefs.project=name;
   }else{
     if(projects.some(x=>x.name===name))return formError(form,$('#projectName'),'Проект с таким названием уже есть');
     projects=[...projects,{id:'p'+Date.now(),name,color:draftColor}];
   }
-  saveProjects();recolorTasks();savePrefs();closeProject();renderDays();render();
+  saveProjects();saveSeries();recolorTasks();savePrefs();closeProject();renderDays();render();
 };
 $('#deleteProject').onclick=()=>{
   const p=projects.find(x=>x.id===editingProject);if(!p)return;
   const n=tasks.filter(t=>t.project===p.name).length;
   if(!confirm(n?`Удалить проект «${p.name}»? ${n} ${taskWord(n)} переедут во Входящие.`:`Удалить проект «${p.name}»?`))return;
   projects=projects.filter(x=>x.id!==p.id);
-  tasks=tasks.map(t=>t.project===p.name?{...t,project:INBOX}:t);
+  tasks=tasks.map(t=>t.project===p.name?{...t,project:INBOX}:t);series=series.map(template=>template.project===p.name?{...template,project:INBOX}:template);
   if(prefs.project===p.name)prefs.project=null;
-  saveProjects();recolorTasks();savePrefs();closeProject();renderDays();render();
+  saveProjects();saveSeries();recolorTasks();savePrefs();closeProject();renderDays();render();
 };
 $$('[data-project-close]').forEach(b=>b.onclick=closeProject);
 
@@ -1368,6 +1451,11 @@ document.addEventListener('click',closePops);
 
 $$('[data-close]').forEach(b=>b.onclick=closeModal);
 $$('[data-detail-close]').forEach(b=>b.onclick=closeDetail);
+$$('[data-template-close]').forEach(b=>b.onclick=closeTemplate);
+$$('[data-template-delete-close]').forEach(b=>b.onclick=()=>$('#templateDeleteOverlay').classList.remove('open'));
+$('#deleteTemplate').onclick=()=>{if(editingTemplateId)$('#templateDeleteOverlay').classList.add('open')};
+$('#deleteTemplateOnly').onclick=()=>{if(editingTemplateId)removeTemplate(editingTemplateId,false)};
+$('#deleteTemplateFuture').onclick=()=>{if(editingTemplateId)removeTemplate(editingTemplateId,true)};
 
 $('#taskForm').onsubmit=e=>{
   e.preventDefault();
@@ -1375,22 +1463,23 @@ $('#taskForm').onsubmit=e=>{
   if(!title)return formError(form,$('#taskTitle'),'Введите название задачи');
   clearFormError(form);
   const project=$('#taskProject').value||INBOX,date=$('#taskDate').value||todayISO,description=$('#taskDescription').value.trim();
-  const durationWorkdays=Math.max(1,Number($('#taskDuration').value)||1),type=$('#repeatType').value;
-  let newId=Date.now();
-  if(type==='none'){
-    tasks.push({id:newId,title,project,due:'Без времени',priority:$('#taskPriority').value,date,done:false,description,subtasks:[],durationWorkdays,dailyDone:{},color:colorOf(project)});
-  }else{
-    const weekdays=$$('#weekdayPicker input:checked').map(i=>Number(i.value));
-    const monthDays=$('#monthDays').value.split(',').map(x=>Number(x.trim())).filter(n=>n>=1&&n<=31);
-    if(type==='weekly'&&!weekdays.length)return formError(form,$('#weeklyOptions'),'Выберите хотя бы один день недели');
-    if(type==='monthly'&&!monthDays.length)return formError(form,$('#monthDays'),'Укажите числа месяца');
-    const id='r'+Date.now();
-    series.push({id,title,description,project,priority:$('#taskPriority').value,startDate:date,durationWorkdays,repeat:{type,interval:Math.max(1,Number($('#repeatInterval').value)||1),weekdays,monthDays,endType:$('#repeatEndType').value,endDate:$('#repeatEndDate').value,count:Math.max(1,Number($('#repeatCount').value)||1)}});
-    saveSeries();ensureOccurrences();newId=(tasks.find(t=>t.seriesId===id)||{}).id;
-  }
+  const durationWorkdays=Math.max(1,Number($('#taskDuration').value)||1),newId=Date.now();
+  tasks.push({id:newId,title,project,due:'Без времени',priority:$('#taskPriority').value,date,done:false,description,subtasks:[],durationWorkdays,dailyDone:{},color:colorOf(project)});
   save();closeModal();
   if(prefs.view==='tasks'){activeDate=date;weekStart=mondayOf(fromISO(date));prefs.activeDate=activeDate;savePrefs()}
   renderDays();render();if(newId)popIn(newId);
+};
+$('#templateForm').onsubmit=e=>{
+  e.preventDefault();
+  const form=e.target,title=$('#templateName').value.trim(),repeat=templateRepeatFromForm();
+  if(!title)return formError(form,$('#templateName'),'Введите название шаблона');
+  if(repeat.type==='weekly'&&!repeat.weekdays.length)return formError(form,$('#templateWeeklyOptions'),'Выберите хотя бы один рабочий день');
+  if(repeat.type==='monthly'&&!repeat.monthDays.length)return formError(form,$('#templateMonthlyOptions'),'Укажите числа месяца');
+  clearFormError(form);
+  const previous=editingTemplateId&&series.find(item=>item.id===editingTemplateId);
+  const template={id:editingTemplateId||'r'+Date.now(),title,description:$('#templateDescription').value.trim(),project:$('#templateProject').value||INBOX,priority:$('#templatePriority').value,startDate:$('#templateStartDate').value||todayISO,due:/^\d{1,2}:\d{2}$/.test($('#templateTime').value.trim())?$('#templateTime').value.trim().padStart(5,'0'):'Без времени',durationWorkdays:Math.max(1,Number($('#templateDuration').value)||1),status:templateStatus($('#templateStatus').value),repeat,skippedOccurrences:previous&&Array.isArray(previous.skippedOccurrences)?previous.skippedOccurrences:[]};
+  series=editingTemplateId?series.map(item=>item.id===editingTemplateId?template:item):[...series,template];
+  refreshFutureTemplateTasks(template);saveSeries();save();closeTemplate();renderDays();render();toast(previous?'Шаблон обновлён':'Шаблон создан');
 };
 $('#detailForm').onsubmit=e=>{
   e.preventDefault();
@@ -1402,11 +1491,11 @@ $('#detailForm').onsubmit=e=>{
   const project=$('#detailProject').value||current.project,newDate=$('#detailDate').value||current.date,durationWorkdays=Math.max(1,Number($('#detailDuration').value)||1);
   const time=$('#detailTime').value.trim();
   const allowed=new Set(workDates(newDate,durationWorkdays));
-  tasks=tasks.map(t=>t.id===detailId?{...t,title,description:$('#detailDescription').value.trim(),project,date:newDate,durationWorkdays,dailyDone:Object.fromEntries(Object.entries(t.dailyDone||{}).filter(([d])=>allowed.has(d))),due:/^\d{1,2}:\d{2}$/.test(time)?time.padStart(5,'0'):'Без времени',priority:$('#detailPriority').value,color:colorOf(project)}:t);
+  tasks=tasks.map(t=>t.id===detailId?{...t,title,description:$('#detailDescription').value.trim(),project,date:newDate,durationWorkdays,dailyDone:Object.fromEntries(Object.entries(t.dailyDone||{}).filter(([d])=>allowed.has(d))),due:/^\d{1,2}:\d{2}$/.test(time)?time.padStart(5,'0'):'Без времени',priority:$('#detailPriority').value,templateDetached:t.seriesId?true:t.templateDetached,color:colorOf(project)}:t);
   save();closeDetail();
   renderDays();render();
 };
-$('#deleteTask').onclick=()=>{if(detailId===null)return;tasks=tasks.filter(t=>t.id!==detailId);save();closeDetail();renderDays();render()};
+$('#deleteTask').onclick=()=>{if(detailId===null)return;const task=tasks.find(t=>t.id===detailId);if(task&&task.seriesId&&task.occurrenceKey){series=series.map(template=>template.id===task.seriesId?{...template,skippedOccurrences:[...new Set([...(template.skippedOccurrences||[]),task.occurrenceKey])]}:template);saveSeries()}tasks=tasks.filter(t=>t.id!==detailId);save();closeDetail();renderDays();render()};
 $('#detailComplete').onclick=()=>{tasks=tasks.map(t=>t.id===detailId?{...t,done:!t.done,completedEarly:!t.done&&taskDates(t).length>1,completedAt:!t.done?todayISO:null}:t);save();closeDetail();renderDays();render()};
 $('#subInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addSub()}};
 
@@ -1421,7 +1510,7 @@ document.addEventListener('keydown',e=>{
   }
   if(e.key==='Escape'&&$('#rolloverOverlay').classList.contains('open')){e.preventDefault();closeRollover();return}
   if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){const f=document.querySelector('.overlay.open form');if(f){e.preventDefault();f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true}))}}
-  if(e.key==='Escape'){if(drag)return endDrag(true);closeModal();closeDetail();closeProject();closeSettings();closePops()}});
+  if(e.key==='Escape'){if(drag)return endDrag(true);closeModal();closeDetail();closeTemplate();$('#templateDeleteOverlay').classList.remove('open');closeProject();closeSettings();closePops()}});
 $('#search').oninput=e=>applySearchInput(e.target);
 document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&cloudUser&&await reconcileCloud())maybeStartRollover()});
 $('#days').onclick=e=>{const b=e.target.closest('[data-date]');if(b){const dir=b.dataset.date>activeDate?1:b.dataset.date<activeDate?-1:0;activeDate=b.dataset.date;prefs.activeDate=activeDate;savePrefs();renderDays();render();boardEnter(dir)}};
@@ -1456,7 +1545,7 @@ function initDataDots(){
   reduced.addEventListener&&reduced.addEventListener('change',()=>{cancelAnimationFrame(raf);draw(0)});draw(0);
 }
 
-prepareTaskForm();fillSelects();updateScheduleFields();renderDays();render();initDataDots();initCloud();
+prepareTaskForm();fillSelects();updateTemplateScheduleFields();renderDays();render();initDataDots();initCloud();
 window.FocusModulesContext=()=>({client:cloudClient,user:cloudUser,projects});
 </script>
 <script src="./focus-modules.js?v=20260911-2"></script>
