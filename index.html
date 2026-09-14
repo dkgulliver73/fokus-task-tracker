@@ -776,7 +776,19 @@ function renderDone(){
 
 /* ===================== Анимации перестановки ===================== */
 function cardPositions(){return new Map([...document.querySelectorAll('#board .card:not(.dragging)')].map(el=>[el.dataset.id,el.getBoundingClientRect()]))}
-function animateGridFrom(old,duration=MOVE_MS){requestAnimationFrame(()=>document.querySelectorAll('#board .card:not(.dragging)').forEach(el=>{if(REDUCED.matches)return;const a=old.get(el.dataset.id);if(!a)return;el.getAnimations().forEach(animation=>animation.cancel());const b=el.getBoundingClientRect(),x=a.left-b.left,y=a.top-b.top;if(Math.abs(x)>1||Math.abs(y)>1)el.animate([{transform:`translate3d(${x}px,${y}px,0)`},{transform:'translate3d(0,0,0)'}],{duration,easing:'cubic-bezier(.2,.78,.25,1)',fill:'both'})}))}
+function animateGridFrom(old,duration=MOVE_MS){
+  if(REDUCED.matches)return;
+  /* FLIP must be completed in the same frame as the marker move.  The old
+     rectangles are visual coordinates, so cancelling an in-flight animation
+     after the DOM change still lets the next animation start where it looked. */
+  document.querySelectorAll('#board .card:not(.dragging)').forEach(el=>{
+    const a=old.get(el.dataset.id);if(!a)return;
+    el.getAnimations().forEach(animation=>animation.cancel());
+    const b=el.getBoundingClientRect(),x=a.left-b.left,y=a.top-b.top;
+    if(Math.abs(x)<=1&&Math.abs(y)<=1)return;
+    el.animate([{transform:`translate3d(${x}px,${y}px,0)`},{transform:'translate3d(0,0,0)'}],{duration,easing:'cubic-bezier(.2,.78,.25,1)',fill:'both'});
+  });
+}
 function smoothRender(){const old=cardPositions();render();requestAnimationFrame(()=>document.querySelectorAll('#board .card').forEach(el=>{if(REDUCED.matches)return;const a=old.get(el.dataset.id);if(!a)return;const b=el.getBoundingClientRect(),x=a.left-b.left,y=a.top-b.top;if(Math.abs(x)>1||Math.abs(y)>1)el.animate([{transform:`translate(${x}px,${y}px)`,opacity:.7},{transform:'translate(0,0)',opacity:1}],{duration:MOVE_MS,easing:MOVE_EASE})}))}
 function boardEnter(dir){if(REDUCED.matches||!dir)return;const list=document.querySelector('.board .task-list');if(!list)return;list.animate([{opacity:0,transform:`translateX(${dir*14}px)`},{opacity:1,transform:'none'}],{duration:180,easing:MOVE_EASE})}
 function popComplete(id){if(REDUCED.matches)return;const b=document.querySelector(`[data-complete="${id}"]`);if(!b)return;b.animate([{transform:'scale(1)'},{transform:'scale(1.18)'},{transform:'scale(1)'}],{duration:220,easing:MOVE_EASE})}
@@ -900,7 +912,7 @@ function placeMarker(list,before){
   drag.moved=true;
   const old=cardPositions();
   list.insertBefore(drag.marker,anchor||null);
-  animateGridFrom(old,270);
+  animateGridFrom(old,220);
 }
 function endDrag(cancelled){
   dbg('жест завершён'+(cancelled?' (отмена)':''));
