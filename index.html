@@ -311,7 +311,7 @@
     .home-calendar-day .home-date,.home-calendar-day.today .home-date,.home-calendar-day.selected .home-date,.home-calendar-day.today.selected .home-date{display:block;min-width:0;height:auto;border-radius:0;background:transparent;color:#f0f2f7;font-family:inherit;font-size:clamp(23px,2vw,30px);font-weight:800;line-height:.95;letter-spacing:-.045em}
     .home-calendar-day.selected .home-date,.home-calendar-day.today.selected .home-date{color:#fff}
     .home-month-name{color:#7d8798;font-size:11px;font-weight:650;line-height:1;white-space:nowrap}
-    .home-day-statuses{display:grid;gap:5px;align-content:end;width:100%;min-height:31px;margin-top:auto}
+    .home-day-statuses{display:grid;gap:5px;align-content:start;width:100%;height:31px;min-height:31px;flex:0 0 31px;margin-top:auto}
     .home-day-status{display:inline-flex;align-items:center;gap:4px;max-width:100%;font-size:clamp(9px,.78vw,11px);font-weight:800;line-height:1.15;white-space:nowrap}
     .home-day-status i{display:inline!important;width:auto!important;height:auto!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;font-style:normal;font-size:1.05em;line-height:1}
     .home-day-status.complete{color:#81c59e}
@@ -338,6 +338,8 @@
     .home-day-task{grid-template-columns:auto minmax(0,1fr) auto auto;cursor:pointer;user-select:none;touch-action:pan-y}
     .home-day-task[data-home-drag]{cursor:grab}
     .home-day-task.home-dragging{display:none!important}
+    .home-drag-clone{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto auto!important;align-items:center!important;gap:8px!important;min-height:54px!important;padding:9px 10px!important;overflow:hidden}
+    .home-drag-clone .home-day-complete{align-self:center!important;justify-self:end!important;margin:0!important}
     .home-day-task-main{display:contents}
     .home-day-complete{width:24px;height:24px;padding:0;border:1px solid #3a4351;border-radius:8px;background:#10151e;color:transparent;display:grid;place-items:center;transition:background .16s ease,border-color .16s ease,transform .16s ease;flex:none}
     .home-day-complete:hover{border-color:#766df4;background:#1d2132;transform:scale(1.06)}
@@ -401,7 +403,7 @@
       .home-view .home-calendar-day{min-width:0;min-height:0!important;padding:5px 5px 4px;border-radius:9px}.home-view .home-calendar-day:hover{transform:none}
       .home-view .home-date-stack{gap:0}.home-view .home-calendar-day .home-date,.home-view .home-calendar-day.today .home-date,.home-view .home-calendar-day.selected .home-date,.home-view .home-calendar-day.today.selected .home-date{font-size:21px;font-weight:800;line-height:1}.home-view .home-month-name{display:none}
       .home-view .home-calendar-day.today{border-color:#4d5260;background:#171c26}.home-view .home-calendar-day.selected{border-color:#887dff;background:linear-gradient(145deg,#302a5c,#1c2130);box-shadow:0 0 0 1px #7769fa55}
-      .home-view .home-day-statuses{min-height:24px;gap:0}.home-view .home-day-status{font-size:11px;line-height:1.1;gap:3px}.home-view .home-day-status i{font-size:11px}
+      .home-view .home-day-statuses{height:24px;min-height:24px;flex-basis:24px;gap:0;align-content:start}.home-view .home-day-status{font-size:11px;line-height:1.1;gap:3px}.home-view .home-day-status i{font-size:11px}
       .home-view .home-calendar-day.weekend:not(.selected):not(.today){background:#181923;border-color:#30313e}.home-view .home-calendar-day.outside-month{background:#11151d!important;border-color:#252b36!important}.home-view .home-calendar-day.outside-month .home-date{color:#687383}
       .home-view .home-day-panel{width:100%;height:auto!important;min-height:0;padding:14px;border-radius:15px;overflow:visible;box-shadow:none;animation:none}
       .home-view .home-day-panel-head{display:flex;align-items:center;gap:8px;padding:0 0 10px;border-bottom:1px solid var(--line)}
@@ -1099,8 +1101,11 @@ function startHomeDrag(x,y){
 }
 function homeDragFrame(){
   if(!homeDrag)return;
-  const d=homeDrag;d.clone.style.transform=`translate3d(${d.x-(d.rect.left+d.ox)}px,${d.y-(d.rect.top+d.oy)}px,0) rotate(1.5deg) scale(${REDUCED.matches?1:LIFT})`;
-  const panel=$('.home-day-task-list'),r=panel&&panel.getBoundingClientRect();if(panel&&r){if(d.y<r.top+36)panel.scrollTop-=8;else if(d.y>r.bottom-36)panel.scrollTop+=8}
+  const d=homeDrag,bounds=d.list.getBoundingClientRect(),panel=$('.home-day-task-list'),panelRect=panel&&panel.getBoundingClientRect();
+  /* The clone is a local sorting affordance: it never leaves the active list. */
+  const left=Math.max(bounds.left,Math.min(bounds.right-d.rect.width,d.x-d.ox)),top=Math.max(bounds.top,Math.min(bounds.bottom-d.rect.height,d.y-d.oy));
+  d.clone.style.transform=`translate3d(${left-d.rect.left}px,${top-d.rect.top}px,0) rotate(1.5deg) scale(${REDUCED.matches?1:LIFT})`;
+  if(panel&&panelRect){if(d.y<panelRect.top+36)panel.scrollTop-=8;else if(d.y>panelRect.bottom-36)panel.scrollTop+=8}
   const el=document.elementFromPoint(d.x,d.y),list=el&&el.closest&&el.closest('#homeActiveTasks');
   if(list){const rows=[...list.querySelectorAll(':scope > .home-day-task:not(.home-dragging)')],before=rows.find(row=>{const rect=row.getBoundingClientRect();return d.y<rect.top+rect.height/2});placeHomeMarker(list,before||null)}
   d.raf=requestAnimationFrame(homeDragFrame);
@@ -1112,21 +1117,16 @@ function placeHomeMarker(list,before){
 function endHomeDrag(cancelled=false){
   const d=homeDrag;if(!d){homePending=null;detachHomeWindow();return}homeDrag=null;cancelAnimationFrame(d.raf);detachHomeWindow();
   const moving=tasks.find(task=>task.id===d.id),next=d.marker.nextElementSibling,beforeId=next&&next.classList.contains('home-day-task')?Number(next.dataset.homeTask):null,old=homeTaskPositions();
-  if(moving&&!cancelled){
+  if(moving&&!cancelled&&d.moved){
     const rest=tasks.filter(task=>task.id!==d.id);let at=beforeId!==null?rest.findIndex(task=>task.id===beforeId):-1;
     if(at<0){const activeIndices=rest.map((task,index)=>taskVisibleOnDate(task,homeSelectedDate)&&!(task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate]))?index:-1).filter(index=>index>=0);at=activeIndices.length?activeIndices.at(-1)+1:rest.length}
     rest.splice(at,0,moving);tasks=rest;save();renderDays();render();$('.home-day-panel').style.animation='none';animateHomeTasksFrom(old,MOVE_MS);
   }
   d.marker.remove();d.row.classList.remove('home-dragging');
   homeJustDragged=!!d.moved;setTimeout(()=>homeJustDragged=false,90);
-  const target=$(`#board .home-day-task[data-home-task="${d.id}"]`);homeFlyHome(d.clone,target);
-}
-function homeFlyHome(clone,target){
-  if(!target||REDUCED.matches){clone.remove();return}
-  const to=target.getBoundingClientRect(),left=parseFloat(clone.style.left)||0,top=parseFloat(clone.style.top)||0;
-  target.style.opacity='0';
-  const animation=clone.animate([{transform:clone.style.transform},{transform:`translate3d(${to.left-left}px,${to.top-top}px,0) rotate(0deg) scale(1)`,opacity:1},{opacity:0}],{duration:190,easing:'cubic-bezier(.2,.82,.25,1)',fill:'forwards'});
-  animation.onfinish=()=>{target.style.removeProperty('opacity');clone.remove()};setTimeout(()=>{target.style.removeProperty('opacity');clone.remove()},260);
+  /* FLIP already keeps the real row visually continuous.  A second fly-home
+     animation here competed with it and caused the visible shake after drop. */
+  d.clone.remove();
 }
 function completeHomeTask(id){
   const old=homeTaskPositions();toggleTaskForDate(id,homeSelectedDate);save();renderDays();render();$('.home-day-panel').style.animation='none';animateHomeTasksFrom(old,220);
