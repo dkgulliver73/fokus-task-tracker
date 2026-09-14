@@ -316,10 +316,10 @@
     .home-calendar-day{justify-content:flex-start}
     .home-date-stack{flex:none}
     .home-day-statuses{display:flex;flex-direction:column;align-items:flex-start;gap:5px;width:100%;margin-top:auto;flex:none}
-    .home-day-status{display:inline-flex;align-items:center;gap:4px;max-width:100%;font-size:clamp(9px,.78vw,11px);font-weight:800;line-height:1.15;white-space:nowrap}
+    .home-day-status{display:inline-flex;align-items:center;justify-content:flex-start;gap:4px;width:auto;height:auto;max-width:100%;margin:0;padding:0;position:static;transform:none;font-size:clamp(9px,.78vw,11px);font-weight:800;line-height:1.15;white-space:nowrap}
     .home-day-status i{display:inline!important;width:auto!important;height:auto!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;font-style:normal;font-size:1.05em;line-height:1}
-    .home-day-status.complete{color:#81c59e}
-    .home-day-status.active{color:#a69dff}
+    .home-day-status.status-complete{color:#81c59e}
+    .home-day-status.status-active{color:#a69dff}
     .home-calendar-weekdays .weekend{color:#b0a8c4}
     .home-calendar-day.weekend:not(.selected):not(.today){background:linear-gradient(145deg,#1b1b29,#151720);border-color:#3b3949}
     .home-calendar-day.weekend:not(.selected):not(.today):hover{background:linear-gradient(145deg,#222134,#191b27);border-color:#504c61}
@@ -378,8 +378,6 @@
       .home-dashboard .home-calendar h2{margin:0}
       .home-dashboard .home-calendar{height:auto;align-self:start}
       .home-dashboard .home-day-panel{align-self:start}
-      .home-day-status.complete,.home-day-status.complete i{padding:0!important;border:0!important;border-left:0!important;outline:0!important;background:transparent!important;box-shadow:none!important}
-      .home-day-status.complete:before,.home-day-status.complete i:before{content:none!important}
       .home-calendar-day.today .home-date,.home-calendar-day.selected .home-date,.home-calendar-day.today.selected .home-date{font-size:clamp(23px,2vw,30px);font-weight:800;line-height:.95}
     }
     .home-day-panel-head{grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:8px 12px}
@@ -492,7 +490,7 @@ let rolloverQueue=[],rolloverIndex=0,rolloverBusy=false,rolloverReturnFocus=null
 /* ===================== Состояние ===================== */
 const todayISO=toISO(new Date());
 /* Increase only for a version that is actually published. */
-const BUILD_NUMBER=145;
+const BUILD_NUMBER=146;
 const INBOX='Без проекта';
 const REDUCED=matchMedia('(prefers-reduced-motion: reduce)');
 const MOVE_MS=320,MOVE_EASE='cubic-bezier(0.23,1,0.32,1)';
@@ -786,7 +784,7 @@ function renderHome(){
     const state=active.length&&iso<todayISO?'overdue':active.length?'active':onDay.length?'complete':'free';
     const stateText=completed.length&&active.length?`${completed.length} из ${onDay.length} выполнено`:state==='overdue'?'Просрочено':state==='active'?`${active.length} ${taskWord(active.length)}`:state==='complete'?`${completed.length} выполнено`:'Свободно';
     const monthLabel=cap(date.toLocaleDateString('ru-RU',{month:'long'}));
-    const statusHtml=completed.length||active.length?`<span class="home-day-statuses">${completed.length?`<span class="home-day-status complete" title="${completed.length} выполнено"><i aria-hidden="true">✓</i> ${completed.length} ${taskWord(completed.length)}</span>`:''}${active.length?`<span class="home-day-status active" title="${active.length} активных задач"><i aria-hidden="true">●</i> ${active.length} ${taskWord(active.length)}</span>`:''}</span>`:'';
+    const statusHtml=completed.length||active.length?`<span class="home-day-statuses">${completed.length?`<span class="home-day-status status-complete" title="${completed.length} выполнено"><i aria-hidden="true">✓</i> ${completed.length} ${taskWord(completed.length)}</span>`:''}${active.length?`<span class="home-day-status status-active" title="${active.length} активных задач"><i aria-hidden="true">●</i> ${active.length} ${taskWord(active.length)}</span>`:''}</span>`:'';
     cells.push(`<button type="button" class="home-calendar-day ${isToday?'today':''} ${isSelected?'selected':''} ${isOutside?'outside-month':''} state-${state}" data-home-date="${iso}" aria-pressed="${isSelected}" title="${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}: ${stateText}"><span class="home-date-stack"><span class="home-date">${date.getDate()}</span><span class="home-month-name">${monthLabel}</span></span>${statusHtml}</button>`);
   }
   const selectedDate=fromISO(homeSelectedDate),selectedTasks=tasks.filter(task=>taskVisibleOnDate(task,homeSelectedDate)),selectedDone=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).length,activeTasks=selectedTasks.filter(task=>!(task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate]))),doneTasks=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).sort((a,b)=>(b.completedAtTime||0)-(a.completedAtTime||0)),monthName=selectedDate.toLocaleDateString('ru-RU',{month:'long'}),weekday=cap(selectedDate.toLocaleDateString('ru-RU',{weekday:'long'}));
