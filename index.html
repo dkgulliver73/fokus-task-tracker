@@ -390,6 +390,12 @@
     .home-day-date h3{display:flex;align-items:baseline;gap:8px}
     .home-day-date h3 small{color:#9ca6b7;font-size:15px;font-weight:650;letter-spacing:0;text-transform:lowercase}
     .home-day-panel-head .home-day-summary{grid-column:2;grid-row:2;margin:0;align-self:start;text-align:right;font-size:11px}
+    /* Secondary weekly dashboard: a compact current-state summary, not historical BI. */
+    .home-dashboard{height:auto;min-height:100%;grid-template-rows:auto auto;align-content:start;padding-bottom:18px}
+    .home-analytics{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.85fr);gap:0;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#141a25e8,#10151de8);box-shadow:0 18px 42px #0002;overflow:hidden}
+    .home-insight{min-width:0;padding:18px 20px}.home-week-insight{border-right:1px solid var(--line)}.home-insight-kicker{display:block;color:#9690ff;font-size:10px;font-weight:800;letter-spacing:.13em;line-height:1.2;text-transform:uppercase}.home-week-total{display:flex;align-items:baseline;gap:7px;margin:9px 0 16px}.home-week-total strong{font-size:24px;letter-spacing:-.04em}.home-week-total span{color:#8590a2;font-size:12px;font-weight:650}.home-rhythm{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:end}.home-rhythm-day{display:grid;grid-template-columns:auto 1fr;grid-template-rows:42px auto;column-gap:4px;align-items:end;color:#7f8999;font-size:10px}.home-rhythm-track{grid-column:1/-1;display:flex;align-items:flex-end;gap:2px;height:42px;padding:3px 4px;border-radius:7px;background:#0e131c}.home-rhythm-track i{display:block;min-width:5px;border-radius:4px 4px 2px 2px}.home-rhythm-done{background:#79c29b}.home-rhythm-open{background:#8278e9}.home-rhythm-day b{color:#c3cad6;font-size:10px;font-weight:700;text-align:right}.home-project-list{display:grid;gap:12px;margin-top:14px}.home-project-row>div{display:flex;justify-content:space-between;gap:8px;color:#c8ced9;font-size:12px;font-weight:650}.home-project-row b{font-variant-numeric:tabular-nums;font-size:11px}.home-project-row>i{display:block;height:5px;margin-top:6px;overflow:hidden;border-radius:8px;background:#222a38}.home-project-row em{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8177ec,#a69dff)}.home-project-extra{color:#778293;font-size:11px}.home-attention{grid-column:1/-1;display:flex;justify-content:space-between;gap:18px;padding:13px 20px;border-top:1px solid var(--line);background:#10151c}.home-attention>.home-insight-kicker{flex:none;padding-top:2px}.home-attention>div{display:flex;align-items:center;justify-content:flex-end;gap:18px;flex-wrap:wrap;color:#aeb6c4;font-size:12px}.home-attention span{display:flex;gap:4px;align-items:baseline;white-space:nowrap}.home-attention span:last-child{padding-left:18px;border-left:1px solid #29313e}.home-attention small{color:#778293;font-size:10px;font-weight:700;text-transform:uppercase}.home-attention b{color:#dde2ec;font-size:12px}.home-attention .attention-overdue b{color:#e5aa7b}.home-attention .attention-clear{color:#86c4a0}.home-analytics-empty{display:block;padding:20px}.home-analytics-empty>span{color:#9690ff;font-size:10px;font-weight:800;letter-spacing:.13em}.home-analytics-empty strong{display:block;margin-top:8px;font-size:17px}.home-analytics-empty p{margin:5px 0 0;color:#788394;font-size:12px}
+    @media(min-width:621px){.board.home-dashboard-board{height:100vh;overflow:auto}.home-dashboard .home-calendar,.home-dashboard .home-day-panel{align-self:start}}
+    @media(max-width:768px){.home-analytics{grid-column:auto;grid-template-columns:1fr;border-radius:15px}.home-insight{padding:15px}.home-week-insight{border-right:0;border-bottom:1px solid var(--line)}.home-attention{display:grid;gap:10px;padding:14px 15px}.home-attention>div{justify-content:flex-start;gap:10px 14px}.home-attention span:last-child{padding-left:0;border-left:0}.home-week-total{margin-bottom:13px}.home-rhythm{gap:7px}}
     @media(min-width:901px){.app{grid-template-columns:196px minmax(0,1fr)}aside{padding-left:12px;padding-right:12px}.focus-plaque{width:168px;height:54px;border-radius:11px}.focus-plaque strong{font-size:27px;letter-spacing:.15em;padding-left:.15em}.focus-plaque small{font-size:5.5px;letter-spacing:.12em}}
     @media(max-width:620px){.home-day-panel-head{grid-template-columns:minmax(0,1fr) auto}.home-day-date h3{font-size:40px}.home-day-add{min-height:32px;padding:0 9px;font-size:10px}}
     /* Mobile home is a dedicated vertical workspace, not a shrunken desktop dashboard. */
@@ -490,7 +496,7 @@ let rolloverQueue=[],rolloverIndex=0,rolloverBusy=false,rolloverReturnFocus=null
 /* ===================== Состояние ===================== */
 const todayISO=toISO(new Date());
 /* Increase only for a version that is actually published. */
-const BUILD_NUMBER=146;
+const BUILD_NUMBER=147;
 const INBOX='Без проекта';
 const REDUCED=matchMedia('(prefers-reduced-motion: reduce)');
 const MOVE_MS=320,MOVE_EASE='cubic-bezier(0.23,1,0.32,1)';
@@ -569,11 +575,40 @@ function clearLoginFromSearch(){
 
 const colorOf=name=>(projects.find(p=>p.name===name)||{}).color||'gray';
 
+const validIsoDate=value=>/^\d{4}-\d{2}-\d{2}$/.test(value||'');
+const validTimestamp=value=>typeof value==='string'&&!Number.isNaN(Date.parse(value));
+const historyNow=()=>new Date().toISOString();
+function normalizeTaskHistory(task,date){
+  const {completedAtTime,...withoutLegacyCompletionTime}=task;
+  const migratedOriginal=!validIsoDate(task.originalScheduledDate);
+  const legacyCompletedAt=validTimestamp(task.completedAt)?task.completedAt:null;
+  const completedAt=typeof completedAtTime==='number'&&Number.isFinite(completedAtTime)?new Date(completedAtTime).toISOString():legacyCompletedAt;
+  return {...withoutLegacyCompletionTime,
+    createdAt:validTimestamp(task.createdAt)?task.createdAt:undefined,
+    updatedAt:validTimestamp(task.updatedAt)?task.updatedAt:undefined,
+    originalScheduledDate:migratedOriginal?date:task.originalScheduledDate,
+    originalScheduledDateSource:migratedOriginal?'migration':(task.originalScheduledDateSource||'recorded'),
+    historyStartedAt:validTimestamp(task.historyStartedAt)?task.historyStartedAt:(validTimestamp(task.createdAt)?task.createdAt:historyNow()),
+    rescheduleHistory:Array.isArray(task.rescheduleHistory)?task.rescheduleHistory.filter(event=>event&&validIsoDate(event.fromDate)&&validIsoDate(event.toDate)&&validTimestamp(event.at)):[],
+    statusHistory:Array.isArray(task.statusHistory)?task.statusHistory.filter(event=>event&&typeof event.from==='string'&&typeof event.to==='string'&&validTimestamp(event.at)):[],
+    completedAt};
+}
+function touchTask(task,at=historyNow()){return {...task,updatedAt:at}}
+function rescheduleTask(task,toDate,source,at=historyNow()){
+  if(task.date===toDate)return task;
+  return {...task,date:toDate,updatedAt:at,rescheduleHistory:[...(task.rescheduleHistory||[]),{at,fromDate:task.date,toDate,source}]};
+}
+function setTaskDone(task,done,at=historyNow()){
+  if(task.done===done)return touchTask(task,at);
+  const from=task.done?'done':'active',to=done?'done':'active';
+  return {...task,done,updatedAt:at,completedAt:done?at:null,statusHistory:[...(task.statusHistory||[]),{at,from,to}]};
+}
+
 tasks=tasks.map((t,i)=>{
   let date=t.date;
   if(!date&&t.day){const b=new Date();date=`${b.getFullYear()}-${pad(b.getMonth()+1)}-${pad(Number(t.day))}`}
   const project=t.project||INBOX;
-  return{...t,project,
+  const normalized={...t,project,
     date:date||toISO(addDays(weekStart,i%7)),
     done:typeof t.done==='boolean'?t.done:t.status==='done',
     due:/^\d\d:\d\d$/.test(t.due||'')?t.due:'Без времени',
@@ -583,6 +618,7 @@ tasks=tasks.map((t,i)=>{
     durationWorkdays:Math.max(1,Number(t.durationWorkdays)||1),
     dailyDone:t.dailyDone&&typeof t.dailyDone==='object'?t.dailyDone:{},
     color:colorOf(project)};
+  return normalizeTaskHistory(normalized,normalized.date);
 });
 
 function touchLocal(){if(!cloudApplying){localStorage.setItem('focus_local_updated',new Date().toISOString());localStorage.setItem('focus_local_dirty','1')}}
@@ -636,7 +672,8 @@ function ensureOccurrences(){
     const skipped=new Set(s.skippedOccurrences||[]);
     occurrenceDates(s,horizon).forEach(date=>{
       const key=s.id+'@'+date;if(known.has(key)||skipped.has(key))return;known.add(key);
-      tasks.push({id:Date.now()+Math.floor(Math.random()*1000000),title:s.title,project:s.project,due:s.due||'Без времени',priority:s.priority,date,done:false,description:s.description||'',subtasks:[],durationWorkdays:s.durationWorkdays||1,dailyDone:{},seriesId:s.id,occurrenceKey:key,templateDetached:false,color:colorOf(s.project)});
+      const createdAt=historyNow();
+      tasks.push({id:Date.now()+Math.floor(Math.random()*1000000),title:s.title,project:s.project,due:s.due||'Без времени',priority:s.priority,date,done:false,description:s.description||'',subtasks:[],durationWorkdays:s.durationWorkdays||1,dailyDone:{},seriesId:s.id,occurrenceKey:key,templateDetached:false,color:colorOf(s.project),createdAt,updatedAt:createdAt,originalScheduledDate:date,originalScheduledDateSource:'recorded',historyStartedAt:createdAt,rescheduleHistory:[],statusHistory:[],completedAt:null});
     });
   });
 }
@@ -775,6 +812,37 @@ function renderHomeLegacy(){
   $('#homeToday').onclick=()=>{homeMonth=new Date(fromISO(todayISO).getFullYear(),fromISO(todayISO).getMonth(),1);render()};
   $$('[data-home-date]').forEach(button=>button.onclick=()=>{activeDate=button.dataset.homeDate;weekStart=mondayOf(fromISO(activeDate));prefs.view='tasks';prefs.activeDate=activeDate;savePrefs();renderDays();render()});
 }
+function homeWeekSummary(){
+  const start=mondayOf(fromISO(todayISO));
+  const days=Array.from({length:5},(_,index)=>{const date=addDays(start,index);return{date,iso:toISO(date),short:['Пн','Вт','Ср','Чт','Пт'][index],full:cap(date.toLocaleDateString('ru-RU',{weekday:'long'})),total:0,done:0,active:0}});
+  const byDate=new Map(days.map(day=>[day.iso,day]));
+  const projectsByName=new Map();
+  tasks.forEach(task=>{
+    taskDates(task).forEach(iso=>{
+      const day=byDate.get(iso);if(!day)return;
+      const done=!!task.done||!!(task.dailyDone&&task.dailyDone[iso]);
+      day.total++;if(done)day.done++;else day.active++;
+      const project=projectsByName.get(task.project)||{name:task.project,total:0,done:0};
+      project.total++;if(done)project.done++;projectsByName.set(task.project,project);
+    });
+  });
+  const total=days.reduce((sum,day)=>sum+day.total,0),done=days.reduce((sum,day)=>sum+day.done,0);
+  const todayActive=tasks.filter(task=>taskVisibleOnDate(task,todayISO)&&!(task.done||(task.dailyDone&&task.dailyDone[todayISO]))).length;
+  const overdue=tasks.filter(task=>!task.done&&remainingTaskDates(task).length&&remainingTaskDates(task).at(-1)<todayISO).length;
+  const upcoming=[];let cursor=nextWorkday(fromISO(todayISO));
+  while(upcoming.length<10){upcoming.push({iso:toISO(cursor),date:new Date(cursor)});cursor=nextWorkday(addDays(cursor,1))}
+  const peak=upcoming.map(day=>({...day,count:tasks.filter(task=>!task.done&&taskOnDate(task,day.iso)&&!(task.dailyDone&&task.dailyDone[day.iso])).length})).sort((a,b)=>b.count-a.count||a.date-b.date)[0];
+  return{days,total,done,percent:total?Math.round(done/total*100):0,projects:[...projectsByName.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ru')),overdue,todayActive,peak};
+}
+function renderHomeAnalytics(summary){
+  if(!summary.total)return `<section class="home-analytics home-analytics-empty" aria-label="Моя неделя"><span>МОЯ НЕДЕЛЯ</span><strong>На эту неделю задач пока нет</strong><p>Добавьте задачу в календаре, когда появится план.</p></section>`;
+  const maxDay=Math.max(1,...summary.days.map(day=>day.total));
+  const rhythm=summary.days.map(day=>`<div class="home-rhythm-day" title="${day.full}: ${day.done} из ${day.total}"><div class="home-rhythm-track"><i class="home-rhythm-done" style="height:${Math.round(day.done/maxDay*100)}%"></i><i class="home-rhythm-open" style="height:${Math.round((day.total-day.done)/maxDay*100)}%"></i></div><small>${day.short}</small><b>${day.done}/${day.total}</b></div>`).join('');
+  const visibleProjects=summary.projects.slice(0,3),extra=summary.projects.length-visibleProjects.length;
+  const projectRows=visibleProjects.map(project=>{const percent=project.total?Math.round(project.done/project.total*100):0;return `<div class="home-project-row"><div><span>${escapeHtml(project.name)}</span><b>${project.done} / ${project.total}</b></div><i><em style="width:${percent}%"></em></i></div>`}).join('');
+  const attention=[summary.overdue?`<span class="attention-overdue"><b>${summary.overdue}</b> ${taskWord(summary.overdue)} просрочено</span>`:'<span class="attention-clear">Просроченных нет ✓</span>',summary.todayActive?`<span><b>${summary.todayActive}</b> ${taskWord(summary.todayActive)} на сегодня</span>`:'',summary.peak&&summary.peak.count?`<span><small>Пик нагрузки</small><b>${cap(summary.peak.date.toLocaleDateString('ru-RU',{weekday:'long'}))} · ${summary.peak.count} ${taskWord(summary.peak.count)}</b></span>`:''].filter(Boolean).join('');
+  return `<section class="home-analytics" aria-label="Аналитика недели"><div class="home-insight home-week-insight"><span class="home-insight-kicker">МОЯ НЕДЕЛЯ</span><div class="home-week-total"><strong>${summary.done} из ${summary.total}</strong><span>· ${summary.percent}% недели</span></div><div class="home-rhythm">${rhythm}</div></div><section class="home-insight home-project-insight"><span class="home-insight-kicker">ПО ПРОЕКТАМ</span><div class="home-project-list">${projectRows}${extra?`<small class="home-project-extra">+ ещё ${extra}</small>`:''}</div></section><section class="home-attention"><span class="home-insight-kicker">ТРЕБУЕТ ВНИМАНИЯ</span><div>${attention}</div></section></section>`;
+}
 function renderHome(){
   const year=homeMonth.getFullYear(),month=homeMonth.getMonth(),first=new Date(year,month,1),monthDays=new Date(year,month+1,0).getDate(),offset=(first.getDay()+6)%7,weekCount=Math.ceil((offset+monthDays)/7);
   const title=homeMonth.toLocaleDateString('ru-RU',{month:'long',year:'numeric'}),weekDays=[['Понедельник','Пн'],['Вторник','Вт'],['Среда','Ср'],['Четверг','Чт'],['Пятница','Пт']],gridStart=addDays(first,-offset),cells=[];
@@ -787,10 +855,11 @@ function renderHome(){
     const statusHtml=completed.length||active.length?`<span class="home-day-statuses">${completed.length?`<span class="home-day-status status-complete" title="${completed.length} выполнено"><i aria-hidden="true">✓</i> ${completed.length} ${taskWord(completed.length)}</span>`:''}${active.length?`<span class="home-day-status status-active" title="${active.length} активных задач"><i aria-hidden="true">●</i> ${active.length} ${taskWord(active.length)}</span>`:''}</span>`:'';
     cells.push(`<button type="button" class="home-calendar-day ${isToday?'today':''} ${isSelected?'selected':''} ${isOutside?'outside-month':''} state-${state}" data-home-date="${iso}" aria-pressed="${isSelected}" title="${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}: ${stateText}"><span class="home-date-stack"><span class="home-date">${date.getDate()}</span><span class="home-month-name">${monthLabel}</span></span>${statusHtml}</button>`);
   }
-  const selectedDate=fromISO(homeSelectedDate),selectedTasks=tasks.filter(task=>taskVisibleOnDate(task,homeSelectedDate)),selectedDone=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).length,activeTasks=selectedTasks.filter(task=>!(task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate]))),doneTasks=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).sort((a,b)=>(b.completedAtTime||0)-(a.completedAtTime||0)),monthName=selectedDate.toLocaleDateString('ru-RU',{month:'long'}),weekday=cap(selectedDate.toLocaleDateString('ru-RU',{weekday:'long'}));
+  const selectedDate=fromISO(homeSelectedDate),selectedTasks=tasks.filter(task=>taskVisibleOnDate(task,homeSelectedDate)),selectedDone=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).length,activeTasks=selectedTasks.filter(task=>!(task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate]))),doneTasks=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).sort((a,b)=>(Date.parse(b.completedAt)||0)-(Date.parse(a.completedAt)||0)),monthName=selectedDate.toLocaleDateString('ru-RU',{month:'long'}),weekday=cap(selectedDate.toLocaleDateString('ru-RU',{weekday:'long'}));
   const taskRow=(task,done)=>`<article class="home-day-task ${done?'done':''}" data-home-task="${task.id}" ${done?'':'data-home-drag'}><span class="tag ${task.color}">${escapeHtml(task.project)}</span><strong>${escapeHtml(task.title)}</strong>${task.due==='Без времени'?'':`<small>${task.due}</small>`}<button type="button" class="home-day-complete" data-home-task-complete="${task.id}" aria-label="${done?'Вернуть в активные':'Отметить выполненной'}" title="${done?'Вернуть в активные':'Отметить выполненной'}">✓</button></article>`;
   const taskList=selectedTasks.length?`<div class="home-day-active-list" id="homeActiveTasks">${activeTasks.map(task=>taskRow(task,false)).join('')}${activeTasks.length?'':'<div class="home-day-empty">Нет активных задач</div>'}</div>${doneTasks.length?`<section class="home-completed"><button type="button" class="home-completed-toggle" data-home-completed-toggle aria-expanded="${!homeCompletedCollapsed}"><span>Выполнено · ${doneTasks.length}</span><i aria-hidden="true">${homeCompletedCollapsed?'▸':'▾'}</i></button><div class="home-day-done-list" id="homeDoneTasks" ${homeCompletedCollapsed?'hidden':''}>${doneTasks.map(task=>taskRow(task,true)).join('')}</div></section>`:''}`:'<div class="home-day-empty">На этот день задач нет</div>';
-  $('#board').innerHTML=`<section class="home-dashboard" aria-label="Обзор задач" style="--home-panel-height:${weekCount*94+48}px"><section class="home-calendar"><header class="home-calendar-head"><h2>${cap(title)}</h2></header><div class="home-calendar-weekdays">${weekDays.map(([full,short])=>`<span><span class="weekday-full">${full}</span><span class="weekday-short">${short}</span></span>`).join('')}</div><div class="home-calendar-grid" style="--home-weeks:${weekCount}">${cells.join('')}</div></section><aside class="home-day-panel"><div class="home-day-panel-head"><div class="home-day-date"><span>${weekday}</span><h3>${selectedDate.getDate()} <small>${monthName}</small></h3></div><button type="button" class="home-day-add" data-open data-new-date="${homeSelectedDate}">＋ Новая задача</button><small class="home-day-summary">${selectedTasks.length?`${selectedTasks.length} ${taskWord(selectedTasks.length)}${selectedDone?` · ${selectedDone} выполнено`:''}`:'Нет задач'}</small></div><div class="home-day-task-list">${taskList}</div></aside></section>`;
+  const analytics=homeWeekSummary();
+  $('#board').innerHTML=`<section class="home-dashboard" aria-label="Обзор задач" style="--home-panel-height:${weekCount*94+48}px"><section class="home-calendar"><header class="home-calendar-head"><h2>${cap(title)}</h2></header><div class="home-calendar-weekdays">${weekDays.map(([full,short])=>`<span><span class="weekday-full">${full}</span><span class="weekday-short">${short}</span></span>`).join('')}</div><div class="home-calendar-grid" style="--home-weeks:${weekCount}">${cells.join('')}</div></section><aside class="home-day-panel"><div class="home-day-panel-head"><div class="home-day-date"><span>${weekday}</span><h3>${selectedDate.getDate()} <small>${monthName}</small></h3></div><button type="button" class="home-day-add" data-open data-new-date="${homeSelectedDate}">＋ Новая задача</button><small class="home-day-summary">${selectedTasks.length?`${selectedTasks.length} ${taskWord(selectedTasks.length)}${selectedDone?` · ${selectedDone} выполнено`:''}`:'Нет задач'}</small></div><div class="home-day-task-list">${taskList}</div></aside>${renderHomeAnalytics(analytics)}</section>`;
   if(matchMedia('(min-width:621px)').matches){const calendar=$('.home-dashboard .home-calendar'),panel=$('.home-dashboard .home-day-panel');panel.style.height=`${calendar.offsetHeight}px`;}
   $$('[data-home-date]').forEach(button=>button.onclick=()=>{homeSelectedDate=button.dataset.homeDate;const date=fromISO(homeSelectedDate);if(date.getMonth()!==homeMonth.getMonth()||date.getFullYear()!==homeMonth.getFullYear())homeMonth=new Date(date.getFullYear(),date.getMonth(),1);render()});
   $$('[data-home-task]').forEach(row=>{
@@ -1023,18 +1092,18 @@ function endDrag(cancelled){
   if(!moving){d.clone.remove();d.marker.remove();d.card.classList.remove('dragging');return}
   const before=cardPositions();
   if(!cancelled&&d.day){
-    tasks=tasks.filter(t=>t.id!==d.id);moving.date=d.day.dataset.date;if(moving.seriesId)moving.templateDetached=true;tasks.push(moving);activeDate=moving.date;
+    tasks=tasks.filter(t=>t.id!==d.id);const moved=rescheduleTask(moving,d.day.dataset.date,'drag');if(moved.seriesId)moved.templateDetached=true;tasks.push(moved);activeDate=moved.date;
   }else if(!cancelled){
     const next=d.marker.nextElementSibling;
     const beforeId=next&&next.classList.contains('card')?Number(next.dataset.id):null;
     const col=d.marker.closest('.column');
     const rest=tasks.filter(t=>t.id!==d.id);
-    if(col)moving.date=col.dataset.date;
-    if(moving.seriesId)moving.templateDetached=true;
+    const moved=col?rescheduleTask(moving,col.dataset.date,'drag'):touchTask(moving);
+    if(moved.seriesId)moved.templateDetached=true;
     let at;
     if(beforeId!==null)at=rest.findIndex(t=>t.id===beforeId);
     else{const idx=rest.map((t,i)=>t.date===moving.date?i:-1).filter(i=>i>=0);at=idx.length?idx[idx.length-1]+1:rest.length}
-    rest.splice(Math.max(0,at),0,moving);tasks=rest;
+    rest.splice(Math.max(0,at),0,moved);tasks=rest;
   }
   d.marker.remove();d.card.classList.remove('dragging');
   save();renderDays();render();
@@ -1129,7 +1198,7 @@ function endHomeDrag(cancelled=false){
   if(moving&&!cancelled&&d.moved){
     const rest=tasks.filter(task=>task.id!==d.id);let at=beforeId!==null?rest.findIndex(task=>task.id===beforeId):-1;
     if(at<0){const activeIndices=rest.map((task,index)=>taskVisibleOnDate(task,homeSelectedDate)&&!(task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate]))?index:-1).filter(index=>index>=0);at=activeIndices.length?activeIndices.at(-1)+1:rest.length}
-    rest.splice(at,0,moving);tasks=rest;save();renderDays();render();$('.home-day-panel').style.animation='none';animateHomeTasksFrom(old,MOVE_MS);
+    rest.splice(at,0,touchTask(moving));tasks=rest;save();renderDays();render();$('.home-day-panel').style.animation='none';animateHomeTasksFrom(old,MOVE_MS);
   }
   d.marker.remove();d.row.classList.remove('home-dragging');
   homeJustDragged=!!d.moved;setTimeout(()=>homeJustDragged=false,90);
@@ -1158,13 +1227,15 @@ function toggleTaskForDate(id,date){
   tasks=tasks.map(t=>{
     if(t.id!==id)return t;
     const dates=taskDates(t);
-    if(dates.length===1)return{...t,done:!t.done,completedAt:!t.done?todayISO:null,completedAtTime:!t.done?Date.now():null};
+    const at=historyNow();
+    if(dates.length===1)return setTaskDone(t,!t.done,at);
     const markDate=dates.includes(date)?date:dates.find(d=>!(t.dailyDone&&t.dailyDone[d]));
-    if(t.done&&!(t.dailyDone&&t.dailyDone[markDate]))return{...t,done:false,completedEarly:false,completedAt:null,completedAtTime:null};
+    if(t.done&&!(t.dailyDone&&t.dailyDone[markDate]))return{...setTaskDone(t,false,at),completedEarly:false};
     const dailyDone={...(t.dailyDone||{})};
     if(dailyDone[markDate])delete dailyDone[markDate];else dailyDone[markDate]=true;
     const done=dates.every(d=>dailyDone[d]);
-    return{...t,dailyDone,done,completedAt:done?todayISO:null,completedAtTime:done?Date.now():null};
+    const withProgress={...t,dailyDone};
+    return done!==t.done?setTaskDone(withProgress,done,at):touchTask(withProgress,at);
   });
 }
 function completeForDate(id,date){
@@ -1190,11 +1261,12 @@ function updateRolloverTask(id,action,targetDate=null){
   rolloverBusy=true;
   tasks=tasks.map(t=>{
     if(t.id!==id)return t;
-    if(action==='move')return{...t,date:targetDate,rollover:rolloverRecord(t,action,targetDate,null)};
-    if(action==='complete')return{...t,done:true,completedEarly:Number(t.durationWorkdays)>1,completedAt:todayISO,rollover:rolloverRecord(t,action,null,null)};
-    if(action==='keep')return{...t,rollover:rolloverRecord(t,action,null,'forever')};
-    if(action==='snooze')return{...t,rollover:rolloverRecord(t,action,null,toISO(nextWorkday(addDays(fromISO(todayISO),1))))};
-    if(action==='open')return{...t,rollover:rolloverRecord(t,action,null,toISO(nextWorkday(addDays(fromISO(todayISO),1))))};
+    const at=historyNow();
+    if(action==='move')return{...rescheduleTask(t,targetDate,'rollover',at),rollover:rolloverRecord(t,action,targetDate,null)};
+    if(action==='complete')return{...setTaskDone(t,true,at),completedEarly:Number(t.durationWorkdays)>1,rollover:rolloverRecord(t,action,null,null)};
+    if(action==='keep')return{...touchTask(t,at),rollover:rolloverRecord(t,action,null,'forever')};
+    if(action==='snooze')return{...touchTask(t,at),rollover:rolloverRecord(t,action,null,toISO(nextWorkday(addDays(fromISO(todayISO),1))))};
+    if(action==='open')return{...touchTask(t,at),rollover:rolloverRecord(t,action,null,toISO(nextWorkday(addDays(fromISO(todayISO),1))))};
     return t;
   });
   save();renderDays();render();rolloverIndex++;renderRolloverStep();
@@ -1323,7 +1395,7 @@ function refreshFutureTemplateTasks(template){
 }
 function removeTemplate(id,removeFuture){
   if(removeFuture)tasks=tasks.filter(task=>!(task.seriesId===id&&!task.done&&task.date>todayISO));
-  tasks=tasks.map(task=>task.seriesId===id?({...task,seriesId:undefined,occurrenceKey:undefined,templateDetached:true}):task);
+  tasks=tasks.map(task=>task.seriesId===id?({...task,seriesId:undefined,occurrenceKey:undefined,templateDetached:true,updatedAt:historyNow()}):task);
   series=series.filter(template=>template.id!==id);
   saveSeries();save();closeTemplate();$('#templateDeleteOverlay').classList.remove('open');renderDays();render();toast(removeFuture?'Шаблон и будущие задачи удалены':'Шаблон удалён; задачи сохранены');
 }
@@ -1355,13 +1427,13 @@ function renderSubs(){
   const st=t.subtasks||[],done=st.filter(s=>s.done).length;
   $('#subsCount').textContent=st.length?`${done} из ${st.length}`:'';
   $('#subsList').innerHTML=st.length?st.map(s=>`<div class="sub ${s.done?'done':''}"><button type="button" class="sub-check" data-sub-toggle="${s.id}">${s.done?'✓':''}</button><span>${escapeHtml(s.title)}</span><button type="button" class="sub-del" data-sub-del="${s.id}" title="Удалить шаг">×</button></div>`).join(''):'<div class="sub-empty">Разбейте задачу на шаги — прогресс покажется на карточке</div>';
-  $$('[data-sub-toggle]').forEach(b=>b.onclick=()=>{const t=currentTask();if(!t)return;t.subtasks=t.subtasks.map(s=>s.id===b.dataset.subToggle?{...s,done:!s.done}:s);save();renderSubs();render()});
-  $$('[data-sub-del]').forEach(b=>b.onclick=()=>{const t=currentTask();if(!t)return;t.subtasks=t.subtasks.filter(s=>s.id!==b.dataset.subDel);save();renderSubs();render()});
+  $$('[data-sub-toggle]').forEach(b=>b.onclick=()=>{const t=currentTask();if(!t)return;t.subtasks=t.subtasks.map(s=>s.id===b.dataset.subToggle?{...s,done:!s.done}:s);Object.assign(t,touchTask(t));save();renderSubs();render()});
+  $$('[data-sub-del]').forEach(b=>b.onclick=()=>{const t=currentTask();if(!t)return;t.subtasks=t.subtasks.filter(s=>s.id!==b.dataset.subDel);Object.assign(t,touchTask(t));save();renderSubs();render()});
 }
 function addSub(){
   const t=currentTask(),input=$('#subInput');if(!t)return;
   const title=input.value.trim();if(!title)return;
-  t.subtasks=[...(t.subtasks||[]),{id:'s'+Date.now()+Math.random().toString(36).slice(2,6),title,done:false}];
+  t.subtasks=[...(t.subtasks||[]),{id:'s'+Date.now()+Math.random().toString(36).slice(2,6),title,done:false}];Object.assign(t,touchTask(t));
   input.value='';save();renderSubs();render();
 }
 
@@ -1385,7 +1457,7 @@ function closeProject(){$('#projectOverlay').classList.remove('open');editingPro
 function recolorTasks(){tasks=tasks.map(t=>({...t,color:colorOf(t.project)}));save()}
 
 /* ===================== Резервная копия ===================== */
-function cloudPayload(){return{version:4,tasks,series,projects}}
+function cloudPayload(){return{version:5,tasks,series,projects}}
 function queueCloudPush(){if(!cloudClient||!cloudUser||cloudApplying)return;clearTimeout(cloudTimer);cloudTimer=setTimeout(()=>pushCloud(true),900)}
 function setCloudStatus(text,on=false){const el=$('#cloudStatus');if(!el)return;el.textContent=text;el.classList.toggle('on',on)}
 function renderCloudUser(){
@@ -1435,7 +1507,10 @@ async function pushCloud(silent=false){
 function applyCloudPayload(data,updatedAt){
   if(!data||!Array.isArray(data.tasks)||!Array.isArray(data.projects))throw new Error('В Supabase неверный формат данных');
   cloudApplying=true;tasks=data.tasks;series=Array.isArray(data.series)?data.series.map(normalizeTemplate):[];projects=data.projects;
-  tasks=tasks.map(t=>({...t,priority:normalizePriority(t.priority),durationWorkdays:Math.max(1,Number(t.durationWorkdays)||1),dailyDone:t.dailyDone||{},subtasks:Array.isArray(t.subtasks)?t.subtasks:[],color:colorOf(t.project)}));ensureOccurrences();
+  tasks=tasks.map(t=>{
+    const normalized={...t,priority:normalizePriority(t.priority),durationWorkdays:Math.max(1,Number(t.durationWorkdays)||1),dailyDone:t.dailyDone||{},subtasks:Array.isArray(t.subtasks)?t.subtasks:[],color:colorOf(t.project)};
+    return normalizeTaskHistory(normalized,normalized.date);
+  });ensureOccurrences();
   save(false);saveSeries(false);saveProjects(false);localStorage.removeItem('focus_local_dirty');if(updatedAt)localStorage.setItem('focus_cloud_seen',updatedAt);cloudApplying=false;renderDays();render();
 }
 async function pullCloud(silent=false){
@@ -1552,7 +1627,7 @@ $('#projectForm').onsubmit=e=>{
     const oldName=p.name;
     if(projects.some(x=>x.name===name&&x.id!==editingProject))return formError(form,$('#projectName'),'Проект с таким названием уже есть');
     p.name=name;p.color=draftColor;
-    tasks=tasks.map(t=>t.project===oldName?{...t,project:name}:t);series=series.map(template=>template.project===oldName?{...template,project:name}:template);
+    tasks=tasks.map(t=>t.project===oldName?{...t,project:name,updatedAt:historyNow()}:t);series=series.map(template=>template.project===oldName?{...template,project:name}:template);
     if(prefs.project===oldName)prefs.project=name;
   }else{
     if(projects.some(x=>x.name===name))return formError(form,$('#projectName'),'Проект с таким названием уже есть');
@@ -1565,7 +1640,7 @@ $('#deleteProject').onclick=()=>{
   const n=tasks.filter(t=>t.project===p.name).length;
   if(!confirm(n?`Удалить проект «${p.name}»? ${n} ${taskWord(n)} переедут во Входящие.`:`Удалить проект «${p.name}»?`))return;
   projects=projects.filter(x=>x.id!==p.id);
-  tasks=tasks.map(t=>t.project===p.name?{...t,project:INBOX}:t);series=series.map(template=>template.project===p.name?{...template,project:INBOX}:template);
+  tasks=tasks.map(t=>t.project===p.name?{...t,project:INBOX,updatedAt:historyNow()}:t);series=series.map(template=>template.project===p.name?{...template,project:INBOX}:template);
   if(prefs.project===p.name)prefs.project=null;
   saveProjects();saveSeries();recolorTasks();savePrefs();closeProject();renderDays();render();
 };
@@ -1604,7 +1679,8 @@ $('#taskForm').onsubmit=e=>{
   clearFormError(form);
   const project=$('#taskProject').value||INBOX,date=$('#taskDate').value||todayISO,description=$('#taskDescription').value.trim();
   const durationWorkdays=Math.max(1,Number($('#taskDuration').value)||1),newId=Date.now();
-  tasks.push({id:newId,title,project,due:'Без времени',priority:$('#taskPriority').value,date,done:false,description,subtasks:[],durationWorkdays,dailyDone:{},color:colorOf(project)});
+  const createdAt=historyNow();
+  tasks.push({id:newId,title,project,due:'Без времени',priority:$('#taskPriority').value,date,done:false,description,subtasks:[],durationWorkdays,dailyDone:{},color:colorOf(project),createdAt,updatedAt:createdAt,originalScheduledDate:date,originalScheduledDateSource:'recorded',historyStartedAt:createdAt,rescheduleHistory:[],statusHistory:[],completedAt:null});
   save();closeModal();
   if(prefs.view==='tasks'){activeDate=date;weekStart=mondayOf(fromISO(date));prefs.activeDate=activeDate;savePrefs()}
   renderDays();render();if(newId)popIn(newId);
@@ -1632,12 +1708,16 @@ $('#detailForm').onsubmit=e=>{
   const project=$('#detailProject').value||current.project,newDate=$('#detailDate').value||current.date,durationWorkdays=Math.max(1,Number($('#detailDuration').value)||1);
   const time=$('#detailTime').value.trim();
   const allowed=new Set(workDates(newDate,durationWorkdays));
-  tasks=tasks.map(t=>t.id===detailId?{...t,title,description:$('#detailDescription').value.trim(),project,date:newDate,durationWorkdays,dailyDone:Object.fromEntries(Object.entries(t.dailyDone||{}).filter(([d])=>allowed.has(d))),due:/^\d{1,2}:\d{2}$/.test(time)?time.padStart(5,'0'):'Без времени',priority:$('#detailPriority').value,templateDetached:t.seriesId?true:t.templateDetached,color:colorOf(project)}:t);
+  tasks=tasks.map(t=>{
+    if(t.id!==detailId)return t;
+    const next=rescheduleTask(t,newDate,'edit');
+    return {...next,title,description:$('#detailDescription').value.trim(),project,date:newDate,durationWorkdays,dailyDone:Object.fromEntries(Object.entries(t.dailyDone||{}).filter(([d])=>allowed.has(d))),due:/^\d{1,2}:\d{2}$/.test(time)?time.padStart(5,'0'):'Без времени',priority:$('#detailPriority').value,templateDetached:t.seriesId?true:t.templateDetached,color:colorOf(project),updatedAt:historyNow()};
+  });
   save();closeDetail();
   renderDays();render();
 };
 $('#deleteTask').onclick=()=>{if(detailId===null)return;const task=tasks.find(t=>t.id===detailId);if(task&&task.seriesId&&task.occurrenceKey){series=series.map(template=>template.id===task.seriesId?{...template,skippedOccurrences:[...new Set([...(template.skippedOccurrences||[]),task.occurrenceKey])]}:template);saveSeries()}tasks=tasks.filter(t=>t.id!==detailId);save();closeDetail();renderDays();render()};
-$('#detailComplete').onclick=()=>{tasks=tasks.map(t=>t.id===detailId?{...t,done:!t.done,completedEarly:!t.done&&taskDates(t).length>1,completedAt:!t.done?todayISO:null}:t);save();closeDetail();renderDays();render()};
+$('#detailComplete').onclick=()=>{tasks=tasks.map(t=>t.id===detailId?{...setTaskDone(t,!t.done),completedEarly:!t.done&&taskDates(t).length>1}:t);save();closeDetail();renderDays();render()};
 $('#subInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addSub()}};
 
 document.addEventListener('keydown',e=>{
