@@ -381,6 +381,7 @@
     }
     .home-day-panel{position:static;top:auto;overflow:visible}
     .home-day-task-list{overflow:visible}
+    .home-day-task:hover{transform:none}
     .home-day-panel-head{grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:8px 12px}
     .home-day-date{display:grid;gap:2px;min-width:0}
     .home-day-date>span{color:#9a91ff;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
@@ -497,7 +498,7 @@ let rolloverQueue=[],rolloverIndex=0,rolloverBusy=false,rolloverReturnFocus=null
 /* ===================== Состояние ===================== */
 const todayISO=toISO(new Date());
 /* Increase only for a version that is actually published. */
-const BUILD_NUMBER=149;
+const BUILD_NUMBER=150;
 const INBOX='Без проекта';
 const REDUCED=matchMedia('(prefers-reduced-motion: reduce)');
 const MOVE_MS=320,MOVE_EASE='cubic-bezier(0.23,1,0.32,1)';
