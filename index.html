@@ -441,8 +441,8 @@
   <main><header class="topbar"><div class="title-wrap"><h1 id="viewTitle">Задачи</h1><button class="chip" id="projectChip"></button></div><time class="header-clock" id="headerClock" aria-label="Текущее время"></time><div class="actions"><button class="mini-action search-action" id="searchButton" type="button" title="Поиск (Cmd/Ctrl+K)" aria-label="Открыть поиск" aria-haspopup="dialog">⌕</button><button class="mini-action mobile-menu-action" id="mobileMenuButton" title="Проекты и данные" aria-label="Проекты и данные">•••</button><button class="mini-action" id="filterBtn" title="Фильтр" aria-label="Фильтр">☷</button><button class="mini-action" id="sortBtn" title="Сортировка" aria-label="Сортировка">↕</button><button class="primary" data-open aria-label="Новая задача">＋ Новая задача</button><div class="pop" id="mobileMenuPop"><div class="pop-title">ПОИСК</div><input class="mobile-menu-search" id="mobileSearch" placeholder="Поиск задач…"><div class="pop-title" style="margin-top:12px">ПРОЕКТЫ</div><div class="mobile-projects" id="mobileProjectList"></div><div class="mobile-menu-footer"><button type="button" id="mobileAddProject">＋ Проект</button><button type="button" id="mobileSettings">⚙ Данные и вход</button></div></div><div class="pop" id="filterPop"><div class="pop-title">ПРИОРИТЕТ</div><div class="pop-row" data-key="priority"><button type="button" data-value="all">Любой</button><button type="button" data-value="High">Высокий</button><button type="button" data-value="Medium">Средний</button><button type="button" data-value="Low">Низкий</button></div><div class="pop-title">СТАТУС</div><div class="pop-row" data-key="status"><button type="button" data-value="all">Все</button><button type="button" data-value="active">Активные</button><button type="button" data-value="done">Выполненные</button></div><button type="button" class="pop-reset" id="resetFilters">Сбросить фильтры</button></div><div class="pop" id="sortPop"><div class="pop-title">СОРТИРОВКА</div><div class="pop-col" data-key="sort"><button type="button" data-value="manual">Вручную (перетаскивание)</button><button type="button" data-value="time">По времени</button><button type="button" data-value="priority">По приоритету</button><button type="button" data-value="title">По названию</button></div></div></div></header><div class="period" id="period"><button id="prevWeek" title="Предыдущая неделя">‹</button><div class="range"><strong id="weekRange"></strong></div><button id="nextWeek" title="Следующая неделя">›</button><button class="today" id="todayButton">Сегодня</button><div class="days" id="days"></div></div><div class="board" id="board"></div></main>
 </div>
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Поиск задач"><div class="search-panel"><span aria-hidden="true">⌕</span><input class="search" id="search" placeholder="Поиск по названию, описанию или проекту…"><kbd>Esc</kbd></div></div>
-<div class="overlay" id="overlay"><form class="modal" id="taskForm" novalidate><div class="modal-head"><div><small>НОВАЯ ЗАДАЧА</small><h2>Что нужно сделать?</h2></div><button class="close" type="button" data-close>×</button></div><input id="taskTitle" required placeholder="Например, подготовить презентацию"><label class="field-label task-notes"><span>Заметки</span><textarea id="taskDescription" placeholder="Контекст, детали или ожидаемый результат…"></textarea></label><div class="form-row"><select id="taskProject"></select><input type="date" id="taskDate" required></div><div class="form-row"><select id="taskPriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select><label class="field-label">Рабочих дней<input type="number" id="taskDuration" min="1" max="260" value="1"></label></div><p class="task-template-hint">Для автоматических повторов используйте раздел «Шаблоны».</p><div class="modal-actions"><button type="button" data-close>Отмена</button><button class="save">Создать задачу</button></div></form></div>
-<div class="overlay" id="detailOverlay"><form class="modal detail-modal" id="detailForm" novalidate><div class="modal-head"><div><small>ЗАДАЧА</small><h2>Подробности задачи</h2></div><button class="close" type="button" data-detail-close>×</button></div><input id="detailTitle" required placeholder="Название задачи"><textarea id="detailDescription" placeholder="Описание, заметки или результат…"></textarea><div class="form-row"><select id="detailProject"></select><input type="date" id="detailDate" required></div><div class="form-row"><input id="detailTime" placeholder="Время, например 14:30"><select id="detailPriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select></div><div class="form-row"><label class="field-label">Рабочих дней<input type="number" id="detailDuration" min="1" max="260" value="1"></label><p class="series-note" id="seriesNote"></p></div><div class="subs"><div class="subs-head"><span>ПОДЗАДАЧИ</span><small id="subsCount"></small></div><div class="subs-list" id="subsList"></div><input id="subInput" placeholder="＋ Новый шаг — Enter, чтобы добавить"></div><div class="modal-actions"><button class="delete" type="button" id="deleteTask">Удалить</button><button class="finish" type="button" id="detailComplete">✓ Выполнить</button><button class="save">Сохранить</button></div></form></div>
+<div class="overlay" id="overlay"><form class="modal" id="taskForm" novalidate><div class="modal-head"><div><small>НОВАЯ ЗАДАЧА</small><h2>Что нужно сделать?</h2></div><button class="close" type="button" data-close>×</button></div><input id="taskTitle" required placeholder="Например, подготовить презентацию"><label class="field-label task-notes"><span>Заметки</span><textarea id="taskDescription" placeholder="Контекст, детали или ожидаемый результат…"></textarea></label><div class="form-row"><select id="taskProject"></select><label class="field-label"><span>План на день</span><input type="date" id="taskDate" required></label></div><div class="form-row"><select id="taskPriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select><label class="field-label"><span>Дедлайн, необязательно</span><input type="date" id="taskDeadline"></label></div><p class="task-template-hint">Задача попадёт в план выбранного дня. Дедлайн не меняется при переносе плана.</p><div class="modal-actions"><button type="button" data-close>Отмена</button><button class="save">Создать задачу</button></div></form></div>
+<div class="overlay" id="detailOverlay"><form class="modal detail-modal" id="detailForm" novalidate><div class="modal-head"><div><small>ЗАДАЧА</small><h2>Подробности задачи</h2></div><button class="close" type="button" data-detail-close>×</button></div><input id="detailTitle" required placeholder="Название задачи"><textarea id="detailDescription" placeholder="Описание, заметки или результат…"></textarea><div class="form-row"><select id="detailProject"></select><label class="field-label"><span>План на день</span><input type="date" id="detailDate" required></label><button type="button" id="detailAddPlan" title="Добавить ещё один день в план">＋ В план</button></div><div class="form-row"><input id="detailTime" placeholder="Время, например 14:30"><select id="detailPriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select></div><div class="form-row"><label class="field-label"><span>Дедлайн</span><input type="date" id="detailDeadline"></label><label class="field-label legacy-duration-field">Рабочих дней<input type="number" id="detailDuration" min="1" max="260" value="1"></label><p class="series-note" id="seriesNote"></p></div><div class="subs"><div class="subs-head"><span>ПОДЗАДАЧИ</span><small id="subsCount"></small></div><div class="subs-list" id="subsList"></div><input id="subInput" placeholder="＋ Новый шаг — Enter, чтобы добавить"></div><div class="modal-actions"><button class="delete" type="button" id="deleteTask">Удалить</button><button class="finish" type="button" id="detailComplete">✓ Выполнить</button><button class="save">Сохранить</button></div></form></div>
 <div class="overlay" id="templateOverlay"><form class="modal detail-modal" id="templateForm" novalidate><div class="modal-head"><div><small id="templateKicker">НОВЫЙ ШАБЛОН</small><h2 id="templateTitle">Шаблон задачи</h2></div><button class="close" type="button" data-template-close>×</button></div><input id="templateName" required placeholder="Например, PriceIndex"><label class="field-label task-notes"><span>Описание</span><textarea id="templateDescription" placeholder="Контекст или инструкция для каждой задачи…"></textarea></label><div class="form-row"><select id="templateProject"></select><input type="date" id="templateStartDate" required></div><div class="form-row"><input id="templateTime" placeholder="Время, например 14:30"><select id="templatePriority"><option value="Medium">Средний приоритет</option><option value="High">Высокий приоритет</option><option value="Low">Низкий приоритет</option></select></div><div class="form-row"><label class="field-label">Рабочих дней<input type="number" id="templateDuration" min="1" max="260" value="1"></label><label class="field-label">Статус<select id="templateStatus"><option value="active">Активен</option><option value="paused">На паузе</option><option value="completed">Завершён</option></select></label></div><div class="schedule"><p class="schedule-title">РАСПИСАНИЕ</p><div class="repeat-layout"><select id="templateRepeatType"><option value="daily">Каждые N рабочих дней</option><option value="weekly">По дням недели</option><option value="monthly">По числам месяца</option><option value="monthlyWorkdays">По рабочим дням месяца</option></select><label class="field-label" id="templateIntervalField"><span>Каждые</span><div class="repeat-control"><input type="number" id="templateInterval" min="1" max="99" value="1"><span id="templateRepeatUnit">раб. дн.</span></div></label></div><div class="schedule-extra" id="templateWeeklyOptions"><div class="weekday-picker" id="templateWeekdayPicker"><label><input type="checkbox" value="1"><span>Пн</span></label><label><input type="checkbox" value="2"><span>Вт</span></label><label><input type="checkbox" value="3"><span>Ср</span></label><label><input type="checkbox" value="4"><span>Чт</span></label><label><input type="checkbox" value="5"><span>Пт</span></label></div></div><div class="schedule-extra" id="templateMonthlyOptions"><label class="field-label">Числа месяца<input id="templateMonthDays" placeholder="Например: 1, 10, 25"></label></div><div class="schedule-extra" id="templateWorkdayOptions"><span class="field-label">Рабочие дни месяца</span><div class="weekday-picker template-workday-picker" id="templateWorkdayPicker"></div></div><div class="schedule-extra show" id="templateEndOptions"><div class="form-row repeat-end-row"><select id="templateEndType"><option value="never">Без окончания</option><option value="date">До даты</option><option value="count">После N повторений</option></select><input type="date" id="templateEndDate"><input type="number" id="templateCount" min="1" max="999" value="10" aria-label="Количество повторений"></div></div></div><div class="modal-actions"><button class="delete" type="button" id="deleteTemplate">Удалить</button><button type="button" data-template-close>Отмена</button><button class="save">Сохранить шаблон</button></div></form></div>
 <div class="overlay" id="templateDeleteOverlay"><section class="modal template-delete-dialog"><div class="modal-head"><div><small>УДАЛЕНИЕ ШАБЛОНА</small><h2>Удалить шаблон?</h2></div><button class="close" type="button" data-template-delete-close>×</button></div><p>Выполненные задачи останутся в истории.</p><div class="template-delete-actions"><button type="button" id="deleteTemplateOnly">Удалить только шаблон</button><button type="button" id="deleteTemplateFuture" class="danger">Удалить шаблон и будущие задачи</button></div><div class="modal-actions"><button type="button" data-template-delete-close>Отмена</button></div></section></div>
 <div class="overlay" id="projectOverlay"><form class="modal" id="projectForm" novalidate><div class="modal-head"><div><small id="projectKicker">НОВЫЙ ПРОЕКТ</small><h2>Проект</h2></div><button class="close" type="button" data-project-close>×</button></div><input id="projectName" required placeholder="Например, Личный блог"><div class="swatches" id="swatches"></div><div class="modal-actions"><button class="delete" type="button" id="deleteProject">Удалить</button><button type="button" data-project-close>Отмена</button><button class="save">Сохранить</button></div></form></div>
@@ -487,8 +487,32 @@ function addWorkdays(d,n){let x=nextWorkday(d),left=n;while(left>0){x=addDays(x,
 function workDates(start,count){const out=[];let d=nextWorkday(fromISO(start));while(out.length<Math.max(1,count||1)){if(isWorkday(d))out.push(toISO(d));d=addDays(d,1)}return out}
 function taskDates(t){return workDates(t.date,Number(t.durationWorkdays)||1)}
 function taskOnDate(t,iso){return taskDates(t).includes(iso)}
+/* Планирование v1. Старые многодневные задачи остаются в legacy-модели. */
+const PLAN_VERSION=1;
+const planDayStates=new Set(['PENDING','COMPLETED','PROGRESSED','MISSED','CANCELLED','REPLANNED']);
+function isPlanningTask(t){return t.planningVersion===PLAN_VERSION&&Array.isArray(t.planDays)}
+function isLegacyTask(t){return !isPlanningTask(t)}
+function planDays(t){return isPlanningTask(t)?t.planDays:[]}
+function planDay(t,iso){return planDays(t).filter(day=>day.date===iso).at(-1)||null}
+function activePlanDay(t,iso){const day=planDay(t,iso);return !!day&&day.state==='PENDING'}
+function planDayStatus(t,iso){return planDay(t,iso)?.state||null}
+function taskPlannedOn(t,iso){if(!isPlanningTask(t))return taskOnDate(t,iso);const day=planDay(t,iso);return !!day&&day.state!=='REPLANNED'}
+function taskActiveOnDate(t,iso){return isPlanningTask(t)?activePlanDay(t,iso)&&!t.done&&!t.cancelled:taskVisibleOnDate(t,iso)&&!t.done}
+function taskCompletedOnDate(t,iso){return isPlanningTask(t)?planDayStatus(t,iso)==='COMPLETED':taskOnDate(t,iso)&&!!(t.done||(t.dailyDone&&t.dailyDone[iso]))}
+function pendingPlanDays(t,before=todayISO){return planDays(t).filter(day=>day.state==='PENDING'&&day.date<before)}
+function planRecord(date,state,at=historyNow(),extra={}){return {id:`pd-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,date,state,createdAt:at,resolvedAt:state==='PENDING'?null:at,...extra}}
+function addPlanDay(task,date,at=historyNow(),source='plan'){if(!validIsoDate(date)||activePlanDay(task,date))return task;return {...task,date,updatedAt:at,planDays:[...planDays(task),planRecord(date,'PENDING',at,{source})]}}
+function resolvePlanDay(task,date,state,at=historyNow(),extra={}){return {...task,updatedAt:at,planDays:planDays(task).map(day=>day.date===date&&day.state==='PENDING'?{...day,state,resolvedAt:at,...extra}:day)}}
+function replanPlanningTask(task,fromDate,toDate,source='edit',at=historyNow()){
+  if(fromDate===toDate)return touchTask(task,at);
+  let next=task;
+  if(activePlanDay(next,fromDate))next=resolvePlanDay(next,fromDate,fromDate>=todayISO?'REPLANNED':'MISSED',at,{replannedTo:toDate,source});
+  next=addPlanDay(next,toDate,at,source);
+  return {...next,date:toDate,rescheduleHistory:[...(next.rescheduleHistory||[]),{at,fromDate,toDate,source}]};
+}
+function planningOverdue(t){return isPlanningTask(t)&&!t.done&&!t.cancelled&&!!t.deadline&&t.deadline<todayISO}
 function rolloverSuppressedOn(t,iso){const until=t.rollover&&t.rollover.suppressedUntil;return until==='forever'||!!until&&until>iso}
-function taskVisibleOnDate(t,iso){const dates=taskDates(t);return dates.includes(iso)||(iso===todayISO&&!t.done&&dates[dates.length-1]<todayISO&&!rolloverSuppressedOn(t,iso))}
+function taskVisibleOnDate(t,iso){if(isPlanningTask(t))return taskPlannedOn(t,iso);const dates=taskDates(t);return dates.includes(iso)||(iso===todayISO&&!t.done&&dates[dates.length-1]<todayISO&&!rolloverSuppressedOn(t,iso))}
 function dailyDoneCount(t){const dates=taskDates(t);return dates.filter(d=>t.dailyDone&&t.dailyDone[d]).length}
 let toastTimer;
 function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400)}
@@ -507,7 +531,7 @@ const PALETTE=Object.keys(HEX);
 const VIEW_TITLES={home:'Главная',tasks:'Задачи',inbox:'Входящие',done:'Выполненные',templates:'Шаблоны'};
 $('#buildVersion').textContent=`Сборка #${BUILD_NUMBER}`;
 $$('.logo').forEach(el=>{el.className='logo focus-plaque';el.innerHTML='<strong>FOCUS</strong><small>ФОКУС | ЗАДАЧИ | ПРОГРЕСС</small>'});
-const SYNC_PROTOCOL='4';
+const SYNC_PROTOCOL='5';
 if(localStorage.getItem('focus_sync_protocol')!==SYNC_PROTOCOL){localStorage.removeItem('focus_local_dirty');localStorage.removeItem('focus_cloud_seen');localStorage.setItem('focus_sync_protocol',SYNC_PROTOCOL)}
 
 let projects=load('focus_projects',[{id:'p1',name:'Новый сайт',color:'purple'},{id:'p2',name:'Карта города',color:'blue'},{id:'p3',name:'The Elder',color:'pink'},{id:'p4',name:'Работа',color:'yellow'},{id:'p5',name:'Личное',color:'green'}]);
@@ -593,7 +617,14 @@ function normalizeTaskHistory(task,date){
     historyStartedAt:validTimestamp(task.historyStartedAt)?task.historyStartedAt:(validTimestamp(task.createdAt)?task.createdAt:historyNow()),
     rescheduleHistory:Array.isArray(task.rescheduleHistory)?task.rescheduleHistory.filter(event=>event&&validIsoDate(event.fromDate)&&validIsoDate(event.toDate)&&validTimestamp(event.at)):[],
     statusHistory:Array.isArray(task.statusHistory)?task.statusHistory.filter(event=>event&&typeof event.from==='string'&&typeof event.to==='string'&&validTimestamp(event.at)):[],
-    completedAt};
+    completedAt,
+    deadline:validIsoDate(task.deadline)?task.deadline:null,
+    availableFrom:validIsoDate(task.availableFrom)?task.availableFrom:null,
+    cancelled:!!task.cancelled,
+    cancelledAt:validTimestamp(task.cancelledAt)?task.cancelledAt:null,
+    planningVersion:task.planningVersion===PLAN_VERSION?PLAN_VERSION:undefined,
+    planningStartedAt:task.planningVersion===PLAN_VERSION?(validTimestamp(task.planningStartedAt)?task.planningStartedAt:historyNow()):undefined,
+    planDays:task.planningVersion===PLAN_VERSION&&Array.isArray(task.planDays)?task.planDays.filter(day=>day&&validIsoDate(day.date)&&planDayStates.has(day.state)).map(day=>({...day,state:day.state,createdAt:validTimestamp(day.createdAt)?day.createdAt:historyNow(),resolvedAt:validTimestamp(day.resolvedAt)?day.resolvedAt:null})):undefined};
 }
 function touchTask(task,at=historyNow()){return {...task,updatedAt:at}}
 function rescheduleTask(task,toDate,source,at=historyNow()){
@@ -603,7 +634,7 @@ function rescheduleTask(task,toDate,source,at=historyNow()){
 function setTaskDone(task,done,at=historyNow()){
   if(task.done===done)return touchTask(task,at);
   const from=task.done?'done':'active',to=done?'done':'active';
-  return {...task,done,updatedAt:at,completedAt:done?at:null,statusHistory:[...(task.statusHistory||[]),{at,from,to}]};
+  return {...task,done,cancelled:false,updatedAt:at,completedAt:done?at:null,statusHistory:[...(task.statusHistory||[]),{at,from,to}]};
 }
 
 tasks=tasks.map((t,i)=>{
@@ -675,7 +706,8 @@ function ensureOccurrences(){
     occurrenceDates(s,horizon).forEach(date=>{
       const key=s.id+'@'+date;if(known.has(key)||skipped.has(key))return;known.add(key);
       const createdAt=historyNow();
-      tasks.push({id:Date.now()+Math.floor(Math.random()*1000000),title:s.title,project:s.project,due:s.due||'Без времени',priority:s.priority,date,done:false,description:s.description||'',subtasks:[],durationWorkdays:s.durationWorkdays||1,dailyDone:{},seriesId:s.id,occurrenceKey:key,templateDetached:false,color:colorOf(s.project),createdAt,updatedAt:createdAt,originalScheduledDate:date,originalScheduledDateSource:'recorded',historyStartedAt:createdAt,rescheduleHistory:[],statusHistory:[],completedAt:null});
+      const planning=s.planningVersion===PLAN_VERSION;
+      tasks.push({id:Date.now()+Math.floor(Math.random()*1000000),title:s.title,project:s.project,due:s.due||'Без времени',priority:s.priority,date,done:false,description:s.description||'',subtasks:[],durationWorkdays:planning?1:s.durationWorkdays||1,dailyDone:{},planningVersion:planning?PLAN_VERSION:undefined,planningStartedAt:planning?createdAt:undefined,planDays:planning?[planRecord(date,'PENDING',createdAt,{source:'template'})]:undefined,deadline:null,seriesId:s.id,occurrenceKey:key,templateDetached:false,color:colorOf(s.project),createdAt,updatedAt:createdAt,originalScheduledDate:date,originalScheduledDateSource:'recorded',historyStartedAt:createdAt,rescheduleHistory:[],statusHistory:[],completedAt:null});
     });
   });
 }
@@ -703,13 +735,13 @@ const filtersOn=()=>prefs.priority!=='all'||prefs.status!=='all';
 function getWeek(){return Array.from({length:7},(_,i)=>{const date=addDays(weekStart,i),iso=toISO(date);return{date,iso,short:date.toLocaleDateString('ru-RU',{weekday:'short'}).replace('.',''),full:cap(date.toLocaleDateString('ru-RU',{weekday:'long'})),day:date.getDate(),dateLabel:numericDate(date),compactLabel:compactDate(date)}})}
 function isoWeekNumber(date){const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7));const yearStart=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil((((d-yearStart)/86400000)+1)/7)}
 function formatWeekRange(){const days=getWeek(),a=days[0].date,b=days[6].date;return `${numericDate(a)} - ${numericDate(b)}`}
-function activeTasksForWeek(){const dates=getWeek().map(d=>d.iso);return tasks.filter(t=>!t.done&&dates.some(d=>taskVisibleOnDate(t,d)&&!(t.dailyDone&&t.dailyDone[d])))}
+function activeTasksForWeek(){const dates=getWeek().map(d=>d.iso);return tasks.filter(t=>!t.done&&!t.cancelled&&dates.some(d=>taskActiveOnDate(t,d)))}
 function renderDays(){
   const week=getWeek();
   $('#weekRange').textContent=formatWeekRange();
   $('#weekNumber').textContent=`Неделя ${isoWeekNumber(week[0].date)}`;
   $('#days').innerHTML=week.map(d=>{
-    const n=tasks.filter(t=>taskOnDate(t,d.iso)&&!t.done&&!(t.dailyDone&&t.dailyDone[d.iso])&&(!prefs.project||t.project===prefs.project)).length;
+    const n=tasks.filter(t=>taskActiveOnDate(t,d.iso)&&(!prefs.project||t.project===prefs.project)).length;
     return `<button data-date="${d.iso}" ${d.iso===activeDate?'aria-current="date"':''} title="${d.full}, ${d.dateLabel} — ${n} ${taskWord(n)}" class="${d.iso===activeDate?'active ':''}${d.iso===todayISO?'today-dot':''}"><span class="weekday"><i class="weekday-full">${d.full}</i><i class="weekday-short">${d.short}</i></span><strong class="day-date"><span class="day-date-full">${d.dateLabel}</span><span class="day-date-mobile">${d.compactLabel}</span></strong></button>`;
   }).join('');
 }
@@ -733,7 +765,7 @@ function renderSidebar(){
     savePrefs();renderDays();render();
   });
   const weekDates=getWeek().map(d=>d.iso),weekSlots=[];
-  tasks.forEach(t=>weekDates.forEach(d=>{if(taskOnDate(t,d))weekSlots.push(!!t.done||!!(t.dailyDone&&t.dailyDone[d]))}));
+  tasks.forEach(t=>weekDates.forEach(d=>{if(taskPlannedOn(t,d))weekSlots.push(taskCompletedOnDate(t,d)||planDayStatus(t,d)==='PROGRESSED')}));
   const weekDone=weekSlots.filter(Boolean).length;
   $('#progressText').textContent=weekDone+'/'+weekSlots.length;
   $('#progressBar').style.width=(weekSlots.length?Math.round(weekDone/weekSlots.length*100):0)+'%';
@@ -758,17 +790,17 @@ function renderProfileControls(){
 /* ===================== Карточка ===================== */
 function card(t,o={}){
   const st=t.subtasks||[],sdone=st.filter(s=>s.done).length;
-  const days=taskDates(t),dailyDone=dailyDoneCount(t),long=days.length>1;
+  const days=taskDates(t),dailyDone=dailyDoneCount(t),long=isLegacyTask(t)&&days.length>1;
   const completed=!!(t.done||o.doneForDay);
   const priority=normalizePriority(t.priority);
   const hasTime=!!t.due&&t.due!=='Без времени';
   const when=o.showDate?`${hasTime?'◷ ':''}${shortDate(t.date)}${hasTime?' · '+t.due:''}`:(hasTime?`◷ ${t.due}`:'');
-  return `<article class="card ${t.done?'done':''} ${o.doneForDay?'done-for-day':''}"${o.drag?' data-drag="1"':''} data-id="${t.id}">
+  return `<article class="card ${t.done?'done':''} ${t.cancelled?'cancelled':''} ${o.doneForDay?'done-for-day':''}"${o.drag?' data-drag="1"':''} data-id="${t.id}">
     <div class="card-head"><div class="card-main"><h3 class="card-title">${escapeHtml(t.title)}</h3></div></div>
     <p class="card-description ${t.description?'':'empty'}">${t.description?escapeHtml(t.description):'Описание не добавлено'}</p>
-    ${long?`<div class="focus-progress">Фокус: ${dailyDone} из ${days.length} рабочих дней</div>`:''}
+    ${long?`<div class="focus-progress">Фокус: ${dailyDone} из ${days.length} рабочих дней</div>`:''}${isPlanningTask(t)&&t.deadline?`<div class="focus-progress">Срок: ${shortDate(t.deadline)}</div>`:''}
     ${st.length?`<div class="sub-bar"><i style="transform:scaleX(${(sdone/st.length).toFixed(3)})"></i></div>`:''}
-    <div class="card-bottom"><div class="card-meta-line"><span class="tag ${t.color}">${escapeHtml(t.project)}</span>${(t.seriesId||st.length)?`<span class="card-aux">${t.seriesId?'<span class="recurring-mark" title="Регулярная задача">↻</span>':''}${st.length?`<span class="sub-mini ${sdone===st.length?'full':''}">☷ ${sdone}/${st.length}</span>`:''}</span>`:''}</div><div class="card-bottom-actions">${when?`<span class="card-when ${t.date<todayISO&&!completed?'overdue-date':''}">${when}</span>`:''}<span class="priority-badge ${priority.toLowerCase()}">${label(priority)}</span><button type="button" class="complete ${long?'daily-complete':''}" data-complete="${t.id}" aria-label="${completed?'Вернуть задачу в работу':long?'Отметить выполненной сегодня':'Отметить задачу выполненной'}" aria-pressed="${completed}" title="${completed?'Вернуть в работу':long?'Выполнено сегодня':'Отметить выполненной'}"></button></div></div>
+    <div class="card-bottom"><div class="card-meta-line"><span class="tag ${t.color}">${escapeHtml(t.project)}</span>${t.cancelled?'<span class="card-aux">Не актуальна</span>':''}${(t.seriesId||st.length)?`<span class="card-aux">${t.seriesId?'<span class="recurring-mark" title="Регулярная задача">↻</span>':''}${st.length?`<span class="sub-mini ${sdone===st.length?'full':''}">☷ ${sdone}/${st.length}</span>`:''}</span>`:''}</div><div class="card-bottom-actions">${when?`<span class="card-when ${t.date<todayISO&&!completed&&!t.cancelled?'overdue-date':''}">${when}</span>`:''}<span class="priority-badge ${priority.toLowerCase()}">${label(priority)}</span>${t.cancelled?'':`<button type="button" class="complete ${long?'daily-complete':''}" data-complete="${t.id}" aria-label="${completed?'Вернуть задачу в работу':long?'Отметить выполненной сегодня':'Отметить задачу выполненной'}" aria-pressed="${completed}" title="${completed?'Вернуть в работу':long?'Выполнено сегодня':'Отметить выполненной'}"></button>`}</div></div>
   </article>`;
 }
 const emptyBlock=(title,sub)=>`<div class="empty-day"><strong>${title}</strong>${sub}</div>`;
@@ -819,21 +851,26 @@ function homeWeekSummary(){
   const days=Array.from({length:5},(_,index)=>{const date=addDays(start,index);return{date,iso:toISO(date),short:['Пн','Вт','Ср','Чт','Пт'][index],full:cap(date.toLocaleDateString('ru-RU',{weekday:'long'})),total:0,done:0,active:0}});
   const byDate=new Map(days.map(day=>[day.iso,day]));
   const projectsByName=new Map();
-  tasks.forEach(task=>{
-    taskDates(task).forEach(iso=>{
+  const planningTasks=tasks.filter(isPlanningTask);
+  const sourceTasks=planningTasks.length?planningTasks:tasks.filter(isLegacyTask);
+  sourceTasks.forEach(task=>{
+    const dates=isPlanningTask(task)?planDays(task).filter(day=>day.state!=='REPLANNED').map(day=>day.date):taskDates(task);
+    dates.forEach(iso=>{
       const day=byDate.get(iso);if(!day)return;
-      const done=!!task.done||!!(task.dailyDone&&task.dailyDone[iso]);
+      const state=isPlanningTask(task)?planDayStatus(task,iso):null;
+      if(state==='CANCELLED')return;
+      const done=isPlanningTask(task)?state==='COMPLETED'||state==='PROGRESSED':!!task.done||!!(task.dailyDone&&task.dailyDone[iso]);
       day.total++;if(done)day.done++;else day.active++;
       const project=projectsByName.get(task.project)||{name:task.project,total:0,done:0};
       project.total++;if(done)project.done++;projectsByName.set(task.project,project);
     });
   });
   const total=days.reduce((sum,day)=>sum+day.total,0),done=days.reduce((sum,day)=>sum+day.done,0);
-  const todayActive=tasks.filter(task=>taskVisibleOnDate(task,todayISO)&&!(task.done||(task.dailyDone&&task.dailyDone[todayISO]))).length;
-  const overdue=tasks.filter(task=>!task.done&&remainingTaskDates(task).length&&remainingTaskDates(task).at(-1)<todayISO).length;
+  const todayActive=sourceTasks.filter(task=>taskActiveOnDate(task,todayISO)).length;
+  const overdue=sourceTasks.filter(task=>isPlanningTask(task)?planningOverdue(task):!task.done&&remainingTaskDates(task).length&&remainingTaskDates(task).at(-1)<todayISO).length;
   const upcoming=[];let cursor=nextWorkday(fromISO(todayISO));
   while(upcoming.length<10){upcoming.push({iso:toISO(cursor),date:new Date(cursor)});cursor=nextWorkday(addDays(cursor,1))}
-  const peak=upcoming.map(day=>({...day,count:tasks.filter(task=>!task.done&&taskOnDate(task,day.iso)&&!(task.dailyDone&&task.dailyDone[day.iso])).length})).sort((a,b)=>b.count-a.count||a.date-b.date)[0];
+  const peak=upcoming.map(day=>({...day,count:sourceTasks.filter(task=>taskActiveOnDate(task,day.iso)).length})).sort((a,b)=>b.count-a.count||a.date-b.date)[0];
   return{days,total,done,percent:total?Math.round(done/total*100):0,projects:[...projectsByName.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ru')),overdue,todayActive,peak};
 }
 function renderHomeAttention(summary){
@@ -854,14 +891,14 @@ function renderHome(){
   const title=homeMonth.toLocaleDateString('ru-RU',{month:'long',year:'numeric'}),weekDays=[['Понедельник','Пн'],['Вторник','Вт'],['Среда','Ср'],['Четверг','Чт'],['Пятница','Пт']],gridStart=addDays(first,-offset),cells=[];
   for(let index=0;index<weekCount*7;index++){
     const date=addDays(gridStart,index);if(!isWorkday(date))continue;
-    const iso=toISO(date),onDay=tasks.filter(task=>taskOnDate(task,iso)),completed=onDay.filter(task=>task.done||(task.dailyDone&&task.dailyDone[iso])),active=onDay.filter(task=>!task.done&&!(task.dailyDone&&task.dailyDone[iso])),isToday=iso===todayISO,isSelected=iso===homeSelectedDate,isOutside=date.getMonth()!==month;
+    const iso=toISO(date),onDay=tasks.filter(task=>taskPlannedOn(task,iso)),completed=onDay.filter(task=>taskCompletedOnDate(task,iso)),active=onDay.filter(task=>taskActiveOnDate(task,iso)),isToday=iso===todayISO,isSelected=iso===homeSelectedDate,isOutside=date.getMonth()!==month;
     const state=active.length&&iso<todayISO?'overdue':active.length?'active':onDay.length?'complete':'free';
     const stateText=completed.length&&active.length?`${completed.length} из ${onDay.length} выполнено`:state==='overdue'?'Просрочено':state==='active'?`${active.length} ${taskWord(active.length)}`:state==='complete'?`${completed.length} выполнено`:'Свободно';
     const monthLabel=cap(date.toLocaleDateString('ru-RU',{month:'long'}));
     const statusHtml=completed.length||active.length?`<span class="home-day-statuses">${completed.length?`<span class="home-day-status status-complete" title="${completed.length} выполнено"><i aria-hidden="true">✓</i> ${completed.length} ${taskWord(completed.length)}</span>`:''}${active.length?`<span class="home-day-status status-active" title="${active.length} активных задач"><i aria-hidden="true">●</i> ${active.length} ${taskWord(active.length)}</span>`:''}</span>`:'';
     cells.push(`<button type="button" class="home-calendar-day ${isToday?'today':''} ${isSelected?'selected':''} ${isOutside?'outside-month':''} state-${state}" data-home-date="${iso}" aria-pressed="${isSelected}" title="${date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}: ${stateText}"><span class="home-date-stack"><span class="home-date">${date.getDate()}</span><span class="home-month-name">${monthLabel}</span></span>${statusHtml}</button>`);
   }
-  const selectedDate=fromISO(homeSelectedDate),selectedTasks=tasks.filter(task=>taskVisibleOnDate(task,homeSelectedDate)),selectedDone=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).length,activeTasks=selectedTasks.filter(task=>!(task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate]))),doneTasks=selectedTasks.filter(task=>task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate])).sort((a,b)=>(Date.parse(b.completedAt)||0)-(Date.parse(a.completedAt)||0)),monthName=selectedDate.toLocaleDateString('ru-RU',{month:'long'}),weekday=cap(selectedDate.toLocaleDateString('ru-RU',{weekday:'long'}));
+  const selectedDate=fromISO(homeSelectedDate),selectedTasks=tasks.filter(task=>taskVisibleOnDate(task,homeSelectedDate)),selectedDone=selectedTasks.filter(task=>taskCompletedOnDate(task,homeSelectedDate)).length,activeTasks=selectedTasks.filter(task=>taskActiveOnDate(task,homeSelectedDate)),doneTasks=selectedTasks.filter(task=>taskCompletedOnDate(task,homeSelectedDate)).sort((a,b)=>(Date.parse(b.completedAt)||0)-(Date.parse(a.completedAt)||0)),monthName=selectedDate.toLocaleDateString('ru-RU',{month:'long'}),weekday=cap(selectedDate.toLocaleDateString('ru-RU',{weekday:'long'}));
   const taskRow=(task,done)=>`<article class="home-day-task ${done?'done':''}" data-home-task="${task.id}" ${done?'':'data-home-drag'}><span class="tag ${task.color}">${escapeHtml(task.project)}</span><strong>${escapeHtml(task.title)}</strong>${task.due==='Без времени'?'':`<small>${task.due}</small>`}<button type="button" class="home-day-complete" data-home-task-complete="${task.id}" aria-label="${done?'Вернуть в активные':'Отметить выполненной'}" title="${done?'Вернуть в активные':'Отметить выполненной'}">✓</button></article>`;
   const taskList=selectedTasks.length?`<div class="home-day-active-list" id="homeActiveTasks">${activeTasks.map(task=>taskRow(task,false)).join('')}${activeTasks.length?'':'<div class="home-day-empty">Нет активных задач</div>'}</div>${doneTasks.length?`<section class="home-completed"><button type="button" class="home-completed-toggle" data-home-completed-toggle aria-expanded="${!homeCompletedCollapsed}"><span>Выполнено · ${doneTasks.length}</span><i aria-hidden="true">${homeCompletedCollapsed?'▸':'▾'}</i></button><div class="home-day-done-list" id="homeDoneTasks" ${homeCompletedCollapsed?'hidden':''}>${doneTasks.map(task=>taskRow(task,true)).join('')}</div></section>`:''}`:'<div class="home-day-empty">На этот день задач нет</div>';
   const analytics=homeWeekSummary();
@@ -875,7 +912,7 @@ function renderHome(){
   $$('[data-home-completed-toggle]').forEach(button=>button.onclick=()=>{homeCompletedCollapsed=!homeCompletedCollapsed;try{sessionStorage.setItem('focus_home_completed_collapsed',String(homeCompletedCollapsed))}catch(e){}render()});
 }
 function renderProject(){
-  const list=tasks.filter(t=>!t.done&&matches(t)),groups={};
+  const list=tasks.filter(t=>!t.done&&!t.cancelled&&matches(t)),groups={};
   list.forEach(t=>{(groups[t.date]=groups[t.date]||[]).push(t)});
   const dates=Object.keys(groups).sort();
   $('#board').innerHTML=dates.length?dates.map(d=>{
@@ -888,21 +925,21 @@ function renderDay(){
   const date=fromISO(activeDate);
   const full=cap(date.toLocaleDateString('ru-RU',{weekday:'long'}));
   const pretty=date.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
-  const dayTasks=sortTasks(tasks.filter(t=>taskVisibleOnDate(t,activeDate)&&!t.done&&!(t.dailyDone&&t.dailyDone[activeDate])&&matches(t)));
-  const completedTasks=sortTasks(tasks.filter(t=>taskOnDate(t,activeDate)&&(t.done||(t.dailyDone&&t.dailyDone[activeDate]))&&matches(t)));
+  const dayTasks=sortTasks(tasks.filter(t=>taskActiveOnDate(t,activeDate)&&!t.cancelled&&matches(t)));
+  const completedTasks=sortTasks(tasks.filter(t=>taskCompletedOnDate(t,activeDate)&&matches(t)));
   const dayDone=completedTasks.length,totalForDay=dayTasks.length+dayDone;
   mobileDayHead.innerHTML=`<b>${full}</b><small>${activeDate===todayISO?'Сегодня, ':''}${pretty}</small>`;
   const completedHtml=completedTasks.length?`<div class="completed-today"><div class="completed-title">Выполнено в этот день <span>${dayDone}</span></div><div class="completed-list">${completedTasks.map(t=>card(t,{doneForDay:true})).join('')}</div></div>`:'';
   $('#board').innerHTML=`<section class="column" data-date="${activeDate}"><div class="column-head"><div><span class="day-number">${date.getDate()}</span><span class="day-label"><strong>${full}</strong><small>${activeDate===todayISO?'Сегодня · ':''}${pretty}</small></span></div><div class="day-summary">${noteHtml()}<span>Выполнено ${dayDone} из ${totalForDay}</span><span class="count">${dayTasks.length} ${taskWord(dayTasks.length)}</span></div></div><div class="task-list">${dayTasks.length?dayTasks.map(t=>card(t,{drag:prefs.sort==='manual'})).join(''):emptyBlock('Активных задач на этот день нет','Выполненные задачи остаются ниже')}<button class="quick-add" data-open data-new-date="${activeDate}">＋ Добавить задачу на этот день</button>${completedHtml}</div></section>`;
 }
 function renderInbox(){
-  const list=sortTasks(tasks.filter(t=>t.project===INBOX&&!t.done&&matches(t)));
+  const list=sortTasks(tasks.filter(t=>t.project===INBOX&&!t.done&&!t.cancelled&&matches(t)));
   $('#board').innerHTML=`<section class="column inbox" data-date="${activeDate}"><div class="column-head"><div><span class="day-number">◫</span><span class="day-label"><strong>Входящие</strong><small>Задачи без проекта — разберите и разложите</small></span></div><div class="day-summary">${noteHtml()}<span class="count">${list.length} ${taskWord(list.length)}</span></div></div><div class="task-list">${list.length?list.map(t=>card(t,{showDate:true})).join(''):emptyBlock('Входящие пусты','Быстрые задачи без проекта попадают сюда')}<button class="quick-add" data-open data-new-date="${todayISO}" data-new-project="${INBOX}">＋ Быстро записать задачу</button></div></section>`;
 }
 function renderDone(){
-  const list=tasks.filter(t=>t.done&&matches(t));
+  const list=tasks.filter(t=>(t.done||t.cancelled)&&matches(t));
   const groups={};
-  list.forEach(t=>{(groups[t.date]=groups[t.date]||[]).push(t)});
+  list.forEach(t=>{const resultDate=t.done&&t.completedAt?toISO(new Date(t.completedAt)):t.cancelledAt?toISO(new Date(t.cancelledAt)):t.date;(groups[resultDate]=groups[resultDate]||[]).push(t)});
   const dates=Object.keys(groups).sort().reverse();
   $('#board').innerHTML=dates.length?dates.map(d=>{
     const date=fromISO(d),g=sortTasks(groups[d]);
@@ -1097,13 +1134,13 @@ function endDrag(cancelled){
   if(!moving){d.clone.remove();d.marker.remove();d.card.classList.remove('dragging');return}
   const before=cardPositions();
   if(!cancelled&&d.day){
-    tasks=tasks.filter(t=>t.id!==d.id);const moved=rescheduleTask(moving,d.day.dataset.date,'drag');if(moved.seriesId)moved.templateDetached=true;tasks.push(moved);activeDate=moved.date;
+    tasks=tasks.filter(t=>t.id!==d.id);const moved=isPlanningTask(moving)?replanPlanningTask(moving,moving.date,d.day.dataset.date,'drag'):rescheduleTask(moving,d.day.dataset.date,'drag');if(moved.seriesId)moved.templateDetached=true;tasks.push(moved);activeDate=moved.date;
   }else if(!cancelled){
     const next=d.marker.nextElementSibling;
     const beforeId=next&&next.classList.contains('card')?Number(next.dataset.id):null;
     const col=d.marker.closest('.column');
     const rest=tasks.filter(t=>t.id!==d.id);
-    const moved=col?rescheduleTask(moving,col.dataset.date,'drag'):touchTask(moving);
+    const moved=col?(isPlanningTask(moving)?replanPlanningTask(moving,moving.date,col.dataset.date,'drag'):rescheduleTask(moving,col.dataset.date,'drag')):touchTask(moving);
     if(moved.seriesId)moved.templateDetached=true;
     let at;
     if(beforeId!==null)at=rest.findIndex(t=>t.id===beforeId);
@@ -1202,7 +1239,7 @@ function endHomeDrag(cancelled=false){
   const moving=tasks.find(task=>task.id===d.id),next=d.marker.nextElementSibling,beforeId=next&&next.classList.contains('home-day-task')?Number(next.dataset.homeTask):null,old=homeTaskPositions();
   if(moving&&!cancelled&&d.moved){
     const rest=tasks.filter(task=>task.id!==d.id);let at=beforeId!==null?rest.findIndex(task=>task.id===beforeId):-1;
-    if(at<0){const activeIndices=rest.map((task,index)=>taskVisibleOnDate(task,homeSelectedDate)&&!(task.done||(task.dailyDone&&task.dailyDone[homeSelectedDate]))?index:-1).filter(index=>index>=0);at=activeIndices.length?activeIndices.at(-1)+1:rest.length}
+    if(at<0){const activeIndices=rest.map((task,index)=>taskActiveOnDate(task,homeSelectedDate)?index:-1).filter(index=>index>=0);at=activeIndices.length?activeIndices.at(-1)+1:rest.length}
     rest.splice(at,0,touchTask(moving));tasks=rest;save();renderDays();render();$('.home-day-panel').style.animation='none';animateHomeTasksFrom(old,MOVE_MS);
   }
   d.marker.remove();d.row.classList.remove('home-dragging');
@@ -1231,6 +1268,13 @@ function bindDynamic(){
 function toggleTaskForDate(id,date){
   tasks=tasks.map(t=>{
     if(t.id!==id)return t;
+    if(isPlanningTask(t)){
+      const at=historyNow();
+      if(t.done)return setTaskDone(t,false,at);
+      let next=setTaskDone(t,true,at);
+      if(activePlanDay(next,date))next=resolvePlanDay(next,date,'COMPLETED',at);
+      return next;
+    }
     const dates=taskDates(t);
     const at=historyNow();
     if(dates.length===1)return setTaskDone(t,!t.done,at);
@@ -1251,11 +1295,12 @@ function completeForDate(id,date){
 /* ===================== Разбор просроченных задач ===================== */
 function remainingTaskDates(t){return taskDates(t).filter(d=>!(t.dailyDone&&t.dailyDone[d]))}
 function isRolloverCandidate(t,reviewDate=todayISO){
+  if(isPlanningTask(t))return !t.done&&!t.cancelled&&!rolloverSuppressedOn(t,reviewDate)&&pendingPlanDays(t,reviewDate).length>0;
   const remaining=remainingTaskDates(t),roll=t.rollover||{},until=roll.suppressedUntil;
   return !t.done&&remaining.length>0&&remaining[remaining.length-1]<reviewDate&&roll.reviewedFor!==reviewDate&&until!=='forever'&&(!until||until<=reviewDate);
 }
 function rolloverCandidates(){
-  return tasks.filter(t=>isRolloverCandidate(t)).sort((a,b)=>remainingTaskDates(a).at(-1).localeCompare(remainingTaskDates(b).at(-1))||prioRank[a.priority]-prioRank[b.priority]);
+  return tasks.filter(t=>isRolloverCandidate(t)).sort((a,b)=>{const ad=isPlanningTask(a)?pendingPlanDays(a).at(0).date:remainingTaskDates(a).at(-1),bd=isPlanningTask(b)?pendingPlanDays(b).at(0).date:remainingTaskDates(b).at(-1);return ad.localeCompare(bd)||prioRank[a.priority]-prioRank[b.priority]});
 }
 function rolloverRecord(t,action,targetDate=null,suppressedUntil=null){
   const previous=t.rollover||{},from=t.date,entry={from,to:targetDate,action,at:new Date().toISOString()};
@@ -1267,6 +1312,14 @@ function updateRolloverTask(id,action,targetDate=null){
   tasks=tasks.map(t=>{
     if(t.id!==id)return t;
     const at=historyNow();
+    const sourceDate=rolloverQueue[rolloverIndex]?.date;
+    if(isPlanningTask(t)){
+      if(action==='continue')return {...addPlanDay(resolvePlanDay(t,sourceDate,'PROGRESSED',at),todayISO,at,'rollover'),rollover:rolloverRecord(t,action,todayISO,null)};
+      if(action==='move')return {...addPlanDay(resolvePlanDay(t,sourceDate,'MISSED',at),targetDate,at,'rollover'),rollover:rolloverRecord(t,action,targetDate,null)};
+      if(action==='complete')return {...setTaskDone(resolvePlanDay(t,sourceDate,'COMPLETED',at),true,at),rollover:rolloverRecord(t,action,null,null)};
+      if(action==='cancel'){const cancelled={...t,cancelled:true,cancelledAt:at,updatedAt:at,statusHistory:[...(t.statusHistory||[]),{at,from:'active',to:'cancelled'}]};return {...resolvePlanDay(cancelled,sourceDate,'CANCELLED',at),rollover:rolloverRecord(t,action,null,null)}}
+      if(action==='snooze')return {...touchTask(t,at),rollover:rolloverRecord(t,action,null,toISO(nextWorkday(addDays(fromISO(todayISO),1))))};
+    }
     if(action==='move')return{...rescheduleTask(t,targetDate,'rollover',at),rollover:rolloverRecord(t,action,targetDate,null)};
     if(action==='complete')return{...setTaskDone(t,true,at),completedEarly:Number(t.durationWorkdays)>1,rollover:rolloverRecord(t,action,null,null)};
     if(action==='keep')return{...touchTask(t,at),rollover:rolloverRecord(t,action,null,'forever')};
@@ -1277,7 +1330,7 @@ function updateRolloverTask(id,action,targetDate=null){
   save();renderDays();render();rolloverIndex++;renderRolloverStep();
   if($('#rolloverOverlay').classList.contains('open'))setTimeout(()=>{rolloverBusy=false;setRolloverControlsDisabled(false)},220);
 }
-function currentRolloverTask(){const id=rolloverQueue[rolloverIndex];return tasks.find(t=>t.id===id)}
+function currentRolloverTask(){const item=rolloverQueue[rolloverIndex];return tasks.find(t=>t.id===item?.id)}
 function setRolloverControlsDisabled(disabled){$$('#rolloverOverlay button').forEach(button=>button.disabled=disabled)}
 function closeRollover(dismiss=true){
   if(!$('#rolloverOverlay').classList.contains('open'))return;
@@ -1290,13 +1343,14 @@ function renderRolloverStep(){
   let t=currentRolloverTask();
   while(!t&&rolloverIndex<rolloverQueue.length){rolloverIndex++;t=currentRolloverTask()}
   if(!t){closeRollover(false);return}
-  const total=rolloverQueue.length,position=rolloverIndex+1,long=Number(t.durationWorkdays)>1,last=remainingTaskDates(t).at(-1);
+  const total=rolloverQueue.length,position=rolloverIndex+1,planning=isPlanningTask(t),long=!planning&&Number(t.durationWorkdays)>1,last=planning?rolloverQueue[rolloverIndex].date:remainingTaskDates(t).at(-1);
   $('#rolloverProgressText').textContent=`${position} из ${total}`;
   $('#rolloverProgressBar').style.setProperty('--rollover-progress',Math.round(position/total*100)+'%');
   $('#rolloverTaskTitle').textContent=t.title;
-  $('#rolloverMeta').textContent=`${t.project} · ${label(t.priority)} приоритет · план до ${shortDate(last)}${t.seriesId?' · повторение':''}`;
+  $('#rolloverMeta').textContent=`${t.project} · ${label(t.priority)} приоритет · ${planning&&t.deadline?`срок ${shortDate(t.deadline)}`:`план до ${shortDate(last)}`}${t.seriesId?' · повторение':''}`;
   $('#rolloverMeta').classList.toggle('rollover-series',!!t.seriesId);
-  $('#rolloverNote').textContent=long?'Это многодневная задача. Чтобы сохранить прогресс, откройте её или выберите завершение.':'Выберите, что сделать с этой задачей.';
+  $('#rolloverNote').textContent=planning?'Как завершился этот плановый день?':long?'Это многодневная задача. Чтобы сохранить прогресс, откройте её или выберите завершение.':'Выберите, что сделать с этой задачей.';
+  $('#rolloverToday').textContent=planning?'Продолжить сегодня':'На сегодня';$('#rolloverComplete').textContent=planning?'Завершено':'Завершить';$('#rolloverChoose').textContent='Перенести';$('#rolloverKeep').textContent=planning?'Больше не актуальна':'Оставить на исходной дате';
   $('#rolloverToday').hidden=long;$('#rolloverChoose').hidden=long;$('#rolloverOpen').hidden=!long;
   $('#rolloverDateRow').classList.remove('show');$('#rolloverDate').value=todayISO;$('#rolloverDate').min=todayISO;
   setRolloverControlsDisabled(rolloverBusy);
@@ -1304,15 +1358,15 @@ function renderRolloverStep(){
 }
 function maybeStartRollover(){
   if(!cloudUser||rolloverDismissedFor===todayISO||document.visibilityState==='hidden'||document.body.classList.contains('auth-required')||$('#rolloverOverlay').classList.contains('open'))return;
-  rolloverQueue=rolloverCandidates().map(t=>t.id);rolloverIndex=0;
+  rolloverQueue=rolloverCandidates().flatMap(t=>isPlanningTask(t)?pendingPlanDays(t).map(day=>({id:t.id,date:day.date})):({id:t.id,date:null}));rolloverIndex=0;
   if(!rolloverQueue.length)return;
   rolloverReturnFocus=document.activeElement;$('#rolloverOverlay').classList.add('open');renderRolloverStep();
   requestAnimationFrame(()=>($('#rolloverToday').hidden?$('#rolloverComplete'):$('#rolloverToday')).focus());
 }
 $('#rolloverClose').onclick=closeRollover;
-$('#rolloverToday').onclick=()=>{const t=currentRolloverTask();if(t)updateRolloverTask(t.id,'move',todayISO)};
+$('#rolloverToday').onclick=()=>{const t=currentRolloverTask();if(t)updateRolloverTask(t.id,isPlanningTask(t)?'continue':'move',todayISO)};
 $('#rolloverComplete').onclick=()=>{const t=currentRolloverTask();if(t)updateRolloverTask(t.id,'complete')};
-$('#rolloverKeep').onclick=()=>{const t=currentRolloverTask();if(t)updateRolloverTask(t.id,'keep')};
+$('#rolloverKeep').onclick=()=>{const t=currentRolloverTask();if(t)updateRolloverTask(t.id,isPlanningTask(t)?'cancel':'keep')};
 $('#rolloverTomorrow').onclick=()=>{const t=currentRolloverTask();if(t)updateRolloverTask(t.id,'snooze')};
 $('#rolloverChoose').onclick=()=>{if(rolloverBusy)return;$('#rolloverDateRow').classList.toggle('show');if($('#rolloverDateRow').classList.contains('show'))$('#rolloverDate').focus()};
 $('#rolloverDateApply').onclick=()=>{const t=currentRolloverTask(),date=$('#rolloverDate').value;if(!date||date<todayISO)return toast('Выберите сегодняшнюю или будущую дату');if(t)updateRolloverTask(t.id,'move',date)};
@@ -1342,7 +1396,7 @@ function openModal(date,project){
   $('#taskDate').value=date||(prefs.view==='tasks'?activeDate:todayISO);
   $('#taskProject').value=preset;
   $('#taskDescription').value='';
-  $('#taskDuration').value=1;
+  $('#taskDeadline').value='';
   setTimeout(()=>$('#taskTitle').focus(),30);
 }
 function closeModal(){$('#overlay').classList.remove('open');$('#taskForm').reset()}
@@ -1415,7 +1469,10 @@ function openDetail(id){
   $('#detailDate').value=t.date;
   $('#detailTime').value=t.due==='Без времени'?'':t.due;
   $('#detailPriority').value=t.priority;
+  $('#detailDeadline').value=t.deadline||'';
   $('#detailDuration').value=t.durationWorkdays||1;
+  $('.legacy-duration-field').hidden=!isLegacyTask(t);
+  $('#detailAddPlan').hidden=isLegacyTask(t);
   const template=t.seriesId&&series.find(item=>item.id===t.seriesId);
   $('#seriesNote').innerHTML=template?`Создано по шаблону: <button type="button" class="template-link" data-series-template="${template.id}">${escapeHtml(template.title)} · ${escapeHtml(templateRuleLabel(template))}</button>`:'';
   const templateLink=$('#seriesNote [data-series-template]');if(templateLink)templateLink.onclick=()=>{closeDetail();prefs.view='templates';savePrefs();renderDays();render();setTimeout(()=>openTemplate(template.id),0)};
@@ -1462,7 +1519,7 @@ function closeProject(){$('#projectOverlay').classList.remove('open');editingPro
 function recolorTasks(){tasks=tasks.map(t=>({...t,color:colorOf(t.project)}));save()}
 
 /* ===================== Резервная копия ===================== */
-function cloudPayload(){return{version:5,tasks,series,projects}}
+function cloudPayload(){return{version:6,tasks,series,projects}}
 function queueCloudPush(){if(!cloudClient||!cloudUser||cloudApplying)return;clearTimeout(cloudTimer);cloudTimer=setTimeout(()=>pushCloud(true),900)}
 function setCloudStatus(text,on=false){const el=$('#cloudStatus');if(!el)return;el.textContent=text;el.classList.toggle('on',on)}
 function renderCloudUser(){
@@ -1583,6 +1640,7 @@ function closePops(){$$('.pop').forEach(p=>p.classList.remove('open'))}
 function togglePop(id){const p=$(id),was=p.classList.contains('open');closePops();if(!was)p.classList.add('open')}
 
 function enhanceStepper(input,suffix='дн.'){
+  if(!input)return;
   const label=input.closest('.field-label'),box=document.createElement('div');
   if(label&&label.firstChild&&label.firstChild.nodeType===3)label.firstChild.textContent='Длительность';
   box.className='stepper';
@@ -1602,7 +1660,7 @@ function prepareTaskForm(){
   const priority=$('#taskPriority'),row=priority.parentElement,label=document.createElement('label');
   row.classList.add('task-settings-row');label.className='field-label';label.innerHTML='<span>Приоритет</span>';
   row.insertBefore(label,priority);label.appendChild(priority);
-  enhanceStepper($('#taskDuration'));enhanceStepper($('#detailDuration'));
+  enhanceStepper($('#detailDuration'));
 }
 
 /* ===================== Статические обработчики ===================== */
@@ -1683,9 +1741,9 @@ $('#taskForm').onsubmit=e=>{
   if(!title)return formError(form,$('#taskTitle'),'Введите название задачи');
   clearFormError(form);
   const project=$('#taskProject').value||INBOX,date=$('#taskDate').value||todayISO,description=$('#taskDescription').value.trim();
-  const durationWorkdays=Math.max(1,Number($('#taskDuration').value)||1),newId=Date.now();
+  const deadline=$('#taskDeadline').value||null,newId=Date.now();
   const createdAt=historyNow();
-  tasks.push({id:newId,title,project,due:'Без времени',priority:$('#taskPriority').value,date,done:false,description,subtasks:[],durationWorkdays,dailyDone:{},color:colorOf(project),createdAt,updatedAt:createdAt,originalScheduledDate:date,originalScheduledDateSource:'recorded',historyStartedAt:createdAt,rescheduleHistory:[],statusHistory:[],completedAt:null});
+  tasks.push({id:newId,title,project,due:'Без времени',priority:$('#taskPriority').value,date,done:false,description,subtasks:[],durationWorkdays:1,dailyDone:{},planningVersion:PLAN_VERSION,planningStartedAt:createdAt,availableFrom:null,deadline,cancelled:false,planDays:[planRecord(date,'PENDING',createdAt,{source:'create'})],color:colorOf(project),createdAt,updatedAt:createdAt,originalScheduledDate:date,originalScheduledDateSource:'recorded',historyStartedAt:createdAt,rescheduleHistory:[],statusHistory:[],completedAt:null});
   save();closeModal();
   if(prefs.view==='tasks'){activeDate=date;weekStart=mondayOf(fromISO(date));prefs.activeDate=activeDate;savePrefs()}
   renderDays();render();if(newId)popIn(newId);
@@ -1699,7 +1757,7 @@ $('#templateForm').onsubmit=e=>{
   if(repeat.type==='monthlyWorkdays'&&!repeat.workdayOrdinals.length)return formError(form,$('#templateWorkdayOptions'),'Выберите хотя бы один рабочий день месяца');
   clearFormError(form);
   const previous=editingTemplateId&&series.find(item=>item.id===editingTemplateId);
-  const template={id:editingTemplateId||'r'+Date.now(),title,description:$('#templateDescription').value.trim(),project:$('#templateProject').value||INBOX,priority:$('#templatePriority').value,startDate:$('#templateStartDate').value||todayISO,due:/^\d{1,2}:\d{2}$/.test($('#templateTime').value.trim())?$('#templateTime').value.trim().padStart(5,'0'):'Без времени',durationWorkdays:Math.max(1,Number($('#templateDuration').value)||1),status:templateStatus($('#templateStatus').value),repeat,skippedOccurrences:previous&&Array.isArray(previous.skippedOccurrences)?previous.skippedOccurrences:[]};
+  const template={id:editingTemplateId||'r'+Date.now(),title,description:$('#templateDescription').value.trim(),project:$('#templateProject').value||INBOX,priority:$('#templatePriority').value,startDate:$('#templateStartDate').value||todayISO,due:/^\d{1,2}:\d{2}$/.test($('#templateTime').value.trim())?$('#templateTime').value.trim().padStart(5,'0'):'Без времени',durationWorkdays:Math.max(1,Number($('#templateDuration').value)||1),planningVersion:previous?previous.planningVersion:PLAN_VERSION,status:templateStatus($('#templateStatus').value),repeat,skippedOccurrences:previous&&Array.isArray(previous.skippedOccurrences)?previous.skippedOccurrences:[]};
   series=editingTemplateId?series.map(item=>item.id===editingTemplateId?template:item):[...series,template];
   refreshFutureTemplateTasks(template);saveSeries();save();closeTemplate();renderDays();render();toast(previous?'Шаблон обновлён':'Шаблон создан');
 };
@@ -1710,19 +1768,20 @@ $('#detailForm').onsubmit=e=>{
   const title=$('#detailTitle').value.trim();
   if(!title)return formError(form,$('#detailTitle'),'Введите название задачи');
   clearFormError(form);
-  const project=$('#detailProject').value||current.project,newDate=$('#detailDate').value||current.date,durationWorkdays=Math.max(1,Number($('#detailDuration').value)||1);
+  const project=$('#detailProject').value||current.project,newDate=$('#detailDate').value||current.date,durationWorkdays=Math.max(1,Number($('#detailDuration').value)||1),deadline=$('#detailDeadline').value||null;
   const time=$('#detailTime').value.trim();
   const allowed=new Set(workDates(newDate,durationWorkdays));
   tasks=tasks.map(t=>{
     if(t.id!==detailId)return t;
-    const next=rescheduleTask(t,newDate,'edit');
-    return {...next,title,description:$('#detailDescription').value.trim(),project,date:newDate,durationWorkdays,dailyDone:Object.fromEntries(Object.entries(t.dailyDone||{}).filter(([d])=>allowed.has(d))),due:/^\d{1,2}:\d{2}$/.test(time)?time.padStart(5,'0'):'Без времени',priority:$('#detailPriority').value,templateDetached:t.seriesId?true:t.templateDetached,color:colorOf(project),updatedAt:historyNow()};
+    const next=isPlanningTask(t)?replanPlanningTask(t,t.date,newDate,'edit'):rescheduleTask(t,newDate,'edit');
+    return {...next,title,description:$('#detailDescription').value.trim(),project,date:newDate,deadline,durationWorkdays:isPlanningTask(t)?1:durationWorkdays,dailyDone:isPlanningTask(t)?t.dailyDone:Object.fromEntries(Object.entries(t.dailyDone||{}).filter(([d])=>allowed.has(d))),due:/^\d{1,2}:\d{2}$/.test(time)?time.padStart(5,'0'):'Без времени',priority:$('#detailPriority').value,templateDetached:t.seriesId?true:t.templateDetached,color:colorOf(project),updatedAt:historyNow()};
   });
   save();closeDetail();
   renderDays();render();
 };
 $('#deleteTask').onclick=()=>{if(detailId===null)return;const task=tasks.find(t=>t.id===detailId);if(task&&task.seriesId&&task.occurrenceKey){series=series.map(template=>template.id===task.seriesId?{...template,skippedOccurrences:[...new Set([...(template.skippedOccurrences||[]),task.occurrenceKey])]}:template);saveSeries()}tasks=tasks.filter(t=>t.id!==detailId);save();closeDetail();renderDays();render()};
-$('#detailComplete').onclick=()=>{tasks=tasks.map(t=>t.id===detailId?{...setTaskDone(t,!t.done),completedEarly:!t.done&&taskDates(t).length>1}:t);save();closeDetail();renderDays();render()};
+$('#detailComplete').onclick=()=>{tasks=tasks.map(t=>{if(t.id!==detailId)return t;const at=historyNow();let next=setTaskDone(t,!t.done,at);if(!t.done&&isPlanningTask(t)&&activePlanDay(t,t.date))next=resolvePlanDay(next,t.date,'COMPLETED',at);return {...next,completedEarly:!t.done&&isLegacyTask(t)&&taskDates(t).length>1}});save();closeDetail();renderDays();render()};
+$('#detailAddPlan').onclick=()=>{const t=currentTask(),date=$('#detailDate').value;if(!t||!isPlanningTask(t)||!validIsoDate(date))return;tasks=tasks.map(task=>task.id===t.id?addPlanDay(task,date,historyNow(),'manual'):task);save();renderDays();render();toast('Задача добавлена в план дня')};
 $('#subInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addSub()}};
 
 document.addEventListener('keydown',e=>{
