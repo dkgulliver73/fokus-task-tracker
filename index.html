@@ -368,18 +368,19 @@
       .topbar.home-dashboard-topbar .title-wrap{display:none}
       .topbar.home-dashboard-topbar .header-clock{font-size:16px}
       .topbar.home-dashboard-topbar .actions{margin-left:auto}
-      .board.home-dashboard-board{height:100vh;min-height:0;padding:12px 24px 16px;overflow:hidden}
+      .board.home-dashboard-board{height:auto;min-height:100vh;padding:12px 24px 32px;overflow:visible}
       .home-dashboard{height:100%}
-      .home-dashboard .home-calendar,.home-dashboard .home-day-panel{min-height:0}
+      .home-dashboard .home-calendar,.home-dashboard .home-day-panel{min-height:0;align-self:stretch}
       .home-dashboard .home-calendar{overflow:hidden}
       .home-dashboard .home-calendar-grid{min-height:0;flex:none;grid-template-rows:repeat(var(--home-weeks,5),88px)}
       .home-dashboard .home-calendar-day{padding:10px 12px 12px}
       .home-dashboard .home-calendar-head{margin-bottom:10px}
       .home-dashboard .home-calendar h2{margin:0}
-      .home-dashboard .home-calendar{height:auto;align-self:start}
-      .home-dashboard .home-day-panel{align-self:start}
+      .home-dashboard .home-calendar{height:auto}
       .home-calendar-day.today .home-date,.home-calendar-day.selected .home-date,.home-calendar-day.today.selected .home-date{font-size:clamp(23px,2vw,30px);font-weight:800;line-height:.95}
     }
+    .home-day-panel{position:static;top:auto;overflow:visible}
+    .home-day-task-list{overflow:visible}
     .home-day-panel-head{grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:8px 12px}
     .home-day-date{display:grid;gap:2px;min-width:0}
     .home-day-date>span{color:#9a91ff;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
@@ -394,7 +395,7 @@
     .home-dashboard{height:auto;min-height:100%;grid-template-rows:auto auto;align-content:start;padding-bottom:18px}
     .home-analytics{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,1fr);gap:0;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#141a25e8,#10151de8);box-shadow:0 14px 34px #0002;overflow:hidden}
     .home-insight{min-width:0;padding:15px 20px}.home-week-insight{border-right:1px solid var(--line)}.home-project-insight{align-self:start}.home-insight-kicker{display:block;color:#9690ff;font-size:10px;font-weight:800;letter-spacing:.13em;line-height:1.2;text-transform:uppercase}.home-week-total{display:flex;align-items:baseline;gap:8px;margin:8px 0 12px}.home-week-total strong{font-size:25px;letter-spacing:-.045em}.home-week-total span{color:#99a3b4;font-size:12px;font-weight:650}.home-rhythm{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:end}.home-rhythm-day{display:grid;grid-template-columns:auto 1fr;grid-template-rows:52px auto;column-gap:5px;align-items:end;color:#98a2b2;font-size:11px}.home-rhythm-track{grid-column:1/-1;display:flex;align-items:flex-end;gap:3px;height:52px;padding:4px 5px;border-radius:8px;background:#0e131c}.home-rhythm-track i{display:block;min-width:7px;border-radius:5px 5px 2px 2px}.home-rhythm-track i[style="height:0%"]{display:none}.home-rhythm-done{background:#79c29b}.home-rhythm-open{background:#8278e9}.home-rhythm-day b{color:#d1d7e1;font-size:11px;font-weight:750;text-align:right}.home-project-list{display:grid;gap:10px;margin-top:12px}.home-project-row>div{display:flex;justify-content:space-between;gap:8px;color:#c8ced9;font-size:12px;font-weight:650}.home-project-row b{font-variant-numeric:tabular-nums;font-size:11px}.home-project-row>i{display:block;height:5px;margin-top:5px;overflow:hidden;border-radius:8px;background:#222a38}.home-project-row em{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8177ec,#a69dff)}.home-project-extra{color:#778293;font-size:11px}.home-attention{grid-column:1/-1;display:flex;align-items:flex-start;gap:18px;padding:12px 20px;border-top:1px solid var(--line);background:#10151c}.home-attention>.home-insight-kicker{flex:none;padding-top:7px}.home-attention-stats{display:flex;align-items:stretch;gap:8px;min-width:0;flex-wrap:wrap}.home-attention-stat{display:grid;gap:3px;min-width:132px;padding:7px 10px;border:1px solid #27303d;border-radius:9px;background:#121925;color:#aeb6c4}.home-attention-stat small{color:#7f8a9c;font-size:10px;font-weight:700;line-height:1.15}.home-attention-stat b{color:#e0e4ec;font-size:12px;line-height:1.25;white-space:nowrap}.home-attention-stat.is-clear{border-color:#294337;background:#121c19}.home-attention-stat.is-clear small{color:#88c49f}.home-attention-stat.is-overdue{border-color:#594033;background:#211914}.home-attention-stat.is-overdue small,.home-attention-stat.is-overdue b{color:#e4af82}.home-analytics-empty{grid-template-columns:1fr}.home-empty-copy{padding:18px 20px}.home-empty-copy>span{color:#9690ff;font-size:10px;font-weight:800;letter-spacing:.13em}.home-empty-copy strong{display:block;margin-top:8px;font-size:17px}.home-empty-copy p{margin:5px 0 0;color:#788394;font-size:12px}
-    @media(min-width:621px){.board.home-dashboard-board{height:100vh;overflow:auto}.home-dashboard .home-calendar,.home-dashboard .home-day-panel{align-self:start}}
+    @media(min-width:621px){.board.home-dashboard-board{height:auto;min-height:100vh;overflow:visible}.home-dashboard .home-calendar,.home-dashboard .home-day-panel{align-self:stretch}}
     @media(max-width:768px){.home-analytics{grid-column:auto;grid-template-columns:1fr;border-radius:15px}.home-insight{padding:15px}.home-week-insight{border-right:0;border-bottom:1px solid var(--line)}.home-attention{display:grid;gap:10px;padding:14px 15px}.home-attention>div{justify-content:flex-start;gap:10px 14px}.home-attention span:last-child{padding-left:0;border-left:0}.home-week-total{margin-bottom:13px}.home-rhythm{gap:7px}}
     @media(min-width:901px){.app{grid-template-columns:196px minmax(0,1fr)}aside{padding-left:12px;padding-right:12px}.focus-plaque{width:168px;height:54px;border-radius:11px}.focus-plaque strong{font-size:27px;letter-spacing:.15em;padding-left:.15em}.focus-plaque small{font-size:5.5px;letter-spacing:.12em}}
     @media(max-width:620px){.home-day-panel-head{grid-template-columns:minmax(0,1fr) auto}.home-day-date h3{font-size:40px}.home-day-add{min-height:32px;padding:0 9px;font-size:10px}}
@@ -496,7 +497,7 @@ let rolloverQueue=[],rolloverIndex=0,rolloverBusy=false,rolloverReturnFocus=null
 /* ===================== Состояние ===================== */
 const todayISO=toISO(new Date());
 /* Increase only for a version that is actually published. */
-const BUILD_NUMBER=148;
+const BUILD_NUMBER=149;
 const INBOX='Без проекта';
 const REDUCED=matchMedia('(prefers-reduced-motion: reduce)');
 const MOVE_MS=320,MOVE_EASE='cubic-bezier(0.23,1,0.32,1)';
@@ -864,7 +865,6 @@ function renderHome(){
   const taskList=selectedTasks.length?`<div class="home-day-active-list" id="homeActiveTasks">${activeTasks.map(task=>taskRow(task,false)).join('')}${activeTasks.length?'':'<div class="home-day-empty">Нет активных задач</div>'}</div>${doneTasks.length?`<section class="home-completed"><button type="button" class="home-completed-toggle" data-home-completed-toggle aria-expanded="${!homeCompletedCollapsed}"><span>Выполнено · ${doneTasks.length}</span><i aria-hidden="true">${homeCompletedCollapsed?'▸':'▾'}</i></button><div class="home-day-done-list" id="homeDoneTasks" ${homeCompletedCollapsed?'hidden':''}>${doneTasks.map(task=>taskRow(task,true)).join('')}</div></section>`:''}`:'<div class="home-day-empty">На этот день задач нет</div>';
   const analytics=homeWeekSummary();
   $('#board').innerHTML=`<section class="home-dashboard" aria-label="Обзор задач" style="--home-panel-height:${weekCount*94+48}px"><section class="home-calendar"><header class="home-calendar-head"><h2>${cap(title)}</h2></header><div class="home-calendar-weekdays">${weekDays.map(([full,short])=>`<span><span class="weekday-full">${full}</span><span class="weekday-short">${short}</span></span>`).join('')}</div><div class="home-calendar-grid" style="--home-weeks:${weekCount}">${cells.join('')}</div></section><aside class="home-day-panel"><div class="home-day-panel-head"><div class="home-day-date"><span>${weekday}</span><h3>${selectedDate.getDate()} <small>${monthName}</small></h3></div><button type="button" class="home-day-add" data-open data-new-date="${homeSelectedDate}">＋ Новая задача</button><small class="home-day-summary">${selectedTasks.length?`${selectedTasks.length} ${taskWord(selectedTasks.length)}${selectedDone?` · ${selectedDone} выполнено`:''}`:'Нет задач'}</small></div><div class="home-day-task-list">${taskList}</div></aside>${renderHomeAnalytics(analytics)}</section>`;
-  if(matchMedia('(min-width:621px)').matches){const calendar=$('.home-dashboard .home-calendar'),panel=$('.home-dashboard .home-day-panel');panel.style.height=`${calendar.offsetHeight}px`;}
   $$('[data-home-date]').forEach(button=>button.onclick=()=>{homeSelectedDate=button.dataset.homeDate;const date=fromISO(homeSelectedDate);if(date.getMonth()!==homeMonth.getMonth()||date.getFullYear()!==homeMonth.getFullYear())homeMonth=new Date(date.getFullYear(),date.getMonth(),1);render()});
   $$('[data-home-task]').forEach(row=>{
     row.onclick=e=>{if(e.target.closest('[data-home-task-complete]')||homeJustDragged)return;openDetail(Number(row.dataset.homeTask))};
