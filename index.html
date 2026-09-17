@@ -520,7 +520,8 @@ let cloudClient=null,cloudUser=null,cloudTimer=null,cloudPoller=null,cloudApplyi
 let rolloverQueue=[],rolloverIndex=0,rolloverBusy=false,rolloverReturnFocus=null,rolloverDismissedFor=null;
 
 /* ===================== Состояние ===================== */
-const todayISO=toISO(new Date());
+/* Local calendar day. It is deliberately separate from either view's selection. */
+let todayISO=toISO(new Date());
 /* Increase only for a version that is actually published. */
 const BUILD_NUMBER='151.1';
 const INBOX='Без проекта';
@@ -565,10 +566,28 @@ projectNavToggle.addEventListener('click',e=>{e.stopPropagation();setProjectNavO
 function updateHeaderClock(){const now=new Date();$('#headerClock').dateTime=now.toISOString();$('#headerClock').textContent=now.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}
 updateHeaderClock();setInterval(updateHeaderClock,1000);
 
+function resetHomeToToday(){
+  homeSelectedDate=todayISO;
+  const date=fromISO(todayISO);
+  homeMonth=new Date(date.getFullYear(),date.getMonth(),1);
+}
+function refreshToday(){
+  const nextToday=toISO(new Date());
+  if(nextToday===todayISO)return false;
+  todayISO=nextToday;
+  renderDays();render();
+  return true;
+}
+function scheduleTodayRefresh(){
+  const now=new Date(),nextMidnight=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+  setTimeout(()=>{refreshToday();scheduleTodayRefresh()},Math.max(1000,nextMidnight-now+100));
+}
+
 let activeDate=prefs.activeDate;
 let weekStart=mondayOf(fromISO(activeDate));
-let homeMonth=new Date(fromISO(activeDate).getFullYear(),fromISO(activeDate).getMonth(),1);
-let homeSelectedDate=activeDate;
+/* Home begins in today's context; its selection is intentionally not persisted. */
+let homeMonth=new Date(fromISO(todayISO).getFullYear(),fromISO(todayISO).getMonth(),1);
+let homeSelectedDate=todayISO;
 let homeCompletedCollapsed=(()=>{try{return sessionStorage.getItem('focus_home_completed_collapsed')==='true'}catch(e){return false}})();
 let query='';
 let detailId=null,editingProject=null,draftColor='purple';
@@ -1558,7 +1577,16 @@ async function cloudLogin(create=false,source='cloud'){
 function setAuthError(message){$('#authError').textContent=message||''}
 function showStartup(message='Загружаем задачи и настройки…'){document.body.classList.add('auth-required','booting');$('#startupStatus').textContent=message;$('#startupScreen').classList.add('open')}
 function hideStartup(){document.body.classList.remove('booting');$('#startupScreen').classList.remove('open')}
-async function restoreInitialView(){activeDate=prefs.activeDate||todayISO;weekStart=mondayOf(fromISO(activeDate));homeMonth=new Date(fromISO(activeDate).getFullYear(),fromISO(activeDate).getMonth(),1);homeSelectedDate=activeDate;if(prefs.project&&!projects.some(project=>project.name===prefs.project))prefs.project=null;renderDays();render();if(await window.FocusModules?.restore?.())return;savePrefs()}
+async function restoreInitialView(){
+  refreshToday();
+  activeDate=prefs.activeDate||todayISO;
+  weekStart=mondayOf(fromISO(activeDate));
+  resetHomeToToday();
+  if(prefs.project&&!projects.some(project=>project.name===prefs.project))prefs.project=null;
+  renderDays();render();
+  if(await window.FocusModules?.restore?.())return;
+  savePrefs()
+}
 function showAuthGate(){hideStartup();document.body.classList.add('auth-required');$('#authGate').classList.add('open');$('#authStage').textContent='';setTimeout(()=>$('#authUsername').focus(),50)}
 function hideAuthGate(){document.body.classList.remove('auth-required');$('#authGate').classList.remove('open');setAuthError('');$('#authStage').textContent=''}
 async function pushCloud(silent=false){
@@ -1669,7 +1697,7 @@ $('#templateRepeatType').onchange=updateTemplateScheduleFields;
 $('#templateEndType').onchange=updateTemplateScheduleFields;
 $$('.nav [data-view]').forEach(b=>b.onclick=()=>{
   prefs.view=b.dataset.view;
-  if(prefs.view==='home'){homeSelectedDate=todayISO;homeMonth=new Date(fromISO(todayISO).getFullYear(),fromISO(todayISO).getMonth(),1)}
+  if(prefs.view==='home'){refreshToday();resetHomeToToday()}
   if(prefs.view==='inbox')prefs.project=null;
   savePrefs();renderDays();render();
 });
@@ -1799,7 +1827,8 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){const f=document.querySelector('.overlay.open form');if(f){e.preventDefault();f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true}))}}
   if(e.key==='Escape'){if(drag)return endDrag(true);closeModal();closeDetail();closeTemplate();$('#templateDeleteOverlay').classList.remove('open');closeProject();closeSettings();closePops()}});
 $('#search').oninput=e=>applySearchInput(e.target);
-document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&cloudUser&&await reconcileCloud())maybeStartRollover()});
+document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'){refreshToday();if(cloudUser&&await reconcileCloud())maybeStartRollover()}});
+window.addEventListener('focus',refreshToday);
 $('#days').onclick=e=>{const b=e.target.closest('[data-date]');if(b){const dir=b.dataset.date>activeDate?1:b.dataset.date<activeDate?-1:0;activeDate=b.dataset.date;prefs.activeDate=activeDate;savePrefs();renderDays();render();boardEnter(dir)}};
 $('#prevWeek').onclick=()=>{weekStart=addDays(weekStart,-7);activeDate=toISO(weekStart);prefs.activeDate=activeDate;savePrefs();renderDays();render()};
 $('#nextWeek').onclick=()=>{weekStart=addDays(weekStart,7);activeDate=toISO(weekStart);prefs.activeDate=activeDate;savePrefs();renderDays();render()};
@@ -1832,7 +1861,7 @@ function initDataDots(){
   reduced.addEventListener&&reduced.addEventListener('change',()=>{cancelAnimationFrame(raf);draw(0)});draw(0);
 }
 
-prepareTaskForm();fillSelects();initTemplateWorkdayPicker();updateTemplateScheduleFields();renderDays();render();initDataDots();initCloud();
+prepareTaskForm();fillSelects();initTemplateWorkdayPicker();updateTemplateScheduleFields();renderDays();render();initDataDots();scheduleTodayRefresh();initCloud();
 window.FocusModulesContext=()=>({client:cloudClient,user:cloudUser,projects});
 </script>
 <script src="./focus-modules.js?v=20260911-2"></script>
