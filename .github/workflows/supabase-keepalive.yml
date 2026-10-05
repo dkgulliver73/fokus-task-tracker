@@ -1,0 +1,36 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Read Supabase heartbeat
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          response="$(curl --fail --silent --show-error --max-time 20 --get \
+            "${SUPABASE_URL%/}/rest/v1/app_heartbeat" \
+            --data-urlencode 'select=id' \
+            --data-urlencode 'name=eq.focus' \
+            --data-urlencode 'limit=1' \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            -H 'Accept: application/json')"
+
+          jq -e 'type == "array" and length == 1 and .[0].id != null' \
+            >/dev/null <<<"${response}"
+
+          echo 'Supabase heartbeat passed.'
