@@ -522,6 +522,20 @@
     html:not([data-theme="light"]) .drag-clone{border-color:#fc6f20!important;box-shadow:0 28px 68px #1b1713cc,0 0 0 1px #fc6f2055!important}
     html:not([data-theme="light"]) .drop-marker.ready{border-color:#fc6f2099!important;background:#fc6f2018!important;box-shadow:inset 0 0 28px #fc6f201c!important}
     html:not([data-theme="light"]) .drop-marker.ready:before{background:#ff914d!important;box-shadow:0 0 18px #fc6f20!important}
+    /* Task surfaces: descriptions, empty states and the legacy duration control share the warm graphite system. */
+    html:not([data-theme="light"]) .card-description{background:#302e2d!important;border-color:#5a4940!important;color:#ddcbbb!important}
+    html:not([data-theme="light"]) .card-description.empty{color:#ad9b8a!important}
+    html:not([data-theme="light"]) .card.done .card-description,html:not([data-theme="light"]) .card.done-for-day .card-description{background:#2d3b31!important;border-color:#5f8066!important;color:#cde0d0!important}
+    html:not([data-theme="light"]) .card.done .card-description.empty,html:not([data-theme="light"]) .card.done-for-day .card-description.empty{color:#9db8a2!important}
+    html:not([data-theme="light"]) .empty-day{background:#302e2d!important;border-color:#5a4940!important;color:#d1bfae!important}
+    html:not([data-theme="light"]) .empty-day strong{color:#fee8d0!important}
+    html:not([data-theme="light"]) .stepper{background:#302e2d!important;border-color:#5a4940!important}
+    html:not([data-theme="light"]) .stepper:focus-within{border-color:#fc6f20!important;box-shadow:0 0 0 3px #fc6f2020}
+    html:not([data-theme="light"]) .stepper button{background:#3b322d!important;color:#ead7c3!important}
+    html:not([data-theme="light"]) .stepper button:hover{background:#4a3a30!important;color:#fff7ed!important}
+    html:not([data-theme="light"]) .stepper button:active{background:#5a3a29!important;color:#fff7ed!important}
+    html:not([data-theme="light"]) .stepper em{color:#cdbba9!important}
+    html:not([data-theme="light"]) .series-note,html:not([data-theme="light"]) .recurring-mark,html:not([data-theme="light"]) .focus-progress{color:#ffbd8a!important}
     /* Library code needs a clearly deeper reading surface than its card. */
     html:not([data-theme="light"]) .library-card .module-code{background:#292929!important;border:1px solid #51463d;color:#f2dfcd}
     html:not([data-theme="light"]) .library-actions .module-button:not(.primary):not(.danger-icon),html:not([data-theme="light"]) .library-card .module-card-foot button,html:not([data-theme="light"]) .library-card .image-count{background:#3b322d!important;border-color:#5a4940!important;color:#ead7c3!important}
