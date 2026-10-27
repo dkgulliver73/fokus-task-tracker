@@ -521,6 +521,31 @@
     html:not([data-theme="light"]) .drag-clone{border-color:#fc6f20!important;box-shadow:0 28px 68px #1b1713cc,0 0 0 1px #fc6f2055!important}
     html:not([data-theme="light"]) .drop-marker.ready{border-color:#fc6f2099!important;background:#fc6f2018!important;box-shadow:inset 0 0 28px #fc6f201c!important}
     html:not([data-theme="light"]) .drop-marker.ready:before{background:#ff914d!important;box-shadow:0 0 18px #fc6f20!important}
+    /* Library code needs a clearly deeper reading surface than its card. */
+    html:not([data-theme="light"]) .library-card .module-code{background:#292929!important;border:1px solid #51463d;color:#f2dfcd}
+    html:not([data-theme="light"]) .library-actions .module-button:not(.primary):not(.danger-icon),html:not([data-theme="light"]) .library-card .module-card-foot button,html:not([data-theme="light"]) .library-card .image-count{background:#3b322d!important;border-color:#5a4940!important;color:#ead7c3!important}
+    html:not([data-theme="light"]) .library-actions .module-button:not(.primary):not(.danger-icon):hover,html:not([data-theme="light"]) .library-card .module-card-foot button:hover,html:not([data-theme="light"]) .library-card .image-count:hover{background:#4a3a30!important;border-color:#fc6f20!important;color:#fff7ed!important}
+    /* One warm system for secondary module controls, attachments and viewers. */
+    html:not([data-theme="light"]) .module-button:not(.primary):not(.danger):not(.danger-icon),html:not([data-theme="light"]) .module-card button:not(.star):not(.danger):not(.danger-icon){background:#3b322d!important;border-color:#5a4940!important;color:#ead7c3!important}
+    html:not([data-theme="light"]) .module-button:not(.primary):not(.danger):not(.danger-icon):hover,html:not([data-theme="light"]) .module-card button:not(.star):not(.danger):not(.danger-icon):hover{background:#4a3a30!important;border-color:#fc6f20!important;color:#fff7ed!important}
+    html:not([data-theme="light"]) .library-attachments{background:#302e2d!important;border-color:#5a4940!important}
+    html:not([data-theme="light"]) .attachment-drop{background:#292929!important;border-color:#5a4940!important;color:#d9c7b6!important}
+    html:not([data-theme="light"]) .attachment-drop.over{background:#4a382c!important;border-color:#fc6f20!important;color:#ffe1c8!important}
+    html:not([data-theme="light"]) .attachment-tile,html:not([data-theme="light"]) .attachment-tile button,html:not([data-theme="light"]) .image-viewer figure>img,html:not([data-theme="light"]) .viewer-loading{background:#292929!important;border-color:#5a4940!important}
+    html:not([data-theme="light"]) .module-dialog-close,.viewer-nav{background:#3b322d!important;border-color:#5a4940!important;color:#ead7c3!important}
+    html:not([data-theme="light"]) .module-dialog-close:hover,html:not([data-theme="light"]) .module-dialog-close:focus-visible,html:not([data-theme="light"]) .viewer-nav:hover,html:not([data-theme="light"]) .viewer-nav:focus-visible{background:#4a382c!important;border-color:#fc6f20!important;color:#fff7ed!important;box-shadow:0 0 0 3px #fc6f2020!important}
+    html:not([data-theme="light"]) #moduleOverlay:has(.library-attachments) .module-dialog-actions{background:#414141!important}
+    html:not([data-theme="light"]) .library-select-toggle.is-active,html:not([data-theme="light"]) .library-select[aria-pressed="true"]{background:#4a382c!important;border-color:#fc6f20!important;color:#ffe1c8!important;box-shadow:0 0 0 1px #fc6f2060!important}
+    html:not([data-theme="light"]) .library-batch-bar{background:#3b322d!important;border-color:#fc6f2070!important}
+    html:not([data-theme="light"]) .library-batch-count strong{background:#fc6f2024!important;color:#ffbd8a!important}
+    html:not([data-theme="light"]) .vault-open,html:not([data-theme="light"]) .vault-edit,html:not([data-theme="light"]) .vault-eye{background:#3b322d!important;border-color:#5a4940!important;color:#ead7c3!important}
+    html:not([data-theme="light"]) .vault-open:hover,html:not([data-theme="light"]) .vault-open:focus-visible,html:not([data-theme="light"]) .vault-edit:hover,html:not([data-theme="light"]) .vault-edit:focus-visible,html:not([data-theme="light"]) .vault-eye.active{background:#4a382c!important;border-color:#fc6f20!important;color:#ffe1c8!important;box-shadow:0 0 0 3px #fc6f2020!important}
+    html:not([data-theme="light"]) .vault-drop-marker{border-color:#fc6f2085!important;background:#fc6f200d!important;box-shadow:inset 0 0 0 1px #fc6f2012!important}
+    html:not([data-theme="light"]) .vault-question-gate{background:linear-gradient(145deg,#443931,#332e2a)!important}
+    html:not([data-theme="light"]) .vault-question-gate::after{background:radial-gradient(ellipse,#fc6f201b,transparent 68%)!important}
+    html:not([data-theme="light"]) .vault-question-close,html:not([data-theme="light"]) .vault-question-trigger{color:#ffbd8a!important}
+    html:not([data-theme="light"]) .vault-question-close{background:#3b322d!important;border-color:#5a4940!important}
+    html:not([data-theme="light"]) .vault-question-close:hover,html:not([data-theme="light"]) .vault-question-close:focus-visible{background:#4a382c!important;border-color:#fc6f20!important;box-shadow:0 0 0 3px #fc6f2020!important}
     @media(max-width:620px){
       html:not([data-theme="light"]) aside .nav{border-color:#5a4940;background:linear-gradient(135deg,#35302c,#2c2927)!important}
       html:not([data-theme="light"]) .nav button.active{background:linear-gradient(145deg,#4a3a30,#3b322d)!important;border-color:#fc6f20!important;box-shadow:0 8px 18px #1d171399,0 0 0 1px #fc6f2030!important}
