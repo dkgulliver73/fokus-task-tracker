@@ -536,6 +536,8 @@
     html:not([data-theme="light"]) .stepper button:active{background:#5a3a29!important;color:#fff7ed!important}
     html:not([data-theme="light"]) .stepper em{color:#cdbba9!important}
     html:not([data-theme="light"]) .series-note,html:not([data-theme="light"]) .recurring-mark,html:not([data-theme="light"]) .focus-progress{color:#ffbd8a!important}
+    /* Keep the legacy duration value compact without reducing the +/- hit targets. */
+    @media(min-width:621px){.detail-deadline-row .legacy-duration-field .stepper{grid-template-columns:40px 50% auto 40px;justify-content:start}}
     /* Library code needs a clearly deeper reading surface than its card. */
     html:not([data-theme="light"]) .library-card .module-code{background:#292929!important;border:1px solid #51463d;color:#f2dfcd}
     html:not([data-theme="light"]) .library-actions .module-button:not(.primary):not(.danger-icon),html:not([data-theme="light"]) .library-card .module-card-foot button,html:not([data-theme="light"]) .library-card .image-count{background:#3b322d!important;border-color:#5a4940!important;color:#ead7c3!important}
