@@ -522,6 +522,12 @@
     html:not([data-theme="light"]) .drag-clone{border-color:#fc6f20!important;box-shadow:0 28px 68px #1b1713cc,0 0 0 1px #fc6f2055!important}
     html:not([data-theme="light"]) .drop-marker.ready{border-color:#fc6f2099!important;background:#fc6f2018!important;box-shadow:inset 0 0 28px #fc6f201c!important}
     html:not([data-theme="light"]) .drop-marker.ready:before{background:#ff914d!important;box-shadow:0 0 18px #fc6f20!important}
+    html:not([data-theme="light"]) .column.drag-over{background:#4a382c!important;border-color:#fc6f2077!important;box-shadow:inset 0 0 45px #fc6f2018!important}
+    html:not([data-theme="light"]) .days button.drop-target{background:#4a382c!important;border-color:#fc6f20!important;color:#ffe1c8!important;box-shadow:0 10px 26px #fc6f2030!important}
+    html:not([data-theme="light"]) .days button.drop-target strong{color:#fff7ed!important}
+    html:not([data-theme="light"]) .home-day-drop-marker{border-color:#fc6f2099!important;background:#fc6f2018!important;box-shadow:inset 0 0 24px #fc6f201c!important}
+    html:not([data-theme="light"]) .card-bottom .complete:hover,html:not([data-theme="light"]) .home-day-complete:hover{background:#4a382c!important;border-color:#fc6f20!important;color:#fff7ed!important;box-shadow:0 0 0 3px #fc6f2020!important}
+    html:not([data-theme="light"]) .home-day-complete:focus-visible,html:not([data-theme="light"]) .home-completed-toggle:focus-visible{outline-color:#ff914d!important}
     /* Task surfaces: descriptions, empty states and the legacy duration control share the warm graphite system. */
     html:not([data-theme="light"]) .card-description{background:#302e2d!important;border-color:#5a4940!important;color:#ddcbbb!important}
     html:not([data-theme="light"]) .card-description.empty{color:#ad9b8a!important}
@@ -792,6 +798,13 @@ function setTaskDone(task,done,at=historyNow()){
   if(task.done===done)return touchTask(task,at);
   const from=task.done?'done':'active',to=done?'done':'active';
   return {...task,done,cancelled:false,updatedAt:at,completedAt:done?at:null,statusHistory:[...(task.statusHistory||[]),{at,from,to}]};
+}
+function reopenPlanningTask(task,date,at=historyNow()){
+  const matching=planDay(task,date),fallback=planDays(task).find(day=>day.state==='COMPLETED');
+  const reopenDate=matching&&matching.state==='COMPLETED'?date:fallback&&fallback.date;
+  const next=setTaskDone(task,false,at);
+  if(!reopenDate)return next;
+  return {...next,planDays:planDays(next).map(day=>day.date===reopenDate&&day.state==='COMPLETED'?{...day,state:'PENDING',resolvedAt:null,reopenedAt:at}:day)};
 }
 
 tasks=tasks.map((t,i)=>{
@@ -1425,7 +1438,7 @@ function toggleTaskForDate(id,date){
     if(t.id!==id)return t;
     if(isPlanningTask(t)){
       const at=historyNow();
-      if(t.done)return setTaskDone(t,false,at);
+      if(t.done)return reopenPlanningTask(t,date,at);
       let next=setTaskDone(t,true,at);
       if(activePlanDay(next,date))next=resolvePlanDay(next,date,'COMPLETED',at);
       return next;
@@ -1945,7 +1958,7 @@ $('#detailForm').onsubmit=e=>{
   renderDays();render();
 };
 $('#deleteTask').onclick=()=>{if(detailId===null)return;const task=tasks.find(t=>t.id===detailId);if(task&&task.seriesId&&task.occurrenceKey){series=series.map(template=>template.id===task.seriesId?{...template,skippedOccurrences:[...new Set([...(template.skippedOccurrences||[]),task.occurrenceKey])]}:template);saveSeries()}tasks=tasks.filter(t=>t.id!==detailId);save();closeDetail();renderDays();render()};
-$('#detailComplete').onclick=()=>{tasks=tasks.map(t=>{if(t.id!==detailId)return t;const at=historyNow();let next=setTaskDone(t,!t.done,at);if(!t.done&&isPlanningTask(t)&&activePlanDay(t,t.date))next=resolvePlanDay(next,t.date,'COMPLETED',at);return {...next,completedEarly:!t.done&&isLegacyTask(t)&&taskDates(t).length>1}});save();closeDetail();renderDays();render()};
+$('#detailComplete').onclick=()=>{tasks=tasks.map(t=>{if(t.id!==detailId)return t;const at=historyNow();let next=t.done&&isPlanningTask(t)?reopenPlanningTask(t,t.date,at):setTaskDone(t,!t.done,at);if(!t.done&&isPlanningTask(t)&&activePlanDay(t,t.date))next=resolvePlanDay(next,t.date,'COMPLETED',at);return {...next,completedEarly:!t.done&&isLegacyTask(t)&&taskDates(t).length>1}});save();closeDetail();renderDays();render()};
 $('#subInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addSub()}};
 
 document.addEventListener('keydown',e=>{
