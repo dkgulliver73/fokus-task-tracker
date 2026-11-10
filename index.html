@@ -719,6 +719,11 @@ function resetHomeToToday(){
   const date=fromISO(todayISO);
   homeMonth=new Date(date.getFullYear(),date.getMonth(),1);
 }
+function resetTasksToToday(){
+  activeDate=todayISO;
+  weekStart=mondayOf(fromISO(todayISO));
+  prefs.activeDate=todayISO;
+}
 function refreshToday(){
   const nextToday=toISO(new Date());
   if(nextToday===todayISO)return false;
@@ -1732,8 +1737,8 @@ function showStartup(message='Загружаем задачи и настрой�
 function hideStartup(){document.body.classList.remove('booting');$('#startupScreen').classList.remove('open')}
 async function restoreInitialView(){
   refreshToday();
-  activeDate=prefs.activeDate||todayISO;
-  weekStart=mondayOf(fromISO(activeDate));
+  if(prefs.view==='tasks')resetTasksToToday();
+  else{activeDate=prefs.activeDate||todayISO;weekStart=mondayOf(fromISO(activeDate))}
   resetHomeToToday();
   if(prefs.project&&!projects.some(project=>project.name===prefs.project))prefs.project=null;
   renderDays();render();
@@ -1851,6 +1856,7 @@ $('#templateEndType').onchange=updateTemplateScheduleFields;
 $$('.nav [data-view]').forEach(b=>b.onclick=()=>{
   prefs.view=b.dataset.view;
   if(prefs.view==='home'){refreshToday();resetHomeToToday()}
+  if(prefs.view==='tasks')resetTasksToToday();
   if(prefs.view==='inbox')prefs.project=null;
   savePrefs();renderDays();render();
 });
