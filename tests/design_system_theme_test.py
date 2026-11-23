@@ -21,6 +21,7 @@ class WarmThemeContractTest(unittest.TestCase):
         self.assertIn('id="copyWeekRange"', source)
         self.assertIn("copyWeekRange.addEventListener('click'", source)
         self.assertIn("`${formatWeekRange()} | ${weekNumber.textContent}`", source)
+        self.assertNotIn('cursor:copy', source)
 
     def test_warm_theme_exposes_semantic_interaction_tokens(self):
         for token in (
