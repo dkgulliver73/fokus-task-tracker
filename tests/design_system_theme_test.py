@@ -16,6 +16,12 @@ def rule_for(selector):
 
 
 class WarmThemeContractTest(unittest.TestCase):
+    def test_week_range_is_an_accessible_copy_control(self):
+        source = SOURCE.read_text(encoding='utf-8')
+        self.assertIn('id="copyWeekRange"', source)
+        self.assertIn("copyWeekRange.addEventListener('click'", source)
+        self.assertIn("`${formatWeekRange()} | ${weekNumber.textContent}`", source)
+
     def test_warm_theme_exposes_semantic_interaction_tokens(self):
         for token in (
             'focus-ring', 'accent-hover', 'accent-strong', 'selection-surface',
